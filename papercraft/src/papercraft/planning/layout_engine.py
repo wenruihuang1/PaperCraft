@@ -80,7 +80,11 @@ def _screen_specs(count: int) -> list[tuple[int, int, int, int, float, float]]:
         2: [(1, 8, 1, 10, 650, 760), (9, 4, 1, 10, 650, 760)],
         3: [(1, 8, 1, 10, 650, 760), (9, 4, 1, 5, 310, 370), (9, 4, 6, 5, 310, 370)],
         4: [(1, 7, 1, 10, 650, 760), (8, 5, 1, 3, 185, 235), (8, 5, 4, 4, 245, 305), (8, 5, 8, 3, 185, 235)],
-        5: [(1, 7, 1, 7, 450, 540), (8, 5, 1, 4, 245, 305), (8, 5, 5, 3, 185, 235), (1, 7, 8, 3, 185, 235), (8, 5, 8, 3, 185, 235)],
+        # The evidence-analysis card needs one extra support row to keep its
+        # logic, claim/evidence, experiment, and conclusion blocks visible.
+        # The gallery remains in the left bottom strip, so the asymmetric
+        # columns still fit the 16:9 canvas without overlap.
+        5: [(1, 7, 1, 8, 520, 620), (8, 5, 1, 3, 185, 235), (8, 5, 4, 2, 120, 165), (8, 5, 6, 5, 300, 365), (1, 7, 9, 2, 120, 160)],
     }[count]
 
 
@@ -90,7 +94,7 @@ def _print_specs(count: int) -> list[tuple[int, int, int, int, float, float]]:
         2: [(1, 7, 1, 10, 500, 610), (8, 5, 1, 10, 500, 610)],
         3: [(1, 7, 1, 10, 500, 610), (8, 5, 1, 5, 240, 300), (8, 5, 6, 5, 240, 300)],
         4: [(1, 7, 1, 10, 500, 610), (8, 5, 1, 3, 145, 190), (8, 5, 4, 5, 240, 300), (8, 5, 9, 2, 100, 140)],
-        5: [(1, 7, 1, 7, 340, 420), (8, 5, 1, 4, 190, 245), (8, 5, 5, 3, 145, 190), (1, 7, 8, 3, 145, 190), (8, 5, 8, 3, 145, 190)],
+        5: [(1, 7, 1, 8, 390, 480), (8, 5, 1, 4, 190, 245), (8, 5, 5, 1, 80, 110), (8, 5, 6, 5, 240, 300), (1, 7, 9, 2, 100, 140)],
     }[count]
 
 
@@ -102,9 +106,9 @@ def _four_component_specs(
     supports = list(components[1:])
     priority = {
         "result_chart": 4,
-        "visual_gallery": 3,
+        "claim_evidence_chain": 3,
+        "visual_gallery": 2,
         "equation_explorer": 2,
-        "claim_evidence_chain": 1,
         "method_flow": 0,
     }
     large = max(
@@ -123,8 +127,9 @@ def _four_component_specs(
         spans[large] = 4
         spans[second] = 4
     else:
-        spans = [3, 3, 3]
+        spans = [2, 2, 2]
         spans[large] = 4
+        spans[second] = 4
     hero_heights = (500, 610) if printable else (650, 760)
     row = 1
     specs = [(1, 7, 1, 10, *hero_heights)]

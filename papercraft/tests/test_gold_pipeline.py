@@ -24,14 +24,11 @@ def _gold(project_root):
 def test_amp_gold_builds_all_component_families_and_passes_six_reviewers(project_root):
     document, analysis, evidence = _gold(project_root)
     plan = build_poster_plan(document, analysis, evidence)
-    assert {item.component_type for item in plan.components} == {
-        "method_flow",
-        "equation_explorer",
-        "result_chart",
-        "visual_gallery",
+    assert {"method_flow", "result_chart", "claim_evidence_chain"} <= {
+        item.component_type for item in plan.components
     }
-    assert plan.evidence_visibility == "internal_only"
-    assert "claim_evidence_chain" not in {item.component_type for item in plan.components}
+    assert plan.evidence_visibility == "visible_panel"
+    assert len(plan.layout_profiles.screen_16_9.component_layouts) == 5
     metrics = []
     for profile, occupied, visual, font, gap in (
         ("screen_16_9", 0.85, 0.60, 18, 18),
@@ -147,6 +144,6 @@ def test_current_paper_plan_is_mechanism_and_budgeted(project_root):
     )
     plan = build_poster_plan(document, analysis, evidence)
     assert plan.narrative_mode == "mechanism"
-    assert plan.evidence_visibility == "internal_only"
-    assert "claim_evidence_chain" not in {item.component_type for item in plan.components}
+    assert plan.evidence_visibility == "visible_panel"
+    assert "claim_evidence_chain" in {item.component_type for item in plan.components}
     assert all(region.text_budget is not None for region in plan.narrative_regions)

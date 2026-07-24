@@ -144,6 +144,7 @@ class ClaimEvidenceChainComponent(ComponentBase):
     component_type: Literal["claim_evidence_chain"]
     claim_refs: list[ClaimId] = Field(min_length=1)
     evidence_refs: list[EvidenceId] = Field(min_length=1)
+    experiment_refs: list[ExperimentId] = Field(default_factory=list)
     show_assessment_status: bool = True
 
 

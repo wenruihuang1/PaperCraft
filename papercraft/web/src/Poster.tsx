@@ -132,7 +132,42 @@ function SafeFormula({ equation, bundle, compact = false }: { equation: any; bun
 function ClaimChain({ component, bundle, profile, onSource }: { component: PosterComponent; bundle: Bundle; profile: Profile; onSource: (state: ViewerState) => void }) {
   const claims = component.claim_refs.map((id) => bundle.paper_analysis.claims.find((item: any) => item.claim_id === id)).filter(Boolean);
   const assessments = new Map(bundle.evidence_graph.claim_assessments.map((item: any) => [item.claim_id, item]));
-  return <div className="claim-chain compact-evidence">{claims.slice(0, profile === "print_a0_landscape" ? 2 : 1).map((claim: any) => { const assessment: any = assessments.get(claim.claim_id); return <button className="claim-row" key={claim.claim_id} onClick={() => onSource({ title: claim.statement, refs: claim.source_refs })}><span className={`assessment ${assessment.status}`}>{assessment.status.replaceAll("_", " ")}</span><span><strong>{claim.statement}</strong><small>{assessment.limitations?.[0] || claim.scope}</small></span><b>↗</b></button>; })}<p className="evidence-note">Scope is shown to prevent overclaiming; full evidence checks stay in the inspector.</p></div>;
+  const experiments = (component.experiment_refs || []).map((id: string) => bundle.paper_analysis.experiments.find((item: any) => item.experiment_id === id)).filter(Boolean);
+  const details = component.details || [];
+  const visibleClaims = claims.slice(0, profile === "print_a0_landscape" ? 3 : 2);
+  const visibleExperiments = experiments.slice(0, profile === "print_a0_landscape" ? 3 : 2);
+  return <div className="analysis-card">
+    <section className="analysis-box analysis-logic">
+      <span className="analysis-label">LOGIC CHECK</span>
+      <p>{details[0] || component.summary}</p>
+    </section>
+    <div className="analysis-grid">
+      <section className="analysis-box analysis-claims">
+        <span className="analysis-label">CLAIMS → EVIDENCE</span>
+        <div className="claim-chain compact-evidence">{visibleClaims.map((claim: any) => {
+          const assessment: any = assessments.get(claim.claim_id);
+          const status = assessment?.status || "insufficient_evidence";
+          const claimLabel = `${claim.claim_type === "main" ? "Main" : "Supporting"} claim · ${claim.scope || "Scope reported in source"}`;
+          return <button className="claim-row" key={claim.claim_id} onClick={() => onSource({ title: claim.statement, refs: claim.source_refs })}>
+            <span className={`assessment ${status}`}>{status.replaceAll("_", " ")}</span>
+            <span><strong>{claimLabel}</strong><small>{assessment?.limitations?.[0] || "Evidence details available in the source inspector."}</small></span><b>↗</b>
+          </button>;
+        })}</div>
+      </section>
+      <section className="analysis-box analysis-experiments">
+        <span className="analysis-label">EXPERIMENTS & LIMITS</span>
+        <div className="experiment-checks">{visibleExperiments.map((experiment: any, index: number) => <button className="experiment-check" key={experiment.experiment_id} onClick={() => onSource({ title: experiment.question, refs: experiment.source_refs })}>
+          <strong>Experiment {index + 1} · {[...(experiment.datasets || []), ...(experiment.metrics || [])].slice(0, 3).join(" · ") || "Scope not reported"}</strong>
+          <small>{experiment.limitations?.[0] || "No limitation reported; inspect the linked source for setup and results."}</small>
+        </button>)}</div>
+      </section>
+    </div>
+    <section className="analysis-conclusion">
+      <span className="analysis-label">CONTRIBUTION · CONCLUSION</span>
+      <p>{details[1] || "Contributions are not explicitly reported."}</p>
+      <p>{details[2] || "Conclusion is not explicitly reported."}</p>
+    </section>
+  </div>;
 }
 
 function ResultChart({ component, bundle, profile, isHero = false }: { component: PosterComponent; bundle?: Bundle; profile?: Profile; isHero?: boolean }) {

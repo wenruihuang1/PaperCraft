@@ -140,6 +140,14 @@
           "title": "Component Type",
           "type": "string"
         },
+        "experiment_refs": {
+          "items": {
+            "pattern": "^exp_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Experiment Refs",
+          "type": "array"
+        },
         "show_assessment_status": {
           "default": true,
           "title": "Show Assessment Status",

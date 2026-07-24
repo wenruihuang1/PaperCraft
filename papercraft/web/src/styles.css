@@ -185,6 +185,26 @@ button { cursor: pointer; }
 .compact-evidence { padding-bottom: 10px; }
 .evidence-note { padding-bottom: 10px; }
 .type-claim_evidence_chain .component-summary { display: none; }
+.type-claim_evidence_chain .component-visual { overflow: visible; }
+.type-claim_evidence_chain .component-actions { display: none; }
+.analysis-card { min-width: 0; min-height: 0; height: 100%; display: grid; grid-template-rows: 58px minmax(70px, 1fr) 58px; gap: 5px; overflow: hidden; }
+.analysis-box, .analysis-conclusion { min-width: 0; border: 1px solid color-mix(in srgb, var(--pc-warning), transparent 72%); border-radius: 8px; padding: 5px 7px; background: color-mix(in srgb, var(--pc-warning), transparent 94%); overflow: hidden; }
+.analysis-label { display: block; color: var(--pc-warning); font-size: 14px; font-weight: 800; letter-spacing: .08em; line-height: 1.1; }
+.analysis-box p, .analysis-conclusion p { margin: 3px 0 0; color: var(--pc-muted); font-size: 18px; line-height: 1.15; overflow: hidden; }
+.analysis-grid { min-height: 70px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; overflow: hidden; }
+.analysis-grid > .analysis-box { display: flex; flex-direction: column; min-height: 0; }
+.analysis-claims .claim-chain { min-height: 0; overflow: hidden; margin-top: 3px; display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 3px; }
+.analysis-claims .claim-row { min-height: 0; height: 100%; max-height: 48px; grid-template-columns: 92px minmax(0, 1fr) 12px; gap: 5px; padding: 4px; border-radius: 6px; }
+.analysis-claims .claim-row strong { display: block; font-size: 18px !important; line-height: 1.05; -webkit-line-clamp: unset; }
+.analysis-claims .claim-row small { font-size: 18px !important; line-height: 1.05; margin-top: 2px; white-space: normal; text-overflow: clip; }
+.analysis-claims .assessment { padding: 3px 2px; font-size: 18px; line-height: 1.1; }
+.experiment-checks { display: flex; flex-direction: column; gap: 4px; }
+.experiment-check { min-width: 0; padding: 4px; border: 1px solid #ffffff12; border-radius: 6px; color: inherit; background: #ffffff06; text-align: left; overflow: hidden; }
+.experiment-check strong { display: block; overflow: hidden; font-size: 18px; line-height: 1.1; }
+.experiment-check small { display: block; overflow: hidden; color: var(--pc-muted); font-size: 18px; line-height: 1.05; margin-top: 2px; }
+.analysis-conclusion { border-color: color-mix(in srgb, var(--pc-success), transparent 72%); background: color-mix(in srgb, var(--pc-success), transparent 94%); }
+.analysis-conclusion .analysis-label { color: var(--pc-success); }
+.analysis-conclusion p { font-size: 18px; }
 .result-comparison { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
 .result-comparison article { display: grid; grid-template-columns: 100px 1fr 14px 1fr 42px; align-items: center; gap: 5px; padding: 6px 7px; border-radius: 8px; background: #ffffff06; }
 .result-comparison article > span { font-size: 13px; font-weight: 800; }
@@ -323,6 +343,14 @@ button { cursor: pointer; }
 .profile-print_a0_landscape .compact-evidence .claim-row strong { font-size: 20pt; }
 .profile-print_a0_landscape .compact-evidence .claim-row small, .profile-print_a0_landscape .evidence-note { font-size: 24pt; }
 .profile-print_a0_landscape .compact-evidence .assessment { font-size: 13pt; }
+.profile-print_a0_landscape .analysis-box p,
+.profile-print_a0_landscape .analysis-conclusion p,
+.profile-print_a0_landscape .analysis-claims .claim-row strong,
+.profile-print_a0_landscape .experiment-check strong { font-size: 24pt !important; }
+.profile-print_a0_landscape .analysis-claims .claim-row small,
+.profile-print_a0_landscape .experiment-check small { font-size: 18pt !important; }
+.profile-print_a0_landscape .analysis-label,
+.profile-print_a0_landscape .analysis-claims .assessment { font-size: 18pt !important; }
 .profile-print_a0_landscape .component-summary,
 .profile-print_a0_landscape .compact-evidence .claim-row strong { font-size: 24pt; }
 .profile-print_a0_landscape .type-method_flow .component-visual,
@@ -382,6 +410,9 @@ button { cursor: pointer; }
 .profile-screen_16_9 .method-main-layout.has-primary-visual { grid-template-columns: minmax(0, 2.2fr) minmax(250px, .8fr); gap: 12px; }
 .profile-screen_16_9 .method-main-figure { border-color: #b5cbd6; border-radius: 8px; }
 .profile-screen_16_9 .method-main-figure img { object-fit: cover; object-position: center top; transform: scale(1.60); transform-origin: center top; }
+.profile-screen_16_9 .component-hero .method-hero-layout .flow-step { overflow: hidden; }
+.profile-screen_16_9 .component-hero .method-hero-layout .flow-step strong { font-size: 18px; }
+.profile-screen_16_9 .component-hero .method-hero-layout .flow-step p { font-size: 18px; line-height: 1.12; }
 .profile-screen_16_9 .safe-formula { color: var(--pc-fg); background: #eef3f6; }
 .profile-screen_16_9 .result-comparison { height: 100%; grid-auto-rows: minmax(0, 1fr); align-content: stretch; gap: 10px; }
 .profile-screen_16_9 .type-result_chart .component-visual { display: flex; min-height: 0; }
@@ -441,11 +472,11 @@ button { cursor: pointer; }
   display: block;
   overflow: visible;
   margin-top: 4px;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.22;
   -webkit-line-clamp: unset;
 }
-.method-hero-layout .flow-step strong { font-size: 17px; line-height: 1.16; }
+.method-hero-layout .flow-step strong { font-size: 18px; line-height: 1.16; }
 .method-hero-layout .flow-step > b { display: block; right: -10px; }
 .profile-screen_16_9 .method-hero-layout .method-main-figure {
   width: 100%;

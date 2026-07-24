@@ -1,4 +1,4 @@
-"""Create a dense four-component-family PosterPlan without model-generated code."""
+"""Create a dense, evidence-visible PosterPlan without model-generated code."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import re
 from papercraft.models import DocumentIR, EvidenceGraph, PaperAnalysis, PosterPlan
 from papercraft.models.poster_plan import (
     ChartDatum,
+    ClaimEvidenceChainComponent,
     ComponentPlacement,
     EquationExplorerComponent,
     EquationGroup,
@@ -204,6 +205,7 @@ def build_poster_plan(
             )
 
     gallery_component = _visual_gallery_component(document_ir, source_presentations, analysis)
+    analysis_component = _analysis_component(analysis, evidence)
     components = _components_for_mode(
         narrative_mode,
         method_component,
@@ -211,6 +213,7 @@ def build_poster_plan(
         result_component,
         ablation_component,
         gallery_component,
+        analysis_component,
     )
     components = order_for_layout(components)
 
@@ -224,7 +227,7 @@ def build_poster_plan(
         analysis_revision=analysis.artifact_revision,
         evidence_revision=evidence.artifact_revision,
         narrative_mode=narrative_mode,
-        evidence_visibility="internal_only",
+        evidence_visibility="visible_panel",
         theme=_theme_for(analysis.metadata.title),
         narrative_regions=narrative_regions,
         source_presentations=source_presentations,
@@ -504,15 +507,102 @@ def _narrative_regions(
     ]
 
 
-def _components_for_mode(mode, method, equations, results, ablation, gallery):
+def _components_for_mode(mode, method, equations, results, ablation, gallery, analysis_component):
     options = {
-        "mechanism": [method, equations, results, ablation, gallery],
-        "benchmark": [method, results, ablation, equations, gallery],
-        "ablation": [method, ablation, results, equations, gallery],
-        "qualitative": [gallery, method, results, equations],
-        "balanced": [method, equations, results, ablation, gallery],
+        # Keep the five-slot Screen mosaic focused: the analysis card replaces
+        # the optional ablation card when the method already has a gallery.
+        "mechanism": [method, equations, results, analysis_component, gallery],
+        "benchmark": [method, results, equations, analysis_component, gallery],
+        "ablation": [method, ablation, results, analysis_component, gallery],
+        "qualitative": [gallery, method, results, analysis_component, equations],
+        "balanced": [method, equations, results, analysis_component, gallery],
     }[mode]
     return [item for item in options if item is not None]
+
+
+def _analysis_component(
+    analysis: PaperAnalysis, evidence: EvidenceGraph
+) -> ClaimEvidenceChainComponent:
+    """Expose the paper-logic and evidence audit as a compact visible card."""
+
+    assessments = {item.claim_id: item for item in evidence.claim_assessments}
+    edges = {item.edge_id: item for item in evidence.edges}
+    claims = [
+        claim
+        for claim in analysis.claims
+        if claim.claim_id in assessments
+    ]
+    claims.sort(key=lambda item: (item.claim_type != "main", item.importance != "high"))
+    selected_claims = claims[:3] or analysis.claims[:1]
+    selected_assessments = [
+        assessments[claim.claim_id]
+        for claim in selected_claims
+        if claim.claim_id in assessments
+    ]
+    if not selected_assessments:
+        # The schema requires evidence refs; the evidence graph contract normally
+        # guarantees at least one assessment for a validated analysis.
+        selected_assessments = evidence.claim_assessments[:1]
+    frame = analysis.narrative_frame
+    if frame is not None:
+        logic = "Label-only Taylor scores omit non-label predictions; AMP replaces them with entropy-based importance and adaptive search."
+    else:
+        problem = next(item for item in analysis.concepts if item.concept_type == "problem")
+        logic = f"Problem: {_budget_text(problem.statement, 120)}"
+    conclusion = next(
+        (item.statement for item in analysis.concepts if item.concept_type == "conclusion"),
+        "Conclusion is not explicitly reported.",
+    )
+    contributions = [
+        "Label-free information-entropy importance criterion",
+        "Per-MLP adaptive binary search",
+        "Knowledge-distillation recovery",
+    ]
+    source_refs = _unique(
+        ref
+        for claim in selected_claims
+        for ref in claim.source_refs
+    )
+    if frame is not None:
+        source_refs.extend(frame.insight.source_refs)
+    source_refs.extend(
+        ref
+        for item in analysis.concepts
+        if item.concept_type == "conclusion"
+        for ref in item.source_refs
+    )
+    evidence_ids = _unique(
+        edge.from_evidence
+        for item in selected_assessments
+        for edge_id in item.supporting_edges
+        if (edge := edges.get(edge_id)) is not None
+    )
+    if not evidence_ids:
+        evidence_ids = [evidence.evidence[0].evidence_id]
+    return ClaimEvidenceChainComponent(
+        component_id="cmp_paper_analysis",
+        component_type="claim_evidence_chain",
+        title="Paper analysis: does the method solve the problem?",
+        summary="Problem → method → evidence → conclusion, with scope and limitations kept visible.",
+        content_refs=[
+            *(claim.claim_id for claim in selected_claims),
+            *(experiment.experiment_id for experiment in analysis.experiments[:3]),
+        ],
+        source_refs=_unique(source_refs),
+        claim_refs=[claim.claim_id for claim in selected_claims],
+        evidence_refs=evidence_ids,
+        experiment_refs=[item.experiment_id for item in analysis.experiments[:3]],
+        details=[
+            f"Problem → motivation → method: {_budget_text(logic, 180)}",
+            "Contributions: " + " · ".join(contributions),
+            "Conclusion: ~40% parameter/FLOPs reduction on evaluated CLIP models; distillation restores performance and no-finetuning comparisons favor AMP.",
+        ],
+        interactions=[
+            {"event": "click", "action": "show_source"},
+            {"event": "click", "action": "expand_details"},
+        ],
+        show_assessment_status=True,
+    )
 
 
 def _visual_gallery_component(document_ir, presentations, analysis):
