@@ -1,0 +1,8 @@
+{
+  "validation_layer": "cross_reference",
+  "artifact": "review_result",
+  "path": ["repair_batch", "must_preserve_component_ids", 0],
+  "replacement": "cmp_missing",
+  "expected_error": "UNKNOWN_COMPONENT_REF"
+}
+

@@ -1,0 +1,705 @@
+{
+  "schema_version": "1.1.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_dev_002",
+  "source_revision": 1,
+  "metadata": {
+    "title": "Causality-Inspired Single-Source Domain Generalization for Medical Image Segmentation",
+    "authors": [
+      "Cheng Ouyang",
+      "Chen Chen",
+      "Surui Li",
+      "Zeju Li",
+      "Chen Qin",
+      "Wenjia Bai",
+      "Daniel Rueckert"
+    ],
+    "language": "en"
+  },
+  "concepts": [
+    {
+      "concept_id": "cpt_domain_shift",
+      "concept_type": "problem",
+      "statement": "A segmentation model trained on one acquisition domain can rely on appearance-specific cues and fail on unseen scanners, modalities, sequences, or sites.",
+      "importance": "critical",
+      "source_refs": [
+        "src_p001_b0005",
+        "src_p004_b0005"
+      ]
+    },
+    {
+      "concept_id": "cpt_single_source",
+      "concept_type": "motivation",
+      "statement": "Medical imaging often provides training data from only one source domain, while collecting representative target-domain data is impractical.",
+      "importance": "high",
+      "source_refs": [
+        "src_p001_b0005",
+        "src_p004_b0009"
+      ]
+    },
+    {
+      "concept_id": "cpt_key_insight",
+      "concept_type": "key_insight",
+      "statement": "Randomize global appearance with GIN, then spatially decouple potentially correlated object appearances with IPA so the segmenter must rely more on shape-stable information.",
+      "importance": "critical",
+      "source_refs": [
+        "src_p004_b0002",
+        "src_p004_b0003",
+        "src_p006_b0016"
+      ]
+    },
+    {
+      "concept_id": "cpt_conclusion",
+      "concept_type": "conclusion",
+      "statement": "The augmentation improves target-domain Dice across the three evaluated cross-domain scenarios, while the stronger causal interpretation remains an approximation rather than an identified causal effect.",
+      "importance": "high",
+      "source_refs": [
+        "src_p008_b0008",
+        "src_p010_b0015"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "clm_target_generalization",
+      "statement": "The proposed GIN+IPA training has the highest overall reported target-domain Dice in abdominal cross-modality, cardiac cross-sequence, and prostate cross-site evaluation.",
+      "claim_type": "main",
+      "scope": "U-Net with EfficientNet-b2 backbone; the stated source/target splits; Dice in Table II.",
+      "qualifiers": [
+        "single-source training",
+        "evaluated medical segmentation settings only"
+      ],
+      "importance": "critical",
+      "source_refs": [
+        "src_ast_table_007",
+        "src_p008_b0008"
+      ]
+    },
+    {
+      "claim_id": "clm_ipa_contribution",
+      "statement": "Adding spatially variable IPA to GIN improves the reported target-domain Dice most clearly for cardiac and several prostate transfers.",
+      "claim_type": "supporting",
+      "scope": "GIN-only versus proposed GIN+IPA ablation in Table V.",
+      "qualifiers": [
+        "some abdominal differences are small",
+        "not every prostate transfer improves"
+      ],
+      "importance": "high",
+      "source_refs": [
+        "src_ast_table_012",
+        "src_p009_b0006",
+        "src_p010_b0007"
+      ]
+    },
+    {
+      "claim_id": "clm_divergence_term",
+      "statement": "The KL domain-invariance term contributes a small positive change in the abdominal CT-to-MRI setting.",
+      "claim_type": "supporting",
+      "scope": "One ablation: average Dice 85.67 without the term versus 86.31 with it.",
+      "qualifiers": [
+        "single setting",
+        "no uncertainty reported for this comparison"
+      ],
+      "importance": "medium",
+      "source_refs": [
+        "src_p010_b0008"
+      ]
+    },
+    {
+      "claim_id": "clm_causal_intervention",
+      "statement": "IPA realizes the intended causal intervention by removing acquisition-induced confounding between foreground and background appearances.",
+      "claim_type": "supporting",
+      "scope": "Mechanistic interpretation of the augmentation, not merely predictive performance.",
+      "qualifiers": [
+        "pseudo-correlation maps approximate unknown object correlations"
+      ],
+      "importance": "high",
+      "source_refs": [
+        "src_p006_b0007",
+        "src_p006_b0015",
+        "src_p006_b0016"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "method_id": "mth_causal_formulation",
+      "name": "Acquisition-shift formulation",
+      "purpose": "Separate domain-dependent acquisition appearance A from domain-independent anatomical content C and train for prediction invariance across simulated A.",
+      "inputs": [
+        "source image x",
+        "segmentation label y"
+      ],
+      "outputs": [
+        "domain-invariant segmentation predictor"
+      ],
+      "steps": [
+        {
+          "index": 1,
+          "description": "Model X as an effect of acquisition A and content C, with shape representation S determining Y.",
+          "source_refs": [
+            "src_p004_b0005",
+            "src_p004_b0006"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Use photometric transforms as virtual interventions and penalize disagreement between predictions.",
+          "source_refs": [
+            "src_p004_b0009",
+            "src_p005_b0004"
+          ]
+        }
+      ],
+      "assumptions": [
+        "Acquisition changes appearance but not content, shape representation, or labels.",
+        "The experiments are constrained to acquisition shift."
+      ],
+      "equation_refs": [
+        "eq_domain_invariance",
+        "eq_training_objective"
+      ],
+      "claim_refs": [
+        "clm_target_generalization",
+        "clm_divergence_term"
+      ],
+      "source_refs": [
+        "src_p004_b0005",
+        "src_p004_b0006",
+        "src_p005_b0004"
+      ]
+    },
+    {
+      "method_id": "mth_gin",
+      "name": "GIN appearance randomization",
+      "purpose": "Generate diverse intensity and texture transforms without target-domain examples while preserving spatial structure.",
+      "inputs": [
+        "source image x",
+        "random convolution kernels",
+        "interpolation coefficient alpha"
+      ],
+      "outputs": [
+        "globally appearance-shifted image"
+      ],
+      "steps": [
+        {
+          "index": 1,
+          "description": "Sample shallow convolutional weights and apply interleaved Leaky ReLUs.",
+          "source_refs": [
+            "src_p005_b0009",
+            "src_p005_b0010"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Interpolate the random-network output with the original image and restore its Frobenius norm.",
+          "source_refs": [
+            "src_p005_b0011",
+            "src_p005_b0014"
+          ]
+        }
+      ],
+      "assumptions": [
+        "Shallow random networks vary appearance more than anatomy."
+      ],
+      "equation_refs": [
+        "eq_gin_transform"
+      ],
+      "claim_refs": [
+        "clm_target_generalization"
+      ],
+      "source_refs": [
+        "src_p005_b0009",
+        "src_p005_b0011",
+        "src_p005_b0014"
+      ]
+    },
+    {
+      "method_id": "mth_ipa",
+      "name": "IPA spatial intervention",
+      "purpose": "Assign different GIN appearances across smooth spatial regions to weaken acquisition-specific foreground/background correlations.",
+      "inputs": [
+        "two GIN-transformed views",
+        "pseudo-correlation map b"
+      ],
+      "outputs": [
+        "two spatially blended augmented images"
+      ],
+      "steps": [
+        {
+          "index": 1,
+          "description": "Generate a low-frequency pseudo-correlation map from randomly valued control points.",
+          "source_refs": [
+            "src_p007_b0002",
+            "src_p007_b0004"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Blend two GIN views pixel-wise and create a complementary blend by swapping b and 1-b.",
+          "source_refs": [
+            "src_p006_b0017",
+            "src_p007_b0003"
+          ]
+        },
+        {
+          "index": 3,
+          "description": "Optimize segmentation and prediction-consistency losses end to end.",
+          "source_refs": [
+            "src_p007_b0006",
+            "src_p007_b0013",
+            "src_p007_b0014"
+          ]
+        }
+      ],
+      "assumptions": [
+        "Smooth random regions are useful surrogates for unknown confounded objects.",
+        "Spatial blending does not corrupt pixel-label correspondence."
+      ],
+      "equation_refs": [
+        "eq_ipa_blend",
+        "eq_training_objective"
+      ],
+      "claim_refs": [
+        "clm_ipa_contribution",
+        "clm_causal_intervention"
+      ],
+      "source_refs": [
+        "src_p006_b0016",
+        "src_p006_b0017",
+        "src_p007_b0002"
+      ]
+    }
+  ],
+  "equations": [
+    {
+      "equation_id": "eq_domain_invariance",
+      "source_equation_id": "seq_p004_001",
+      "label": "1",
+      "latex_original": "p(Y\\mid S,\\operatorname{do}(A=a_i))=p(Y\\mid S,\\operatorname{do}(A=a_j)),\\;\\forall a_i,a_j",
+      "semantic_role": "constraint",
+      "variables": [
+        {
+          "symbol": "A",
+          "meaning": "acquisition process or domain",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "S",
+          "meaning": "domain-invariant shape representation",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "Y",
+          "meaning": "segmentation label",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Fix one acquisition process by intervention.",
+        "Require the label distribution conditioned on shape to remain unchanged across acquisitions."
+      ],
+      "method_refs": [
+        "mth_causal_formulation"
+      ],
+      "experiment_refs": [
+        "exp_cross_domain"
+      ],
+      "source_refs": [
+        "src_seq_p004_001",
+        "src_p004_b0009"
+      ]
+    },
+    {
+      "equation_id": "eq_training_objective",
+      "source_equation_id": "seq_p005_002",
+      "label": "3",
+      "latex_original": "\\mathcal{L}(\\phi)=\\mathcal{L}_{seg}(f_\\phi(T_i(x)),y)+\\mathcal{L}_{seg}(f_\\phi(T_j(x)),y)+\\lambda_{div}D(p(y\\mid f_\\phi(T_i(x)))\\Vert p(y\\mid f_\\phi(T_j(x))))",
+      "semantic_role": "objective",
+      "variables": [
+        {
+          "symbol": "f_\\phi",
+          "meaning": "segmentation network",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "T_i,T_j",
+          "meaning": "two sampled photometric transformations",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\lambda_{div}",
+          "meaning": "weight of prediction-distribution consistency",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Create two transformed versions of the same labeled image.",
+        "Compute segmentation loss for both.",
+        "Add KL divergence between their predicted distributions."
+      ],
+      "method_refs": [
+        "mth_causal_formulation",
+        "mth_ipa"
+      ],
+      "experiment_refs": [
+        "exp_divergence_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p005_002",
+        "src_p005_b0007"
+      ]
+    },
+    {
+      "equation_id": "eq_gin_transform",
+      "source_equation_id": "seq_p005_003",
+      "label": "4",
+      "latex_original": "g_\\theta(x)=\\frac{\\alpha g^{Net}_\\theta(x)+(1-\\alpha)x}{\\lVert\\alpha g^{Net}_\\theta(x)+(1-\\alpha)x\\rVert_F}\\,\\lVert x\\rVert_F",
+      "semantic_role": "update_rule",
+      "variables": [
+        {
+          "symbol": "g^{Net}_\\theta",
+          "meaning": "randomly weighted shallow convolutional network",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\alpha",
+          "meaning": "uniform interpolation coefficient in [0,1]",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\lVert\\cdot\\rVert_F",
+          "meaning": "Frobenius norm",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Apply a newly sampled random network.",
+        "Interpolate its output with the source image.",
+        "Normalize the result to the source-image norm."
+      ],
+      "method_refs": [
+        "mth_gin"
+      ],
+      "experiment_refs": [
+        "exp_gin_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p005_003",
+        "src_p005_b0011",
+        "src_p005_b0014"
+      ]
+    },
+    {
+      "equation_id": "eq_ipa_blend",
+      "source_equation_id": "seq_p006_003",
+      "label": "6",
+      "latex_original": "T_1(x;\\theta_1,\\theta_2,b)=g_{\\theta_1}(x)\\odot b+g_{\\theta_2}(x)\\odot(1-b)",
+      "semantic_role": "update_rule",
+      "variables": [
+        {
+          "symbol": "b",
+          "meaning": "smooth pseudo-correlation map",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\odot",
+          "meaning": "Hadamard product",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "g_{\\theta_1},g_{\\theta_2}",
+          "meaning": "two independent GIN transformations",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Generate two global appearance variants.",
+        "Weight them pixel-wise by complementary smooth maps.",
+        "Swap the maps to obtain the second training view."
+      ],
+      "method_refs": [
+        "mth_ipa"
+      ],
+      "experiment_refs": [
+        "exp_ipa_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p006_003",
+        "src_p006_b0018",
+        "src_p007_b0003"
+      ]
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "exp_cross_domain",
+      "question": "Does the method improve unseen-domain segmentation across modality, sequence, and site shifts?",
+      "setup": "Train on one source domain using a U-Net/EfficientNet-b2 and test directly on held-out target domains.",
+      "datasets": [
+        "Abdominal CT↔T2-SPIR MRI",
+        "Cardiac bSSFP→LGE MRI",
+        "Prostate MRI across six sites"
+      ],
+      "metrics": [
+        "Dice score"
+      ],
+      "baselines": [
+        "ERM",
+        "Cutout",
+        "RSC",
+        "MixStyle",
+        "AdvBias",
+        "RandConv"
+      ],
+      "results": [
+        {
+          "result_id": "res_abdominal_ct_mri",
+          "metric": "Abdominal CT→MRI Dice",
+          "value": "Best peer 80.66% vs proposed 86.31%",
+          "comparison": "Best peer vs Proposed",
+          "source_refs": [
+            "src_ast_table_007"
+          ]
+        },
+        {
+          "result_id": "res_abdominal_mri_ct",
+          "metric": "Abdominal MRI→CT Dice",
+          "value": "Best peer 75.00% vs proposed 79.62%",
+          "comparison": "Best peer vs Proposed",
+          "source_refs": [
+            "src_ast_table_007"
+          ]
+        },
+        {
+          "result_id": "res_cardiac",
+          "metric": "Cardiac bSSFP→LGE Dice",
+          "value": "Best peer 83.73% vs proposed 85.01%",
+          "comparison": "Best peer vs Proposed",
+          "source_refs": [
+            "src_ast_table_007"
+          ]
+        },
+        {
+          "result_id": "res_prostate_overall",
+          "metric": "Prostate cross-site overall Dice",
+          "value": "Best peer 66.56% vs proposed 70.37%",
+          "comparison": "Best peer vs Proposed",
+          "source_refs": [
+            "src_ast_table_007"
+          ]
+        }
+      ],
+      "limitations": [
+        "One architecture family and paper-defined splits are evaluated.",
+        "Statistical testing is only reported for selected small margins."
+      ],
+      "claim_refs": [
+        "clm_target_generalization"
+      ],
+      "source_refs": [
+        "src_p007_b0019",
+        "src_p008_b0005",
+        "src_p008_b0007",
+        "src_ast_table_007"
+      ]
+    },
+    {
+      "experiment_id": "exp_ipa_ablation",
+      "question": "Ablation: does IPA add value beyond GIN alone?",
+      "setup": "Compare ERM, GIN-only, scalar mixup, superpixel IPA, and the proposed smooth-map IPA.",
+      "datasets": [
+        "Abdominal",
+        "Cardiac",
+        "Prostate"
+      ],
+      "metrics": [
+        "Dice score"
+      ],
+      "baselines": [
+        "GIN-only",
+        "GIN + scalar Mixup",
+        "GIN + superpixel IPA"
+      ],
+      "results": [
+        {
+          "result_id": "res_ablation_ipa_cardiac",
+          "metric": "Cardiac IPA ablation Dice",
+          "value": "GIN-only 83.83% vs proposed 85.01%",
+          "comparison": "GIN-only vs Proposed",
+          "source_refs": [
+            "src_ast_table_012"
+          ]
+        },
+        {
+          "result_id": "res_ablation_ipa_prostate_c",
+          "metric": "Prostate C→Rest IPA ablation Dice",
+          "value": "GIN-only 47.38% vs proposed 59.11%",
+          "comparison": "GIN-only vs Proposed",
+          "source_refs": [
+            "src_ast_table_012"
+          ]
+        }
+      ],
+      "limitations": [
+        "Effects vary by transfer direction; the abdominal CT→MRI increment is small and not significant in the reported one-sided test."
+      ],
+      "claim_refs": [
+        "clm_ipa_contribution",
+        "clm_causal_intervention"
+      ],
+      "source_refs": [
+        "src_p009_b0006",
+        "src_p010_b0007",
+        "src_ast_table_012"
+      ]
+    },
+    {
+      "experiment_id": "exp_divergence_ablation",
+      "question": "Ablation: does the KL domain-invariance term help?",
+      "setup": "Drop the divergence term from Equation 3 for abdominal CT→MRI.",
+      "datasets": [
+        "Abdominal CT→MRI"
+      ],
+      "metrics": [
+        "Average Dice score"
+      ],
+      "baselines": [
+        "without KL divergence"
+      ],
+      "results": [
+        {
+          "result_id": "res_ablation_divergence",
+          "metric": "Abdominal Dice with KL term",
+          "value": "Without term 85.67% vs with term 86.31%",
+          "comparison": "Without KL vs With KL",
+          "source_refs": [
+            "src_p010_b0008"
+          ]
+        }
+      ],
+      "limitations": [
+        "Only one transfer setting; no variance or significance is given."
+      ],
+      "claim_refs": [
+        "clm_divergence_term"
+      ],
+      "source_refs": [
+        "src_p010_b0008"
+      ]
+    },
+    {
+      "experiment_id": "exp_gin_ablation",
+      "question": "Ablation: which GIN capacity and interpolation choices remain stable?",
+      "setup": "Vary shallow-network depth, hidden channels, and interpolation while IPA is disabled.",
+      "datasets": [
+        "Abdominal CT→MRI"
+      ],
+      "metrics": [
+        "Average Dice score"
+      ],
+      "baselines": [
+        "2, 8, or 16 layers",
+        "alternative channel counts",
+        "no interpolation"
+      ],
+      "results": [
+        {
+          "result_id": "res_ablation_gin_depth",
+          "metric": "GIN depth Dice",
+          "value": "2 layers 84.26% vs 4 layers 86.04%",
+          "comparison": "2 layers vs 4 layers",
+          "source_refs": [
+            "src_ast_table_008"
+          ]
+        }
+      ],
+      "limitations": [
+        "Single scenario and IPA disabled."
+      ],
+      "claim_refs": [
+        "clm_target_generalization"
+      ],
+      "source_refs": [
+        "src_p008_b0012",
+        "src_p009_b0003",
+        "src_ast_table_008"
+      ]
+    }
+  ],
+  "understanding_path": [
+    {
+      "step_id": "step_problem",
+      "role": "problem",
+      "object_refs": [
+        "cpt_domain_shift"
+      ],
+      "transition": "Single-source constraints make target-aware adaptation unavailable."
+    },
+    {
+      "step_id": "step_motivation",
+      "role": "motivation",
+      "object_refs": [
+        "cpt_single_source"
+      ],
+      "transition": "The paper reframes acquisition shift as appearance intervention."
+    },
+    {
+      "step_id": "step_insight",
+      "role": "key_insight",
+      "object_refs": [
+        "cpt_key_insight"
+      ],
+      "transition": "GIN and IPA implement complementary perturbations."
+    },
+    {
+      "step_id": "step_method",
+      "role": "method",
+      "object_refs": [
+        "mth_causal_formulation",
+        "mth_gin",
+        "mth_ipa",
+        "eq_training_objective",
+        "eq_ipa_blend"
+      ],
+      "transition": "Three cross-domain settings test the predictive claim."
+    },
+    {
+      "step_id": "step_evidence",
+      "role": "evidence",
+      "object_refs": [
+        "clm_target_generalization",
+        "clm_ipa_contribution",
+        "clm_causal_intervention",
+        "exp_cross_domain",
+        "exp_ipa_ablation"
+      ],
+      "transition": "Predictive gains are stronger evidence than the causal mechanism attribution."
+    },
+    {
+      "step_id": "step_conclusion",
+      "role": "conclusion",
+      "object_refs": [
+        "cpt_conclusion"
+      ],
+      "transition": null
+    }
+  ],
+  "analysis_warnings": [
+    "The PDF text layer does not preserve canonical LaTeX; equations were manually transcribed from rendered pages while retaining original symbols.",
+    "Table cells are image-backed assets, so numerical results cite the table asset source reference.",
+    "Causal language is not treated as proof of causal identification."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "paper_id": "ppr_dev_001",
+  "status": "selected",
+  "title": "Adaptive MLP Pruning for Large Vision Transformers",
+  "authors": ["Chengchao Shen"],
+  "domain": "computer_vision",
+  "document_profile": "method_equation_experiment",
+  "source_file": "source/paper.pdf",
+  "source_sha256": "sha256:0662030ceb09dd41a63f40bd985ba69b79aca3406caea2a1a3d4dbb5f34371fd"
+}

@@ -1,0 +1,291 @@
+{
+  "$defs": {
+    "ClaimAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "pattern": "^clm_[a-z0-9_]+$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "supported",
+            "partially_supported",
+            "insufficient_evidence"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "supporting_edges": {
+          "items": {
+            "pattern": "^edge_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Supporting Edges",
+          "type": "array"
+        },
+        "sufficiency_checks": {
+          "items": {
+            "$ref": "#/$defs/SufficiencyCheck"
+          },
+          "title": "Sufficiency Checks",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim_id",
+        "status",
+        "supporting_edges",
+        "rationale"
+      ],
+      "title": "ClaimAssessment",
+      "type": "object"
+    },
+    "EvidenceEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "edge_id": {
+          "pattern": "^edge_[a-z0-9_]+$",
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "from_evidence": {
+          "pattern": "^ev_[a-z0-9_]+$",
+          "title": "From Evidence",
+          "type": "string"
+        },
+        "to_claim": {
+          "pattern": "^clm_[a-z0-9_]+$",
+          "title": "To Claim",
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "supports",
+            "partially_supports",
+            "contextualizes"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "strength": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Strength",
+          "type": "number"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "qualifiers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Qualifiers",
+          "type": "array"
+        }
+      },
+      "required": [
+        "edge_id",
+        "from_evidence",
+        "to_claim",
+        "relation",
+        "strength",
+        "rationale"
+      ],
+      "title": "EvidenceEdge",
+      "type": "object"
+    },
+    "EvidenceNode": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^ev_[a-z0-9_]+$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "evidence_type": {
+          "enum": [
+            "experiment_result",
+            "equation",
+            "figure",
+            "table",
+            "text_excerpt"
+          ],
+          "title": "Evidence Type",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "object_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Object Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "evidence_type",
+        "summary",
+        "object_refs",
+        "source_refs"
+      ],
+      "title": "EvidenceNode",
+      "type": "object"
+    },
+    "SufficiencyCheck": {
+      "additionalProperties": false,
+      "description": "One explicit reason why evidence does or does not justify a claim.",
+      "properties": {
+        "dimension": {
+          "enum": [
+            "directness",
+            "scope_match",
+            "baseline_adequacy",
+            "ablation_support",
+            "robustness",
+            "statistical_support"
+          ],
+          "title": "Dimension",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "not_applicable",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "dimension",
+        "status",
+        "rationale"
+      ],
+      "title": "SufficiencyCheck",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "artifact_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Artifact Revision",
+      "type": "integer"
+    },
+    "paper_id": {
+      "pattern": "^ppr_[a-z0-9_]+$",
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "analysis_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Analysis Revision",
+      "type": "integer"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/EvidenceNode"
+      },
+      "minItems": 1,
+      "title": "Evidence",
+      "type": "array"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/EvidenceEdge"
+      },
+      "minItems": 1,
+      "title": "Edges",
+      "type": "array"
+    },
+    "claim_assessments": {
+      "items": {
+        "$ref": "#/$defs/ClaimAssessment"
+      },
+      "minItems": 1,
+      "title": "Claim Assessments",
+      "type": "array"
+    },
+    "orphan_claims": {
+      "items": {
+        "pattern": "^clm_[a-z0-9_]+$",
+        "type": "string"
+      },
+      "title": "Orphan Claims",
+      "type": "array"
+    },
+    "orphan_evidence": {
+      "items": {
+        "pattern": "^ev_[a-z0-9_]+$",
+        "type": "string"
+      },
+      "title": "Orphan Evidence",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_revision",
+    "paper_id",
+    "analysis_revision",
+    "evidence",
+    "edges",
+    "claim_assessments"
+  ],
+  "title": "EvidenceGraph",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://papercraft.local/schemas/evidence_graph.schema.json"
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.2.0",
+  "paper_id": "ppr_dev_003",
+  "annotator_id": "codex_primary",
+  "annotation_revision": 1,
+  "status": "source_adjudicated",
+  "reviewed_on": "2026-07-17",
+  "model_review": "paused_invalid_credential",
+  "formula_review": {
+    "status": "passed_visual_crop_and_manual_transcription",
+    "equation_labels_checked": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17"
+    ],
+    "rendered_pages_checked": [
+      3,
+      4,
+      5
+    ]
+  },
+  "numeric_review": {
+    "status": "passed",
+    "rendered_pages_checked": [
+      6,
+      7,
+      8
+    ]
+  },
+  "notes": [
+    "All formulas retain the paper's symbols and a PDF crop fallback.",
+    "Benchmark claims are bounded to the four reported transfer directions.",
+    "Claude Opus 4.8 returned HTTP 401 before token use; no provider output was stored."
+  ]
+}

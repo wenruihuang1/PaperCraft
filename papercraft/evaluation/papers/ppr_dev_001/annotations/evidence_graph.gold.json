@@ -1,0 +1,244 @@
+{
+  "schema_version": "1.1.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_dev_001",
+  "analysis_revision": 1,
+  "evidence": [
+    {
+      "evidence_id": "ev_classification_table",
+      "evidence_type": "table",
+      "summary": "Table 1 reports parameter, FLOP, measured throughput, and six-dataset zero-shot classification results for four original/pruned/distilled CLIP encoders.",
+      "object_refs": ["res_openclip_g", "res_openclip_big_g", "res_evaclip_e", "res_evaclip_8b", "ast_table_004"],
+      "source_refs": ["src_ast_table_004", "src_p007_b0002"]
+    },
+    {
+      "evidence_id": "ev_retrieval_table",
+      "evidence_type": "table",
+      "summary": "Table 2 shows that distilled compressed CLIP encoders match or slightly exceed original mean recall on Flickr30K and COCO.",
+      "object_refs": ["res_retrieval_eva8b", "ast_table_005"],
+      "source_refs": ["src_ast_table_005", "src_p008_b0003", "src_p008_b0004"]
+    },
+    {
+      "evidence_id": "ev_knn_table",
+      "evidence_type": "table",
+      "summary": "Table 4 reports DINOv2-g at 0.62B parameters and 0.16T FLOPs with distilled kNN accuracy equal to the 83.5% original.",
+      "object_refs": ["res_dinov2_knn", "ast_table_007"],
+      "source_refs": ["src_ast_table_007", "src_p008_b0012"]
+    },
+    {
+      "evidence_id": "ev_pruning_baseline_table",
+      "evidence_type": "table",
+      "summary": "Table 3 compares AMP against five pruning baselines at comparable size on OpenCLIP-g and EVA-CLIP-E.",
+      "object_refs": ["res_pruning_openclip", "res_pruning_eva", "ast_table_006"],
+      "source_refs": ["src_ast_table_006", "src_p008_b0008"]
+    },
+    {
+      "evidence_id": "ev_entropy_ablation_table",
+      "evidence_type": "table",
+      "summary": "Table 5 reports 53.8% average pruning-only accuracy for information entropy versus 50.0% for cross entropy, despite a slightly smaller model.",
+      "object_refs": ["res_entropy_ablation", "ast_table_008"],
+      "source_refs": ["src_ast_table_008", "src_p009_b0005"]
+    },
+    {
+      "evidence_id": "ev_binary_ablation_table",
+      "evidence_type": "table",
+      "summary": "Table 6 reports 53.8% average accuracy for binary search versus 7.3% for uniform Taylor pruning, a 46.5 percentage-point gap.",
+      "object_refs": ["res_binary_ablation", "ast_table_009"],
+      "source_refs": ["src_ast_table_009", "src_p009_b0008"]
+    },
+    {
+      "evidence_id": "ev_entropy_formulation",
+      "evidence_type": "equation",
+      "summary": "Equations 5-7 construct a label-free possibility distribution from class-token similarities and compute its mean entropy.",
+      "object_refs": ["eq_similarity", "eq_probability", "eq_entropy"],
+      "source_refs": ["src_seq_p005_004", "src_seq_p005_005", "src_seq_p005_006"]
+    },
+    {
+      "evidence_id": "ev_distillation_formulation",
+      "evidence_type": "equation",
+      "summary": "Equation 8 directly matches teacher and student class and patch tokens, explaining why the reported recovery is a post-distillation result.",
+      "object_refs": ["eq_distillation"],
+      "source_refs": ["src_seq_p006_001"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "edge_classification_compression",
+      "from_evidence": "ev_classification_table",
+      "to_claim": "clm_compression_recovery",
+      "relation": "supports",
+      "strength": 0.95,
+      "rationale": "All four reported CLIP encoders show roughly 36-43% parameter/FLOP reduction and distilled average accuracy within 0.3 points of the original.",
+      "qualifiers": ["post-distillation recovery", "reported zero-shot classification scope"]
+    },
+    {
+      "edge_id": "edge_retrieval_compression",
+      "from_evidence": "ev_retrieval_table",
+      "to_claim": "clm_compression_recovery",
+      "relation": "supports",
+      "strength": 0.9,
+      "rationale": "Retrieval results extend near-lossless recovery beyond classification for the CLIP-style models.",
+      "qualifiers": ["CLIP-style models only"]
+    },
+    {
+      "edge_id": "edge_knn_compression",
+      "from_evidence": "ev_knn_table",
+      "to_claim": "clm_compression_recovery",
+      "relation": "supports",
+      "strength": 0.9,
+      "rationale": "DINOv2-g recovers its original kNN accuracy after a 45.6% parameter reduction.",
+      "qualifiers": ["single DINOv2 backbone", "single kNN protocol"]
+    },
+    {
+      "edge_id": "edge_distill_context",
+      "from_evidence": "ev_distillation_formulation",
+      "to_claim": "clm_compression_recovery",
+      "relation": "contextualizes",
+      "strength": 0.55,
+      "rationale": "The equation explains the recovery mechanism but does not itself demonstrate accuracy.",
+      "qualifiers": []
+    },
+    {
+      "edge_id": "edge_throughput",
+      "from_evidence": "ev_classification_table",
+      "to_claim": "clm_throughput",
+      "relation": "supports",
+      "strength": 0.95,
+      "rationale": "The measured ratios are approximately 1.47x, 1.50x, 1.61x, and 1.45x for the four CLIP encoders.",
+      "qualifiers": ["one A6000 GPU", "batch size 1000", "224x224"]
+    },
+    {
+      "edge_id": "edge_entropy_ablation",
+      "from_evidence": "ev_entropy_ablation_table",
+      "to_claim": "clm_entropy_criterion",
+      "relation": "partially_supports",
+      "strength": 0.78,
+      "rationale": "The ablation supports better downstream pruning accuracy, but does not measure importance-score accuracy directly and covers one backbone.",
+      "qualifiers": ["single backbone", "downstream proxy"]
+    },
+    {
+      "edge_id": "edge_entropy_definition",
+      "from_evidence": "ev_entropy_formulation",
+      "to_claim": "clm_entropy_criterion",
+      "relation": "contextualizes",
+      "strength": 0.55,
+      "rationale": "The equations establish that all inter-instance possibilities contribute and no labels are required.",
+      "qualifiers": []
+    },
+    {
+      "edge_id": "edge_binary_ablation",
+      "from_evidence": "ev_binary_ablation_table",
+      "to_claim": "clm_adaptive_search",
+      "relation": "partially_supports",
+      "strength": 0.82,
+      "rationale": "The result directly favors adaptive sizing over uniform sizing, but only for one backbone and the prose contains a conflicting numerical claim.",
+      "qualifiers": ["single backbone", "46.5-point table difference"]
+    },
+    {
+      "edge_id": "edge_baseline_context",
+      "from_evidence": "ev_pruning_baseline_table",
+      "to_claim": "clm_adaptive_search",
+      "relation": "contextualizes",
+      "strength": 0.65,
+      "rationale": "AMP also exceeds several alternative pruning strategies at matched model size.",
+      "qualifiers": ["two backbones"]
+    },
+    {
+      "edge_id": "edge_head_free_equation",
+      "from_evidence": "ev_entropy_formulation",
+      "to_claim": "clm_head_free_applicability",
+      "relation": "supports",
+      "strength": 0.8,
+      "rationale": "The criterion uses only backbone class-token representations and therefore does not require labels or a prediction head.",
+      "qualifiers": ["methodological support"]
+    },
+    {
+      "edge_id": "edge_head_free_dino",
+      "from_evidence": "ev_knn_table",
+      "to_claim": "clm_head_free_applicability",
+      "relation": "supports",
+      "strength": 0.9,
+      "rationale": "DINOv2-g is an explicit end-to-end demonstration of head-free pruning and recovery.",
+      "qualifiers": ["one pure-vision backbone"]
+    }
+  ],
+  "claim_assessments": [
+    {
+      "claim_id": "clm_compression_recovery",
+      "status": "supported",
+      "supporting_edges": ["edge_classification_compression", "edge_retrieval_compression", "edge_knn_compression", "edge_distill_context"],
+      "sufficiency_checks": [
+        {"dimension": "directness", "status": "passed", "rationale": "Tables directly report size, compute, and task performance.", "source_refs": ["src_p007_b0002", "src_p008_b0003", "src_p008_b0012"]},
+        {"dimension": "scope_match", "status": "passed", "rationale": "The gold claim is restricted to evaluated backbones, tasks, and post-distillation recovery.", "source_refs": ["src_p007_b0004"]},
+        {"dimension": "baseline_adequacy", "status": "passed", "rationale": "Every compressed model is compared with its original counterpart.", "source_refs": ["src_p007_b0002", "src_p008_b0012"]},
+        {"dimension": "ablation_support", "status": "not_applicable", "rationale": "The overall compression/recovery claim is a main outcome rather than a component attribution claim.", "source_refs": []},
+        {"dimension": "robustness", "status": "passed", "rationale": "Evidence spans multiple model scales, datasets, and three evaluation families.", "source_refs": ["src_p007_b0004"]},
+        {"dimension": "statistical_support", "status": "unknown", "rationale": "Accuracy variance and significance are not reported.", "source_refs": []}
+      ],
+      "limitations": ["Near-lossless applies after distillation; pruning-only EVA accuracy degrades sharply.", "No accuracy uncertainty estimates are reported."],
+      "rationale": "Multiple direct tables support the carefully scoped claim."
+    },
+    {
+      "claim_id": "clm_throughput",
+      "status": "supported",
+      "supporting_edges": ["edge_throughput"],
+      "sufficiency_checks": [
+        {"dimension": "directness", "status": "passed", "rationale": "Table 1 reports measured images per second.", "source_refs": ["src_p007_b0001", "src_p007_b0002"]},
+        {"dimension": "scope_match", "status": "passed", "rationale": "The claim retains the exact hardware, batch, resolution, and model scope.", "source_refs": ["src_p007_b0001"]},
+        {"dimension": "baseline_adequacy", "status": "passed", "rationale": "Each pruned encoder is paired with its original throughput.", "source_refs": ["src_p007_b0002"]},
+        {"dimension": "ablation_support", "status": "not_applicable", "rationale": "No component attribution is claimed.", "source_refs": []},
+        {"dimension": "robustness", "status": "failed", "rationale": "Only one GPU configuration and batch size are tested.", "source_refs": ["src_p007_b0001"]},
+        {"dimension": "statistical_support", "status": "unknown", "rationale": "Ten runs are averaged but no variance is reported.", "source_refs": ["src_p007_b0001"]}
+      ],
+      "limitations": ["The result should not be generalized to other hardware, latency-sensitive batch sizes, or DINOv2-g."],
+      "rationale": "Direct measurements support the explicitly scoped roughly-1.5x claim."
+    },
+    {
+      "claim_id": "clm_entropy_criterion",
+      "status": "partially_supported",
+      "supporting_edges": ["edge_entropy_ablation", "edge_entropy_definition"],
+      "sufficiency_checks": [
+        {"dimension": "directness", "status": "failed", "rationale": "Downstream accuracy is an indirect proxy for importance-score accuracy.", "source_refs": ["src_p009_b0004"]},
+        {"dimension": "scope_match", "status": "passed", "rationale": "The gold claim is limited to downstream accuracy and one ablation.", "source_refs": ["src_p009_b0005"]},
+        {"dimension": "baseline_adequacy", "status": "passed", "rationale": "Cross entropy is the relevant Taylor-pruning criterion baseline.", "source_refs": ["src_p009_b0004"]},
+        {"dimension": "ablation_support", "status": "passed", "rationale": "The criterion is replaced while model sizes remain comparable.", "source_refs": ["src_p009_b0005"]},
+        {"dimension": "robustness", "status": "failed", "rationale": "Only OpenCLIP-g is ablated.", "source_refs": ["src_p009_b0005"]},
+        {"dimension": "statistical_support", "status": "unknown", "rationale": "No run variance is reported.", "source_refs": []}
+      ],
+      "limitations": ["Single-backbone ablation.", "No direct neuron-ranking fidelity metric."],
+      "rationale": "The evidence supports better pruning performance, but only partially supports the stronger explanation of why."
+    },
+    {
+      "claim_id": "clm_adaptive_search",
+      "status": "partially_supported",
+      "supporting_edges": ["edge_binary_ablation", "edge_baseline_context"],
+      "sufficiency_checks": [
+        {"dimension": "directness", "status": "passed", "rationale": "Table 6 directly compares adaptive and uniform sizing at similar total size.", "source_refs": ["src_p009_b0007", "src_p009_b0008"]},
+        {"dimension": "scope_match", "status": "passed", "rationale": "The gold claim is limited to the OpenCLIP-g ablation.", "source_refs": ["src_p009_b0008"]},
+        {"dimension": "baseline_adequacy", "status": "passed", "rationale": "Uniform Taylor pruning isolates the sizing strategy at comparable parameter count.", "source_refs": ["src_p009_b0007"]},
+        {"dimension": "ablation_support", "status": "passed", "rationale": "A dedicated binary-search ablation is reported.", "source_refs": ["src_p009_b0008"]},
+        {"dimension": "robustness", "status": "failed", "rationale": "The ablation is not repeated across model families.", "source_refs": []},
+        {"dimension": "statistical_support", "status": "failed", "rationale": "No variance is reported and the prose/table numeric discrepancy is unresolved.", "source_refs": ["src_p009_b0007", "src_p009_b0008"]}
+      ],
+      "limitations": ["Single backbone.", "The paper's 64.5% prose value conflicts with the table's 46.5-point difference."],
+      "rationale": "The table strongly supports this scoped comparison, but the internal numeric inconsistency and narrow ablation prevent an unqualified judgment."
+    },
+    {
+      "claim_id": "clm_head_free_applicability",
+      "status": "supported",
+      "supporting_edges": ["edge_head_free_equation", "edge_head_free_dino"],
+      "sufficiency_checks": [
+        {"dimension": "directness", "status": "passed", "rationale": "The formulation excludes labels/heads and DINOv2-g supplies an applied demonstration.", "source_refs": ["src_p005_b0031", "src_p008_b0012"]},
+        {"dimension": "scope_match", "status": "passed", "rationale": "The claim is limited to demonstrated DINOv2-g applicability.", "source_refs": ["src_p008_b0010"]},
+        {"dimension": "baseline_adequacy", "status": "passed", "rationale": "Original DINOv2-g provides the representation-quality baseline.", "source_refs": ["src_p008_b0012"]},
+        {"dimension": "ablation_support", "status": "not_applicable", "rationale": "Applicability does not require component attribution.", "source_refs": []},
+        {"dimension": "robustness", "status": "failed", "rationale": "Only one head-free model family is demonstrated.", "source_refs": []},
+        {"dimension": "statistical_support", "status": "unknown", "rationale": "No kNN variance is reported.", "source_refs": []}
+      ],
+      "limitations": ["Evidence covers one pure-vision backbone."],
+      "rationale": "The method definition and DINOv2-g result jointly support the narrowly scoped applicability claim."
+    }
+  ],
+  "orphan_claims": [],
+  "orphan_evidence": []
+}

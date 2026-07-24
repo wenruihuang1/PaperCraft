@@ -1,0 +1,66 @@
+{
+  "file_name": "paper.pdf",
+  "sha256": "sha256:b66fb484875c42d674469f6cfc1fc0f644571ccdd66dc0bf271bf1038fe1fdc8",
+  "status": "supported",
+  "rejection_codes": [],
+  "metrics": {
+    "page_count": 10,
+    "total_text_characters": 48100,
+    "text_page_ratio": 1.0,
+    "raster_dominant_page_ratio": 0.0,
+    "latin_letter_ratio": 0.9889020579678914,
+    "english_function_word_ratio": 0.18111931119311192
+  },
+  "pages": [
+    {
+      "page_number": 1,
+      "text_characters": 5731,
+      "image_coverage_ratio": 0.0
+    },
+    {
+      "page_number": 2,
+      "text_characters": 5184,
+      "image_coverage_ratio": 0.07139906584508131
+    },
+    {
+      "page_number": 3,
+      "text_characters": 4043,
+      "image_coverage_ratio": 0.025375864945608208
+    },
+    {
+      "page_number": 4,
+      "text_characters": 4499,
+      "image_coverage_ratio": 0.059357146556147745
+    },
+    {
+      "page_number": 5,
+      "text_characters": 5278,
+      "image_coverage_ratio": 0.0
+    },
+    {
+      "page_number": 6,
+      "text_characters": 2281,
+      "image_coverage_ratio": 0.16681358731050314
+    },
+    {
+      "page_number": 7,
+      "text_characters": 4719,
+      "image_coverage_ratio": 0.0
+    },
+    {
+      "page_number": 8,
+      "text_characters": 3935,
+      "image_coverage_ratio": 0.16081502163761024
+    },
+    {
+      "page_number": 9,
+      "text_characters": 9637,
+      "image_coverage_ratio": 0.0
+    },
+    {
+      "page_number": 10,
+      "text_characters": 2793,
+      "image_coverage_ratio": 0.0
+    }
+  ]
+}

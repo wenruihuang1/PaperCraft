@@ -1,0 +1,55 @@
+{
+  "paper_id": "ppr_dev_002",
+  "required_claim_refs": [
+    "clm_target_generalization",
+    "clm_ipa_contribution",
+    "clm_causal_intervention"
+  ],
+  "required_method_refs": [
+    "mth_causal_formulation",
+    "mth_gin",
+    "mth_ipa"
+  ],
+  "required_equation_refs": [
+    "eq_training_objective",
+    "eq_gin_transform",
+    "eq_ipa_blend"
+  ],
+  "required_result_refs": [
+    "res_abdominal_ct_mri",
+    "res_cardiac",
+    "res_prostate_overall",
+    "res_ablation_ipa_cardiac"
+  ],
+  "recommended_component_types": [
+    "method_flow",
+    "equation_explorer",
+    "claim_evidence_chain",
+    "result_chart"
+  ],
+  "preferred_asset_refs": [
+    "ast_figure_002",
+    "ast_figure_005",
+    "ast_figure_009",
+    "ast_table_007",
+    "ast_table_012"
+  ],
+  "original_reconstruction_toggle_asset_refs": [
+    "ast_figure_002",
+    "ast_figure_005"
+  ],
+  "must_not_reconstruct_asset_refs": [
+    "ast_table_007",
+    "ast_table_012"
+  ],
+  "forbidden_overstatements": [
+    "Do not state that causal confounding removal was directly demonstrated.",
+    "Do not imply improvement on every prostate transfer direction.",
+    "Do not generalize beyond acquisition shifts, the evaluated splits, or medical segmentation.",
+    "Do not describe the KL term as decisively validated from a single 0.64-point ablation."
+  ],
+  "notes": [
+    "Lead with the gap between robust predictive evidence and insufficient causal-mechanism evidence.",
+    "Show the GIN→IPA→consistency-loss flow and use Table II values as a selected chart rather than shrinking the full table."
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_minimal",
+  "analysis_revision": 1,
+  "evidence": [
+    {
+      "evidence_id": "ev_runtime",
+      "evidence_type": "experiment_result",
+      "summary": "Runtime decreases from 20 ms to 10 ms.",
+      "object_refs": ["res_runtime"],
+      "source_refs": ["src_result"]
+    },
+    {
+      "evidence_id": "ev_definition",
+      "evidence_type": "equation",
+      "summary": "Equation 1 defines the score used by the method.",
+      "object_refs": ["eq_score"],
+      "source_refs": ["src_equation"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "edge_runtime",
+      "from_evidence": "ev_runtime",
+      "to_claim": "clm_speed",
+      "relation": "supports",
+      "strength": 0.95,
+      "rationale": "The measured runtime is half of the baseline runtime.",
+      "qualifiers": ["single benchmark"]
+    },
+    {
+      "edge_id": "edge_definition",
+      "from_evidence": "ev_definition",
+      "to_claim": "clm_speed",
+      "relation": "contextualizes",
+      "strength": 0.4,
+      "rationale": "The equation explains the computed score but does not measure speed.",
+      "qualifiers": []
+    }
+  ],
+  "claim_assessments": [
+    {
+      "claim_id": "clm_speed",
+      "status": "supported",
+      "supporting_edges": ["edge_runtime", "edge_definition"],
+      "limitations": ["Only one benchmark is evaluated."],
+      "rationale": "Direct measurements support the scoped runtime claim."
+    }
+  ],
+  "orphan_claims": [],
+  "orphan_evidence": []
+}
+

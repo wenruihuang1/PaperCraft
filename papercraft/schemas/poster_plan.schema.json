@@ -1,0 +1,1574 @@
+{
+  "$defs": {
+    "BoundingBox": {
+      "additionalProperties": false,
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "BoundingBox",
+      "type": "object"
+    },
+    "ChartDatum": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "display_value": {
+          "minLength": 1,
+          "title": "Display Value",
+          "type": "string"
+        },
+        "series": {
+          "minLength": 1,
+          "title": "Series",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "value",
+        "display_value",
+        "series"
+      ],
+      "title": "ChartDatum",
+      "type": "object"
+    },
+    "ClaimEvidenceChainComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "pattern": "^cmp_[a-z0-9_]+$",
+          "title": "Component Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "content_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Content Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "claim_refs": {
+          "items": {
+            "pattern": "^clm_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Claim Refs",
+          "type": "array"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^ev_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "asset_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Asset Refs",
+          "type": "array"
+        },
+        "interactions": {
+          "items": {
+            "$ref": "#/$defs/Interaction"
+          },
+          "title": "Interactions",
+          "type": "array"
+        },
+        "details": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "component_type": {
+          "const": "claim_evidence_chain",
+          "title": "Component Type",
+          "type": "string"
+        },
+        "show_assessment_status": {
+          "default": true,
+          "title": "Show Assessment Status",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "component_id",
+        "title",
+        "summary",
+        "content_refs",
+        "source_refs",
+        "claim_refs",
+        "evidence_refs",
+        "component_type"
+      ],
+      "title": "ClaimEvidenceChainComponent",
+      "type": "object"
+    },
+    "ComponentPlacement": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "pattern": "^cmp_[a-z0-9_]+$",
+          "title": "Component Id",
+          "type": "string"
+        },
+        "order": {
+          "exclusiveMinimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "column_start": {
+          "exclusiveMinimum": 0,
+          "title": "Column Start",
+          "type": "integer"
+        },
+        "column_span": {
+          "exclusiveMinimum": 0,
+          "title": "Column Span",
+          "type": "integer"
+        },
+        "row_start": {
+          "exclusiveMinimum": 0,
+          "title": "Row Start",
+          "type": "integer"
+        },
+        "row_span": {
+          "exclusiveMinimum": 0,
+          "title": "Row Span",
+          "type": "integer"
+        },
+        "minimum_height": {
+          "exclusiveMinimum": 0,
+          "title": "Minimum Height",
+          "type": "number"
+        },
+        "preferred_height": {
+          "exclusiveMinimum": 0,
+          "title": "Preferred Height",
+          "type": "number"
+        }
+      },
+      "required": [
+        "component_id",
+        "order",
+        "column_start",
+        "column_span",
+        "row_start",
+        "row_span",
+        "minimum_height",
+        "preferred_height"
+      ],
+      "title": "ComponentPlacement",
+      "type": "object"
+    },
+    "EquationExplorerComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "pattern": "^cmp_[a-z0-9_]+$",
+          "title": "Component Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "content_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Content Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "claim_refs": {
+          "items": {
+            "pattern": "^clm_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Claim Refs",
+          "type": "array"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^ev_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "asset_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Asset Refs",
+          "type": "array"
+        },
+        "interactions": {
+          "items": {
+            "$ref": "#/$defs/Interaction"
+          },
+          "title": "Interactions",
+          "type": "array"
+        },
+        "details": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "component_type": {
+          "const": "equation_explorer",
+          "title": "Component Type",
+          "type": "string"
+        },
+        "equation_refs": {
+          "items": {
+            "pattern": "^eq_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Equation Refs",
+          "type": "array"
+        },
+        "show_variable_table": {
+          "default": true,
+          "title": "Show Variable Table",
+          "type": "boolean"
+        },
+        "show_computation_steps": {
+          "default": true,
+          "title": "Show Computation Steps",
+          "type": "boolean"
+        },
+        "equation_groups": {
+          "items": {
+            "$ref": "#/$defs/EquationGroup"
+          },
+          "title": "Equation Groups",
+          "type": "array"
+        }
+      },
+      "required": [
+        "component_id",
+        "title",
+        "summary",
+        "content_refs",
+        "source_refs",
+        "component_type",
+        "equation_refs"
+      ],
+      "title": "EquationExplorerComponent",
+      "type": "object"
+    },
+    "EquationGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "group_id": {
+          "pattern": "^eqg_[a-z0-9_]+$",
+          "title": "Group Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "equation_refs": {
+          "items": {
+            "pattern": "^eq_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Equation Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "group_id",
+        "title",
+        "explanation",
+        "equation_refs"
+      ],
+      "title": "EquationGroup",
+      "type": "object"
+    },
+    "FlowStep": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "description",
+        "source_refs"
+      ],
+      "title": "FlowStep",
+      "type": "object"
+    },
+    "Interaction": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "click",
+          "title": "Event",
+          "type": "string"
+        },
+        "action": {
+          "enum": [
+            "expand_details",
+            "show_source",
+            "toggle_original_reconstruction",
+            "collapse_secondary"
+          ],
+          "title": "Action",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event",
+        "action"
+      ],
+      "title": "Interaction",
+      "type": "object"
+    },
+    "LayoutProfiles": {
+      "additionalProperties": false,
+      "properties": {
+        "screen_16_9": {
+          "$ref": "#/$defs/ScreenLayoutProfile"
+        },
+        "print_a0_landscape": {
+          "$ref": "#/$defs/PrintLayoutProfile"
+        }
+      },
+      "required": [
+        "screen_16_9",
+        "print_a0_landscape"
+      ],
+      "title": "LayoutProfiles",
+      "type": "object"
+    },
+    "MethodFlowComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "pattern": "^cmp_[a-z0-9_]+$",
+          "title": "Component Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "content_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Content Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "claim_refs": {
+          "items": {
+            "pattern": "^clm_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Claim Refs",
+          "type": "array"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^ev_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "asset_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Asset Refs",
+          "type": "array"
+        },
+        "interactions": {
+          "items": {
+            "$ref": "#/$defs/Interaction"
+          },
+          "title": "Interactions",
+          "type": "array"
+        },
+        "details": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "component_type": {
+          "const": "method_flow",
+          "title": "Component Type",
+          "type": "string"
+        },
+        "method_refs": {
+          "items": {
+            "pattern": "^mth_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Method Refs",
+          "type": "array"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/FlowStep"
+          },
+          "minItems": 2,
+          "title": "Steps",
+          "type": "array"
+        },
+        "inspector_panels": {
+          "items": {
+            "$ref": "#/$defs/MethodInspectorPanel"
+          },
+          "title": "Inspector Panels",
+          "type": "array"
+        }
+      },
+      "required": [
+        "component_id",
+        "title",
+        "summary",
+        "content_refs",
+        "source_refs",
+        "component_type",
+        "method_refs",
+        "steps"
+      ],
+      "title": "MethodFlowComponent",
+      "type": "object"
+    },
+    "MethodInspectorPanel": {
+      "additionalProperties": false,
+      "properties": {
+        "panel_id": {
+          "pattern": "^mip_[a-z0-9_]+$",
+          "title": "Panel Id",
+          "type": "string"
+        },
+        "method_ref": {
+          "pattern": "^mth_[a-z0-9_]+$",
+          "title": "Method Ref",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "why_needed": {
+          "minLength": 1,
+          "title": "Why Needed",
+          "type": "string"
+        },
+        "inputs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "outputs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Outputs",
+          "type": "array"
+        },
+        "equation_refs": {
+          "items": {
+            "pattern": "^eq_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Equation Refs",
+          "type": "array"
+        },
+        "experiment_refs": {
+          "items": {
+            "pattern": "^exp_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Experiment Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "presentation_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Presentation Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "panel_id",
+        "method_ref",
+        "title",
+        "why_needed",
+        "inputs",
+        "outputs",
+        "source_refs"
+      ],
+      "title": "MethodInspectorPanel",
+      "type": "object"
+    },
+    "NarrativeRegion": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "problem",
+            "motivation",
+            "key_insight"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "eyebrow": {
+          "minLength": 1,
+          "title": "Eyebrow",
+          "type": "string"
+        },
+        "headline": {
+          "minLength": 1,
+          "title": "Headline",
+          "type": "string"
+        },
+        "body": {
+          "minLength": 1,
+          "title": "Body",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "presentation_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Presentation Ref"
+        },
+        "text_budget": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TextBudget"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "role",
+        "eyebrow",
+        "headline",
+        "body",
+        "source_refs"
+      ],
+      "title": "NarrativeRegion",
+      "type": "object"
+    },
+    "OccupancyPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "calculation_method": {
+          "const": "intrinsic_demand",
+          "title": "Calculation Method",
+          "type": "string"
+        },
+        "raw_demand_ratio": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Raw Demand Ratio",
+          "type": "number"
+        },
+        "tolerance": {
+          "exclusiveMinimum": 0.0,
+          "maximum": 0.1,
+          "title": "Tolerance",
+          "type": "number"
+        },
+        "absolute_bounds": {
+          "$ref": "#/$defs/RatioRange"
+        },
+        "target_interval": {
+          "$ref": "#/$defs/RatioRange"
+        }
+      },
+      "required": [
+        "calculation_method",
+        "raw_demand_ratio",
+        "tolerance",
+        "absolute_bounds",
+        "target_interval"
+      ],
+      "title": "OccupancyPolicy",
+      "type": "object"
+    },
+    "PrintCanvas": {
+      "additionalProperties": false,
+      "properties": {
+        "width_mm": {
+          "const": 1189,
+          "title": "Width Mm",
+          "type": "integer"
+        },
+        "height_mm": {
+          "const": 841,
+          "title": "Height Mm",
+          "type": "integer"
+        },
+        "orientation": {
+          "const": "landscape",
+          "title": "Orientation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "width_mm",
+        "height_mm",
+        "orientation"
+      ],
+      "title": "PrintCanvas",
+      "type": "object"
+    },
+    "PrintLayoutProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "const": "print_a0_landscape",
+          "title": "Profile",
+          "type": "string"
+        },
+        "canvas": {
+          "$ref": "#/$defs/PrintCanvas"
+        },
+        "occupancy": {
+          "$ref": "#/$defs/OccupancyPolicy"
+        },
+        "typography": {
+          "$ref": "#/$defs/PrintTypography"
+        },
+        "visual_area_ratio": {
+          "$ref": "#/$defs/RatioRange"
+        },
+        "minimum_component_gap_mm": {
+          "minimum": 8.0,
+          "title": "Minimum Component Gap Mm",
+          "type": "number"
+        },
+        "component_layouts": {
+          "items": {
+            "$ref": "#/$defs/ComponentPlacement"
+          },
+          "minItems": 1,
+          "title": "Component Layouts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "profile",
+        "canvas",
+        "occupancy",
+        "typography",
+        "visual_area_ratio",
+        "minimum_component_gap_mm",
+        "component_layouts"
+      ],
+      "title": "PrintLayoutProfile",
+      "type": "object"
+    },
+    "PrintTypography": {
+      "additionalProperties": false,
+      "properties": {
+        "title_min_pt": {
+          "minimum": 48,
+          "title": "Title Min Pt",
+          "type": "integer"
+        },
+        "body_min_pt": {
+          "minimum": 24,
+          "title": "Body Min Pt",
+          "type": "integer"
+        },
+        "caption_min_pt": {
+          "minimum": 18,
+          "title": "Caption Min Pt",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "title_min_pt",
+        "body_min_pt",
+        "caption_min_pt"
+      ],
+      "title": "PrintTypography",
+      "type": "object"
+    },
+    "RatioRange": {
+      "additionalProperties": false,
+      "properties": {
+        "minimum": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Minimum",
+          "type": "number"
+        },
+        "maximum": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Maximum",
+          "type": "number"
+        }
+      },
+      "required": [
+        "minimum",
+        "maximum"
+      ],
+      "title": "RatioRange",
+      "type": "object"
+    },
+    "ResultChartComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "pattern": "^cmp_[a-z0-9_]+$",
+          "title": "Component Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "content_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Content Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "claim_refs": {
+          "items": {
+            "pattern": "^clm_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Claim Refs",
+          "type": "array"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^ev_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "asset_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Asset Refs",
+          "type": "array"
+        },
+        "interactions": {
+          "items": {
+            "$ref": "#/$defs/Interaction"
+          },
+          "title": "Interactions",
+          "type": "array"
+        },
+        "details": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "component_type": {
+          "const": "result_chart",
+          "title": "Component Type",
+          "type": "string"
+        },
+        "experiment_refs": {
+          "items": {
+            "pattern": "^exp_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Experiment Refs",
+          "type": "array"
+        },
+        "result_refs": {
+          "items": {
+            "pattern": "^res_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Result Refs",
+          "type": "array"
+        },
+        "chart_type": {
+          "enum": [
+            "bar",
+            "line",
+            "comparison_table"
+          ],
+          "title": "Chart Type",
+          "type": "string"
+        },
+        "chart_data": {
+          "items": {
+            "$ref": "#/$defs/ChartDatum"
+          },
+          "title": "Chart Data",
+          "type": "array"
+        }
+      },
+      "required": [
+        "component_id",
+        "title",
+        "summary",
+        "content_refs",
+        "source_refs",
+        "component_type",
+        "experiment_refs",
+        "result_refs",
+        "chart_type"
+      ],
+      "title": "ResultChartComponent",
+      "type": "object"
+    },
+    "ScreenCanvas": {
+      "additionalProperties": false,
+      "properties": {
+        "width_px": {
+          "const": 1920,
+          "title": "Width Px",
+          "type": "integer"
+        },
+        "height_px": {
+          "const": 1080,
+          "title": "Height Px",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width_px",
+        "height_px"
+      ],
+      "title": "ScreenCanvas",
+      "type": "object"
+    },
+    "ScreenLayoutProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "const": "screen_16_9",
+          "title": "Profile",
+          "type": "string"
+        },
+        "canvas": {
+          "$ref": "#/$defs/ScreenCanvas"
+        },
+        "occupancy": {
+          "$ref": "#/$defs/OccupancyPolicy"
+        },
+        "typography": {
+          "$ref": "#/$defs/ScreenTypography"
+        },
+        "visual_area_ratio": {
+          "$ref": "#/$defs/RatioRange"
+        },
+        "minimum_component_gap_px": {
+          "minimum": 16.0,
+          "title": "Minimum Component Gap Px",
+          "type": "number"
+        },
+        "component_layouts": {
+          "items": {
+            "$ref": "#/$defs/ComponentPlacement"
+          },
+          "minItems": 1,
+          "title": "Component Layouts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "profile",
+        "canvas",
+        "occupancy",
+        "typography",
+        "visual_area_ratio",
+        "minimum_component_gap_px",
+        "component_layouts"
+      ],
+      "title": "ScreenLayoutProfile",
+      "type": "object"
+    },
+    "ScreenTypography": {
+      "additionalProperties": false,
+      "properties": {
+        "title_min_px": {
+          "minimum": 32,
+          "title": "Title Min Px",
+          "type": "integer"
+        },
+        "body_min_px": {
+          "minimum": 18,
+          "title": "Body Min Px",
+          "type": "integer"
+        },
+        "caption_min_px": {
+          "minimum": 14,
+          "title": "Caption Min Px",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "title_min_px",
+        "body_min_px",
+        "caption_min_px"
+      ],
+      "title": "ScreenTypography",
+      "type": "object"
+    },
+    "SourcePresentation": {
+      "additionalProperties": false,
+      "properties": {
+        "presentation_id": {
+          "pattern": "^prs_[a-z0-9_]+$",
+          "title": "Presentation Id",
+          "type": "string"
+        },
+        "source_ref_id": {
+          "pattern": "^src_[a-z0-9_]+$",
+          "title": "Source Ref Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "teaser",
+            "method_overview",
+            "mechanism",
+            "qualitative_result",
+            "benchmark",
+            "formula",
+            "source_only"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "display_kind": {
+          "enum": [
+            "text_excerpt",
+            "pdf_crop",
+            "reconstructed_equation",
+            "reconstructed_chart",
+            "source_figure"
+          ],
+          "title": "Display Kind",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "page": {
+          "exclusiveMinimum": 0,
+          "title": "Page",
+          "type": "integer"
+        },
+        "crop_bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BoundingBox"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "asset_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Ref"
+        },
+        "image_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image Path"
+        },
+        "equation_ref": {
+          "anyOf": [
+            {
+              "pattern": "^eq_[a-z0-9_]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Equation Ref"
+        },
+        "result_refs": {
+          "items": {
+            "pattern": "^res_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Result Refs",
+          "type": "array"
+        },
+        "fallback_to_crop": {
+          "default": true,
+          "title": "Fallback To Crop",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "presentation_id",
+        "source_ref_id",
+        "role",
+        "display_kind",
+        "title",
+        "page"
+      ],
+      "title": "SourcePresentation",
+      "type": "object"
+    },
+    "TextBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "headline_max_chars": {
+          "exclusiveMinimum": 0,
+          "title": "Headline Max Chars",
+          "type": "integer"
+        },
+        "body_max_chars": {
+          "exclusiveMinimum": 0,
+          "title": "Body Max Chars",
+          "type": "integer"
+        },
+        "summary_max_chars": {
+          "exclusiveMinimum": 0,
+          "title": "Summary Max Chars",
+          "type": "integer"
+        },
+        "headline_max_lines": {
+          "exclusiveMinimum": 0,
+          "title": "Headline Max Lines",
+          "type": "integer"
+        },
+        "body_max_lines": {
+          "exclusiveMinimum": 0,
+          "title": "Body Max Lines",
+          "type": "integer"
+        },
+        "summary_max_lines": {
+          "exclusiveMinimum": 0,
+          "title": "Summary Max Lines",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "headline_max_chars",
+        "body_max_chars",
+        "summary_max_chars",
+        "headline_max_lines",
+        "body_max_lines",
+        "summary_max_lines"
+      ],
+      "title": "TextBudget",
+      "type": "object"
+    },
+    "ThemeTokens": {
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "enum": [
+            "technical",
+            "clinical",
+            "editorial"
+          ],
+          "title": "Family",
+          "type": "string"
+        },
+        "background": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Background",
+          "type": "string"
+        },
+        "surface": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Surface",
+          "type": "string"
+        },
+        "foreground": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Foreground",
+          "type": "string"
+        },
+        "muted": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Muted",
+          "type": "string"
+        },
+        "accent": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Accent",
+          "type": "string"
+        },
+        "accent_secondary": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Accent Secondary",
+          "type": "string"
+        },
+        "success": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Success",
+          "type": "string"
+        },
+        "warning": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Warning",
+          "type": "string"
+        },
+        "danger": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Danger",
+          "type": "string"
+        }
+      },
+      "required": [
+        "family",
+        "background",
+        "surface",
+        "foreground",
+        "muted",
+        "accent",
+        "accent_secondary",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "title": "ThemeTokens",
+      "type": "object"
+    },
+    "VisualGalleryComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "pattern": "^cmp_[a-z0-9_]+$",
+          "title": "Component Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "content_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Content Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "claim_refs": {
+          "items": {
+            "pattern": "^clm_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Claim Refs",
+          "type": "array"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^ev_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "asset_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Asset Refs",
+          "type": "array"
+        },
+        "interactions": {
+          "items": {
+            "$ref": "#/$defs/Interaction"
+          },
+          "title": "Interactions",
+          "type": "array"
+        },
+        "details": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "component_type": {
+          "const": "visual_gallery",
+          "title": "Component Type",
+          "type": "string"
+        },
+        "presentation_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Presentation Refs",
+          "type": "array"
+        },
+        "caption_mode": {
+          "default": "compact",
+          "enum": [
+            "compact",
+            "full"
+          ],
+          "title": "Caption Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "component_id",
+        "title",
+        "summary",
+        "content_refs",
+        "source_refs",
+        "component_type",
+        "presentation_refs"
+      ],
+      "title": "VisualGalleryComponent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "artifact_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Artifact Revision",
+      "type": "integer"
+    },
+    "paper_id": {
+      "pattern": "^ppr_[a-z0-9_]+$",
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "analysis_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Analysis Revision",
+      "type": "integer"
+    },
+    "evidence_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Evidence Revision",
+      "type": "integer"
+    },
+    "narrative_mode": {
+      "default": "balanced",
+      "enum": [
+        "mechanism",
+        "benchmark",
+        "ablation",
+        "qualitative",
+        "balanced"
+      ],
+      "title": "Narrative Mode",
+      "type": "string"
+    },
+    "evidence_visibility": {
+      "default": "visible_panel",
+      "enum": [
+        "visible_panel",
+        "inspector",
+        "internal_only"
+      ],
+      "title": "Evidence Visibility",
+      "type": "string"
+    },
+    "theme": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ThemeTokens"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "narrative_regions": {
+      "items": {
+        "$ref": "#/$defs/NarrativeRegion"
+      },
+      "title": "Narrative Regions",
+      "type": "array"
+    },
+    "source_presentations": {
+      "items": {
+        "$ref": "#/$defs/SourcePresentation"
+      },
+      "title": "Source Presentations",
+      "type": "array"
+    },
+    "reading_path": {
+      "items": {
+        "pattern": "^cmp_[a-z0-9_]+$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Reading Path",
+      "type": "array"
+    },
+    "components": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "claim_evidence_chain": "#/$defs/ClaimEvidenceChainComponent",
+            "equation_explorer": "#/$defs/EquationExplorerComponent",
+            "method_flow": "#/$defs/MethodFlowComponent",
+            "result_chart": "#/$defs/ResultChartComponent",
+            "visual_gallery": "#/$defs/VisualGalleryComponent"
+          },
+          "propertyName": "component_type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/MethodFlowComponent"
+          },
+          {
+            "$ref": "#/$defs/EquationExplorerComponent"
+          },
+          {
+            "$ref": "#/$defs/ClaimEvidenceChainComponent"
+          },
+          {
+            "$ref": "#/$defs/ResultChartComponent"
+          },
+          {
+            "$ref": "#/$defs/VisualGalleryComponent"
+          }
+        ]
+      },
+      "minItems": 1,
+      "title": "Components",
+      "type": "array"
+    },
+    "layout_profiles": {
+      "$ref": "#/$defs/LayoutProfiles"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_revision",
+    "paper_id",
+    "analysis_revision",
+    "evidence_revision",
+    "reading_path",
+    "components",
+    "layout_profiles"
+  ],
+  "title": "PosterPlan",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://papercraft.local/schemas/poster_plan.schema.json"
+}

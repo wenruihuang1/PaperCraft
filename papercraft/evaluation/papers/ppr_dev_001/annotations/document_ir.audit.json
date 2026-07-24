@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "paper_id": "ppr_dev_001",
+  "status": "passed_with_notes",
+  "reviewed_on": "2026-07-16",
+  "review_scope": "Deterministic DocumentIR source traceability",
+  "counts": {
+    "pages": 13,
+    "sections": 7,
+    "blocks": 326,
+    "equations": 11,
+    "assets": 12
+  },
+  "checks": [
+    {
+      "check": "input_capability",
+      "status": "passed",
+      "evidence": "Capability report identifies an English text PDF with 13 text-bearing pages."
+    },
+    {
+      "check": "text_source_ranges",
+      "status": "passed",
+      "evidence": "All text-span quotes and character ranges were revalidated against their referenced blocks."
+    },
+    {
+      "check": "visual_page_and_bbox_sampling",
+      "status": "passed",
+      "evidence": "Rendered pages 4, 5, 7, and 8 were compared with source bboxes and caption crops."
+    },
+    {
+      "check": "equation_sampling",
+      "status": "passed_with_notes",
+      "evidence": "Equations (1), (4), (5), (7), and (8) occur on the recorded pages and bboxes; stacked fractions have lossy PDF text order."
+    },
+    {
+      "check": "asset_sampling",
+      "status": "passed",
+      "evidence": "ast_figure_001, ast_figure_003, ast_table_004, and ast_table_005 contain the expected caption-anchored visual regions."
+    }
+  ],
+  "manual_corrections": [],
+  "known_limitations": [
+    "The three binary-search arithmetic examples embedded in Figure 3 are retained as unlabeled display-equation candidates.",
+    "PDF text extraction cannot reconstruct canonical LaTeX for visually stacked equations."
+  ]
+}

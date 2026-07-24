@@ -1,0 +1,381 @@
+{
+  "schema_version": "1.2.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_dev_003",
+  "analysis_revision": 1,
+  "evidence": [
+    {
+      "evidence_id": "ev_benchmark",
+      "evidence_type": "table",
+      "summary": "Table 1 reports the strongest compared average Dice for SAA in all four transfer directions.",
+      "object_refs": [
+        "exp_main_benchmark",
+        "ast_table_004"
+      ],
+      "source_refs": [
+        "src_ast_table_004",
+        "src_p005_b0075",
+        "src_p005_b0092"
+      ]
+    },
+    {
+      "evidence_id": "ev_component_ablation",
+      "evidence_type": "table",
+      "summary": "Tables 2–3 show SAAM as the strongest single component and the full configuration as best on each task.",
+      "object_refs": [
+        "exp_component_ablation",
+        "ast_table_006",
+        "ast_table_007"
+      ],
+      "source_refs": [
+        "src_ast_table_006",
+        "src_ast_table_007",
+        "src_p007_b0045"
+      ]
+    },
+    {
+      "evidence_id": "ev_saam_ablation",
+      "evidence_type": "table",
+      "summary": "Removing Ω, W, or the alignment term reduces the reported overall average Dice.",
+      "object_refs": [
+        "exp_saam_ablation",
+        "ast_table_008"
+      ],
+      "source_refs": [
+        "src_ast_table_008",
+        "src_p007_b0046"
+      ]
+    },
+    {
+      "evidence_id": "ev_mechanism",
+      "evidence_type": "figure",
+      "summary": "Figure 6 visualizes a representative change from diffuse stability to compact organ-centered support and smoother alignment weights.",
+      "object_refs": [
+        "ast_figure_011",
+        "mth_saam"
+      ],
+      "source_refs": [
+        "src_ast_figure_011",
+        "src_p008_b0030"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "edge_mechanism_to_selective",
+      "from_evidence": "ev_mechanism",
+      "to_claim": "clm_selective_alignment",
+      "relation": "partially_supports",
+      "strength": 0.65,
+      "rationale": "The visualization and SAAM ablation support the intended mechanism, but do not directly establish a general causal safety claim.",
+      "qualifiers": [
+        "representative visualization"
+      ]
+    },
+    {
+      "edge_id": "edge_saam_to_selective",
+      "from_evidence": "ev_saam_ablation",
+      "to_claim": "clm_selective_alignment",
+      "relation": "partially_supports",
+      "strength": 0.75,
+      "rationale": "Controlled removal shows the selector, weight, and alignment term each contribute within the evaluated system.",
+      "qualifiers": [
+        "point estimates"
+      ]
+    },
+    {
+      "edge_id": "edge_benchmark",
+      "from_evidence": "ev_benchmark",
+      "to_claim": "clm_benchmark_performance",
+      "relation": "supports",
+      "strength": 0.95,
+      "rationale": "The full comparison table directly contains the four scoped best-average results.",
+      "qualifiers": [
+        "evaluated methods and protocol only"
+      ]
+    },
+    {
+      "edge_id": "edge_components",
+      "from_evidence": "ev_component_ablation",
+      "to_claim": "clm_saam_contribution",
+      "relation": "supports",
+      "strength": 0.9,
+      "rationale": "Four-task component ablations directly compare each single module and the full system.",
+      "qualifiers": [
+        "configured implementation"
+      ]
+    },
+    {
+      "edge_id": "edge_mechanism_visual",
+      "from_evidence": "ev_mechanism",
+      "to_claim": "clm_mechanism_visualization",
+      "relation": "supports",
+      "strength": 0.85,
+      "rationale": "The claim is explicitly limited to what is visible in the representative figure.",
+      "qualifiers": [
+        "qualitative example"
+      ]
+    }
+  ],
+  "claim_assessments": [
+    {
+      "claim_id": "clm_selective_alignment",
+      "status": "partially_supported",
+      "supporting_edges": [
+        "edge_mechanism_to_selective",
+        "edge_saam_to_selective"
+      ],
+      "sufficiency_checks": [
+        {
+          "dimension": "directness",
+          "status": "passed",
+          "rationale": "The cited result or visualization addresses the stated claim directly within its evaluated scope.",
+          "source_refs": [
+            "src_p007_b0046",
+            "src_p008_b0030"
+          ]
+        },
+        {
+          "dimension": "scope_match",
+          "status": "passed",
+          "rationale": "The claim is limited to the reported source-target tasks and Dice metric.",
+          "source_refs": [
+            "src_p007_b0046",
+            "src_p008_b0030"
+          ]
+        },
+        {
+          "dimension": "baseline_adequacy",
+          "status": "passed",
+          "rationale": "The paper compares ERM, generic DG, and recent SSDG methods using a shared protocol.",
+          "source_refs": [
+            "src_p007_b0046",
+            "src_p008_b0030"
+          ]
+        },
+        {
+          "dimension": "ablation_support",
+          "status": "passed",
+          "rationale": "Controlled removals test whether the named method element contributes.",
+          "source_refs": [
+            "src_p007_b0046",
+            "src_p008_b0030"
+          ]
+        },
+        {
+          "dimension": "robustness",
+          "status": "unknown",
+          "rationale": "Evidence spans the task directions explicitly named by the claim.",
+          "source_refs": []
+        },
+        {
+          "dimension": "statistical_support",
+          "status": "unknown",
+          "rationale": "The paper reports point estimates without repeated-run uncertainty or significance tests.",
+          "source_refs": []
+        }
+      ],
+      "limitations": [
+        "The paper does not directly quantify alignment noise or provide repeated-run uncertainty."
+      ],
+      "rationale": "The design is supported by controlled removals and mechanism visualization, but the broader safety rationale remains indirect."
+    },
+    {
+      "claim_id": "clm_benchmark_performance",
+      "status": "supported",
+      "supporting_edges": [
+        "edge_benchmark"
+      ],
+      "sufficiency_checks": [
+        {
+          "dimension": "directness",
+          "status": "passed",
+          "rationale": "The cited result or visualization addresses the stated claim directly within its evaluated scope.",
+          "source_refs": [
+            "src_ast_table_004",
+            "src_p005_b0075",
+            "src_p005_b0092"
+          ]
+        },
+        {
+          "dimension": "scope_match",
+          "status": "passed",
+          "rationale": "The claim is limited to the reported source-target tasks and Dice metric.",
+          "source_refs": [
+            "src_ast_table_004",
+            "src_p005_b0075",
+            "src_p005_b0092"
+          ]
+        },
+        {
+          "dimension": "baseline_adequacy",
+          "status": "passed",
+          "rationale": "The paper compares ERM, generic DG, and recent SSDG methods using a shared protocol.",
+          "source_refs": [
+            "src_ast_table_004",
+            "src_p005_b0075",
+            "src_p005_b0092"
+          ]
+        },
+        {
+          "dimension": "ablation_support",
+          "status": "not_applicable",
+          "rationale": "Controlled removals test whether the named method element contributes.",
+          "source_refs": []
+        },
+        {
+          "dimension": "robustness",
+          "status": "passed",
+          "rationale": "Evidence spans the task directions explicitly named by the claim.",
+          "source_refs": [
+            "src_ast_table_004",
+            "src_p005_b0075",
+            "src_p005_b0092"
+          ]
+        },
+        {
+          "dimension": "statistical_support",
+          "status": "unknown",
+          "rationale": "The paper reports point estimates without repeated-run uncertainty or significance tests.",
+          "source_refs": []
+        }
+      ],
+      "limitations": [
+        "No variance or significance tests are reported."
+      ],
+      "rationale": "The narrowly scoped ranking claim is directly supported across all four tabled transfer directions."
+    },
+    {
+      "claim_id": "clm_saam_contribution",
+      "status": "supported",
+      "supporting_edges": [
+        "edge_components"
+      ],
+      "sufficiency_checks": [
+        {
+          "dimension": "directness",
+          "status": "passed",
+          "rationale": "The cited result or visualization addresses the stated claim directly within its evaluated scope.",
+          "source_refs": [
+            "src_p007_b0045",
+            "src_ast_table_006",
+            "src_ast_table_007"
+          ]
+        },
+        {
+          "dimension": "scope_match",
+          "status": "passed",
+          "rationale": "The claim is limited to the reported source-target tasks and Dice metric.",
+          "source_refs": [
+            "src_p007_b0045",
+            "src_ast_table_006",
+            "src_ast_table_007"
+          ]
+        },
+        {
+          "dimension": "baseline_adequacy",
+          "status": "passed",
+          "rationale": "The paper compares ERM, generic DG, and recent SSDG methods using a shared protocol.",
+          "source_refs": [
+            "src_p007_b0045",
+            "src_ast_table_006",
+            "src_ast_table_007"
+          ]
+        },
+        {
+          "dimension": "ablation_support",
+          "status": "passed",
+          "rationale": "Controlled removals test whether the named method element contributes.",
+          "source_refs": [
+            "src_p007_b0045",
+            "src_ast_table_006",
+            "src_ast_table_007"
+          ]
+        },
+        {
+          "dimension": "robustness",
+          "status": "passed",
+          "rationale": "Evidence spans the task directions explicitly named by the claim.",
+          "source_refs": [
+            "src_p007_b0045",
+            "src_ast_table_006",
+            "src_ast_table_007"
+          ]
+        },
+        {
+          "dimension": "statistical_support",
+          "status": "unknown",
+          "rationale": "The paper reports point estimates without repeated-run uncertainty or significance tests.",
+          "source_refs": []
+        }
+      ],
+      "limitations": [
+        "The conclusion is bounded to the four configured ablation tasks."
+      ],
+      "rationale": "The component tables directly support both parts of the claim on every reported task."
+    },
+    {
+      "claim_id": "clm_mechanism_visualization",
+      "status": "partially_supported",
+      "supporting_edges": [
+        "edge_mechanism_visual"
+      ],
+      "sufficiency_checks": [
+        {
+          "dimension": "directness",
+          "status": "passed",
+          "rationale": "The cited result or visualization addresses the stated claim directly within its evaluated scope.",
+          "source_refs": [
+            "src_ast_figure_011",
+            "src_p008_b0030"
+          ]
+        },
+        {
+          "dimension": "scope_match",
+          "status": "passed",
+          "rationale": "The claim is limited to the reported source-target tasks and Dice metric.",
+          "source_refs": [
+            "src_ast_figure_011",
+            "src_p008_b0030"
+          ]
+        },
+        {
+          "dimension": "baseline_adequacy",
+          "status": "passed",
+          "rationale": "The paper compares ERM, generic DG, and recent SSDG methods using a shared protocol.",
+          "source_refs": [
+            "src_ast_figure_011",
+            "src_p008_b0030"
+          ]
+        },
+        {
+          "dimension": "ablation_support",
+          "status": "passed",
+          "rationale": "Controlled removals test whether the named method element contributes.",
+          "source_refs": [
+            "src_ast_figure_011",
+            "src_p008_b0030"
+          ]
+        },
+        {
+          "dimension": "robustness",
+          "status": "unknown",
+          "rationale": "Evidence spans the task directions explicitly named by the claim.",
+          "source_refs": []
+        },
+        {
+          "dimension": "statistical_support",
+          "status": "unknown",
+          "rationale": "The paper reports point estimates without repeated-run uncertainty or significance tests.",
+          "source_refs": []
+        }
+      ],
+      "limitations": [
+        "One representative case cannot establish population-level behavior."
+      ],
+      "rationale": "The visual description is faithful to Figure 6, but generalization of that mechanism is not statistically established."
+    }
+  ],
+  "orphan_claims": [],
+  "orphan_evidence": []
+}

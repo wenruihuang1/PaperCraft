@@ -1,0 +1,364 @@
+{
+  "$defs": {
+    "ClaimCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_ref": {
+          "pattern": "^clm_[a-z0-9_]+$",
+          "title": "Claim Ref",
+          "type": "string"
+        },
+        "disposition": {
+          "enum": [
+            "included",
+            "omitted"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim_ref",
+        "disposition",
+        "reason"
+      ],
+      "title": "ClaimCoverage",
+      "type": "object"
+    },
+    "EvidenceNarrativeNode": {
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "pattern": "^nar_[a-z0-9_]+$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "importance": {
+          "enum": [
+            "primary",
+            "supporting",
+            "context"
+          ],
+          "title": "Importance",
+          "type": "string"
+        },
+        "object_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Object Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "role": {
+          "const": "evidence",
+          "title": "Role",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^ev_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "node_id",
+        "statement",
+        "importance",
+        "object_refs",
+        "source_refs",
+        "role",
+        "evidence_refs"
+      ],
+      "title": "EvidenceNarrativeNode",
+      "type": "object"
+    },
+    "NarrativeEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "edge_id": {
+          "pattern": "^nedge_[a-z0-9_]+$",
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "from_node": {
+          "pattern": "^nar_[a-z0-9_]+$",
+          "title": "From Node",
+          "type": "string"
+        },
+        "to_node": {
+          "pattern": "^nar_[a-z0-9_]+$",
+          "title": "To Node",
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "frames",
+            "motivates",
+            "reveals",
+            "challenges",
+            "causes",
+            "addressed_by",
+            "operationalizes",
+            "enables",
+            "explains",
+            "evaluated_by",
+            "supports",
+            "qualifies",
+            "limits",
+            "leads_to"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "transition": {
+          "minLength": 1,
+          "title": "Transition",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "from_node",
+        "to_node",
+        "relation",
+        "transition"
+      ],
+      "title": "NarrativeEdge",
+      "type": "object"
+    },
+    "OtherNarrativeNode": {
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "pattern": "^nar_[a-z0-9_]+$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "importance": {
+          "enum": [
+            "primary",
+            "supporting",
+            "context"
+          ],
+          "title": "Importance",
+          "type": "string"
+        },
+        "object_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Object Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "role": {
+          "enum": [
+            "context",
+            "problem",
+            "observation",
+            "gap",
+            "claim",
+            "insight",
+            "intervention",
+            "mechanism",
+            "method",
+            "experiment",
+            "limitation",
+            "boundary",
+            "takeaway"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^ev_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "node_id",
+        "statement",
+        "importance",
+        "object_refs",
+        "source_refs",
+        "role"
+      ],
+      "title": "OtherNarrativeNode",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "artifact_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Artifact Revision",
+      "type": "integer"
+    },
+    "paper_id": {
+      "pattern": "^ppr_[a-z0-9_]+$",
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "analysis_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Analysis Revision",
+      "type": "integer"
+    },
+    "evidence_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Evidence Revision",
+      "type": "integer"
+    },
+    "archetype": {
+      "enum": [
+        "causal_intervention",
+        "mechanism",
+        "method_pipeline",
+        "benchmark_comparison",
+        "case_based",
+        "dataset_characterization",
+        "theory_derivation",
+        "decision_loop",
+        "agent_workflow",
+        "system_architecture",
+        "taxonomy_survey",
+        "balanced"
+      ],
+      "title": "Archetype",
+      "type": "string"
+    },
+    "thesis": {
+      "minLength": 1,
+      "title": "Thesis",
+      "type": "string"
+    },
+    "archetype_rationale": {
+      "minLength": 1,
+      "title": "Archetype Rationale",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "boundary": "#/$defs/OtherNarrativeNode",
+            "claim": "#/$defs/OtherNarrativeNode",
+            "context": "#/$defs/OtherNarrativeNode",
+            "evidence": "#/$defs/EvidenceNarrativeNode",
+            "experiment": "#/$defs/OtherNarrativeNode",
+            "gap": "#/$defs/OtherNarrativeNode",
+            "insight": "#/$defs/OtherNarrativeNode",
+            "intervention": "#/$defs/OtherNarrativeNode",
+            "limitation": "#/$defs/OtherNarrativeNode",
+            "mechanism": "#/$defs/OtherNarrativeNode",
+            "method": "#/$defs/OtherNarrativeNode",
+            "observation": "#/$defs/OtherNarrativeNode",
+            "problem": "#/$defs/OtherNarrativeNode",
+            "takeaway": "#/$defs/OtherNarrativeNode"
+          },
+          "propertyName": "role"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/EvidenceNarrativeNode"
+          },
+          {
+            "$ref": "#/$defs/OtherNarrativeNode"
+          }
+        ]
+      },
+      "minItems": 5,
+      "title": "Nodes",
+      "type": "array"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/NarrativeEdge"
+      },
+      "minItems": 4,
+      "title": "Edges",
+      "type": "array"
+    },
+    "primary_path": {
+      "items": {
+        "pattern": "^nar_[a-z0-9_]+$",
+        "type": "string"
+      },
+      "maxItems": 9,
+      "minItems": 5,
+      "title": "Primary Path",
+      "type": "array"
+    },
+    "claim_coverage": {
+      "items": {
+        "$ref": "#/$defs/ClaimCoverage"
+      },
+      "title": "Claim Coverage",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_revision",
+    "paper_id",
+    "analysis_revision",
+    "evidence_revision",
+    "archetype",
+    "thesis",
+    "archetype_rationale",
+    "nodes",
+    "edges",
+    "primary_path"
+  ],
+  "title": "NarrativePlan",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://papercraft.local/schemas/narrative_plan.schema.json"
+}

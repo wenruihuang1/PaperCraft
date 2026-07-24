@@ -1,0 +1,170 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_dev_001",
+  "source_revision": 1,
+  "metadata": {
+    "title": "Adaptive MLP Pruning for Large Vision Transformers",
+    "authors": [
+      "Chengchao Shen"
+    ],
+    "language": "en"
+  },
+  "concepts": [
+    {
+      "concept_id": "cpt_problem",
+      "concept_type": "problem",
+      "statement": "Nevertheless, their cumbersome parameters results in exorbitant computational and memory demands.",
+      "importance": "critical",
+      "source_refs": [
+        "src_p001_b0004"
+      ]
+    },
+    {
+      "concept_id": "cpt_motivation",
+      "concept_type": "motivation",
+      "statement": "However, the importance computation using one-hot cross en- tropy loss ignores the potential predictions on other categories, thus degrading the quality of the evaluated importance scores.",
+      "importance": "high",
+      "source_refs": [
+        "src_p001_b0004"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "clm_main_result",
+      "statement": "Experimental results on several state-of-the-art large vision transformers, includ- ing CLIP and DINOv2, demonstrate that our method achieves roughly 40% pa- rameter and FLOPs reduction in a near lossless manner.",
+      "claim_type": "main",
+      "scope": "reported in ABSTRACT",
+      "qualifiers": [
+        "roughly",
+        "near lossless"
+      ],
+      "importance": "critical",
+      "source_refs": [
+        "src_p001_b0004"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "method_id": "mth_primary",
+      "name": "3 THE PROPOSED METHOD",
+      "purpose": "In this section, we introduce information entropy as the criterion for importance evaluation as Fig.",
+      "inputs": [],
+      "outputs": [],
+      "steps": [
+        {
+          "index": 1,
+          "description": "First, we evaluate importance scores of hidden neurons in MLP module according to the sensitivity of model predictions to the elimination of each neuron.",
+          "source_refs": [
+            "src_p003_b0043"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Then, we rank the hidden neurons by the obtained importance scores to determine the order of neuron pruning, thus minimizing the performance drop after compression.",
+          "source_refs": [
+            "src_p003_b0043"
+          ]
+        },
+        {
+          "index": 3,
+          "description": "Finally, we implement knowledge distillation between the original model and the pruned one to guide the performance recover of the compressed model.",
+          "source_refs": [
+            "src_p003_b0043"
+          ]
+        },
+        {
+          "index": 4,
+          "description": "Specifically, we obtain inter-instance similarity matrix s ∈RB×B between B image representations in mini-batch.",
+          "source_refs": [
+            "src_p005_b0021"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "equation_refs": [],
+      "claim_refs": [
+        "clm_main_result"
+      ],
+      "source_refs": [
+        "src_p004_b0045",
+        "src_p003_b0043",
+        "src_p005_b0021"
+      ]
+    }
+  ],
+  "equations": [],
+  "experiments": [
+    {
+      "experiment_id": "exp_primary",
+      "question": "Does the reported evaluation support the main result claim?",
+      "setup": "For DINOv2-g, we evaluate its performance model on ImageNet-1K using kNN evaluation protocol.",
+      "datasets": [],
+      "metrics": [],
+      "baselines": [],
+      "results": [
+        {
+          "result_id": "res_main",
+          "metric": "reported outcome",
+          "value": "Experimental results on several state-of-the-art large vision transformers, includ- ing CLIP and DINOv2, demonstrate that our method achieves roughly 40% pa- rameter and FLOPs reduction in a near lossless manner.",
+          "comparison": null,
+          "source_refs": [
+            "src_p001_b0004"
+          ]
+        }
+      ],
+      "limitations": [
+        "Datasets, metrics, and baselines require semantic verification beyond this rule-based baseline."
+      ],
+      "claim_refs": [
+        "clm_main_result"
+      ],
+      "source_refs": [
+        "src_p007_b0004",
+        "src_p001_b0004"
+      ]
+    }
+  ],
+  "understanding_path": [
+    {
+      "step_id": "step_problem",
+      "role": "problem",
+      "object_refs": [
+        "cpt_problem"
+      ],
+      "transition": "The paper's stated motivation frames why the problem matters."
+    },
+    {
+      "step_id": "step_motivation",
+      "role": "motivation",
+      "object_refs": [
+        "cpt_motivation"
+      ],
+      "transition": "The primary method is introduced in response."
+    },
+    {
+      "step_id": "step_method",
+      "role": "method",
+      "object_refs": [
+        "mth_primary"
+      ],
+      "transition": "The evaluation is used to test the reported claim."
+    },
+    {
+      "step_id": "step_evidence",
+      "role": "evidence",
+      "object_refs": [
+        "clm_main_result",
+        "exp_primary",
+        "res_main"
+      ],
+      "transition": null
+    }
+  ],
+  "analysis_warnings": [
+    "Generated by heuristic_v1 without an LLM; semantic boundaries require human review.",
+    "Only extractive source sentences are used; no equation semantics are inferred."
+  ]
+}

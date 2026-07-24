@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "paper_id": "ppr_dev_002",
+  "status": "structurally_passed_semantic_review_required",
+  "reviewed_on": "2026-07-16",
+  "checks": {
+    "problem": "passed",
+    "motivation": "passed",
+    "method": "passed_with_notes",
+    "claim": "passed",
+    "experiment": "passed_with_notes",
+    "source_refs": "passed"
+  },
+  "notes": [
+    "The domain-shift problem, single-source motivation, and unseen-domain performance claim are extractive and correctly grounded.",
+    "The method identifies the GIN and IPA section, but one selected step describes a supporting observation rather than a top-level operation.",
+    "The experiment correctly locates the comparison with ERM and recent baselines.",
+    "Datasets, metrics, and baselines remain empty pending semantic analysis."
+  ]
+}

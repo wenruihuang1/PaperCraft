@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "evaluated_at": "2026-07-19",
+  "status": "passed",
+  "acceptance": {
+    "all_plans_schema_valid": true,
+    "unresolved_references": 0,
+    "ungrounded_nodes": 0,
+    "main_claims_accounted": true,
+    "primary_paths_connected": true,
+    "poster_plan_changed": false,
+    "human_mean_minimum": 4.0,
+    "human_dimension_minimum": 3.0
+  },
+  "samples": [
+    {
+      "paper_id": "ppr_dev_001",
+      "job_id": "narrative_eval_001",
+      "artifact_revision": 6,
+      "expected_archetype": "method_pipeline",
+      "actual_archetype": "method_pipeline",
+      "primary_path_nodes": 8,
+      "human_rubric": {
+        "fidelity": 5,
+        "coherence": 5,
+        "selectivity": 4,
+        "boundary_awareness": 5,
+        "mean": 4.75
+      },
+      "notes": "The primary path separates the pruning gap, entropy insight, ordered AMP pipeline, benchmark evidence, distillation dependency, and evaluation boundaries. Secondary branches retain ablations and head-free applicability without crowding the primary path."
+    },
+    {
+      "paper_id": "ppr_dev_002",
+      "job_id": "narrative_eval_002",
+      "artifact_revision": 1,
+      "expected_archetype": "causal_intervention",
+      "actual_archetype": "causal_intervention",
+      "primary_path_nodes": 7,
+      "human_rubric": {
+        "fidelity": 5,
+        "coherence": 5,
+        "selectivity": 5,
+        "boundary_awareness": 5,
+        "mean": 5.0
+      },
+      "notes": "The path preserves the explicit confounder model, GIN/IPA intervention, cross-domain evidence, heterogeneous gains, and the distinction between a pseudo-intervention and formal causal identification."
+    },
+    {
+      "paper_id": "ppr_dev_003",
+      "job_id": "narrative_eval_003",
+      "artifact_revision": 1,
+      "expected_archetype": "mechanism",
+      "actual_archetype": "mechanism",
+      "primary_path_nodes": 7,
+      "human_rubric": {
+        "fidelity": 5,
+        "coherence": 5,
+        "selectivity": 4,
+        "boundary_awareness": 4,
+        "mean": 4.5
+      },
+      "notes": "The plan centers semantic stability as the missing mechanism, connects it to the three-module method and ablations, and retains point-estimate and qualitative-mechanism limitations as a linked boundary branch."
+    }
+  ],
+  "development_costs_usd": {
+    "narrative_eval_001": "0.681084",
+    "narrative_eval_002": "0.097605",
+    "narrative_eval_003": "0.110430",
+    "note": "The AMP total includes schema-development retries. Under the final transport schema, all three samples produced a valid artifact on the first live attempt."
+  }
+}

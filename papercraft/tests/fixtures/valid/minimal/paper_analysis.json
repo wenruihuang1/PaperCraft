@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_minimal",
+  "source_revision": 1,
+  "metadata": {
+    "title": "A Minimal Grounded Method",
+    "authors": ["Ada Researcher"],
+    "language": "en"
+  },
+  "concepts": [
+    {
+      "concept_id": "cpt_problem",
+      "concept_type": "problem",
+      "statement": "Existing systems are slow.",
+      "importance": "critical",
+      "source_refs": ["src_problem"]
+    },
+    {
+      "concept_id": "cpt_motivation",
+      "concept_type": "motivation",
+      "statement": "Reducing runtime makes the system practical for repeated use.",
+      "importance": "high",
+      "source_refs": ["src_problem"]
+    },
+    {
+      "concept_id": "cpt_insight",
+      "concept_type": "key_insight",
+      "statement": "Normalize before computing the score.",
+      "importance": "high",
+      "source_refs": ["src_method"]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "clm_speed",
+      "statement": "The method halves runtime on the evaluated benchmark.",
+      "claim_type": "main",
+      "scope": "the evaluated benchmark",
+      "qualifiers": ["single benchmark"],
+      "importance": "critical",
+      "source_refs": ["src_result"]
+    }
+  ],
+  "methods": [
+    {
+      "method_id": "mth_pipeline",
+      "name": "Two-step pipeline",
+      "purpose": "Reduce runtime while preserving the score definition.",
+      "inputs": ["input x", "time t"],
+      "outputs": ["score s"],
+      "steps": [
+        {"index": 1, "description": "Normalize the input.", "source_refs": ["src_method"]},
+        {"index": 2, "description": "Compute the score.", "source_refs": ["src_equation"]}
+      ],
+      "assumptions": ["t is non-zero"],
+      "equation_refs": ["eq_score"],
+      "claim_refs": ["clm_speed"],
+      "source_refs": ["src_method", "src_equation"]
+    }
+  ],
+  "equations": [
+    {
+      "equation_id": "eq_score",
+      "source_equation_id": "seq_score",
+      "label": "1",
+      "latex_original": "s = x / t",
+      "semantic_role": "definition",
+      "variables": [
+        {"symbol": "s", "meaning": "score", "unit": null, "domain": "real"},
+        {"symbol": "x", "meaning": "normalized input", "unit": null, "domain": "real"},
+        {"symbol": "t", "meaning": "runtime", "unit": "ms", "domain": "positive real"}
+      ],
+      "computation_steps": ["Read x and t.", "Divide x by t."],
+      "method_refs": ["mth_pipeline"],
+      "experiment_refs": ["exp_runtime"],
+      "source_refs": ["src_equation"]
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "exp_runtime",
+      "question": "Does the method reduce runtime?",
+      "setup": "Compare the baseline and proposed method on one benchmark.",
+      "datasets": ["MinimalBench"],
+      "metrics": ["runtime_ms"],
+      "baselines": ["baseline"],
+      "results": [
+        {
+          "result_id": "res_runtime",
+          "metric": "runtime_ms",
+          "value": "10 ms",
+          "comparison": "baseline: 20 ms",
+          "source_refs": ["src_result"]
+        }
+      ],
+      "limitations": ["Only one benchmark is evaluated."],
+      "claim_refs": ["clm_speed"],
+      "source_refs": ["src_result"]
+    }
+  ],
+  "understanding_path": [
+    {
+      "step_id": "step_problem",
+      "role": "problem",
+      "object_refs": ["cpt_problem", "cpt_motivation"],
+      "transition": "The runtime bottleneck motivates a smaller pipeline."
+    },
+    {
+      "step_id": "step_method",
+      "role": "method",
+      "object_refs": ["mth_pipeline", "eq_score"],
+      "transition": "The experiment tests the method's runtime claim."
+    },
+    {
+      "step_id": "step_evidence",
+      "role": "evidence",
+      "object_refs": ["clm_speed", "res_runtime"],
+      "transition": null
+    }
+  ],
+  "analysis_warnings": []
+}

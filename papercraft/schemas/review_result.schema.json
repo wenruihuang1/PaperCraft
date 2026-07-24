@@ -1,0 +1,441 @@
+{
+  "$defs": {
+    "CheckerSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "checker": {
+          "enum": [
+            "source_consistency",
+            "content_completeness",
+            "evidence_sufficiency",
+            "formula_accuracy",
+            "global_layout",
+            "local_overflow"
+          ],
+          "title": "Checker",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "issue_count": {
+          "minimum": 0,
+          "title": "Issue Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "checker",
+        "status",
+        "issue_count"
+      ],
+      "title": "CheckerSummary",
+      "type": "object"
+    },
+    "InputRevisions": {
+      "additionalProperties": false,
+      "properties": {
+        "document_ir": {
+          "exclusiveMinimum": 0,
+          "title": "Document Ir",
+          "type": "integer"
+        },
+        "paper_analysis": {
+          "exclusiveMinimum": 0,
+          "title": "Paper Analysis",
+          "type": "integer"
+        },
+        "evidence_graph": {
+          "exclusiveMinimum": 0,
+          "title": "Evidence Graph",
+          "type": "integer"
+        },
+        "poster_plan": {
+          "exclusiveMinimum": 0,
+          "title": "Poster Plan",
+          "type": "integer"
+        },
+        "html_render": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Html Render"
+        },
+        "pdf_render": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pdf Render"
+        }
+      },
+      "required": [
+        "document_ir",
+        "paper_analysis",
+        "evidence_graph",
+        "poster_plan"
+      ],
+      "title": "InputRevisions",
+      "type": "object"
+    },
+    "IssueTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact": {
+          "enum": [
+            "document_ir",
+            "paper_analysis",
+            "evidence_graph",
+            "poster_plan",
+            "html_render",
+            "pdf_render"
+          ],
+          "title": "Artifact",
+          "type": "string"
+        },
+        "target_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Id"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        }
+      },
+      "required": [
+        "artifact"
+      ],
+      "title": "IssueTarget",
+      "type": "object"
+    },
+    "RepairBatch": {
+      "additionalProperties": false,
+      "properties": {
+        "operations": {
+          "items": {
+            "$ref": "#/$defs/SuggestedPatch"
+          },
+          "title": "Operations",
+          "type": "array"
+        },
+        "affected_component_ids": {
+          "items": {
+            "pattern": "^cmp_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Affected Component Ids",
+          "type": "array"
+        },
+        "must_preserve_component_ids": {
+          "items": {
+            "pattern": "^cmp_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Must Preserve Component Ids",
+          "type": "array"
+        }
+      },
+      "title": "RepairBatch",
+      "type": "object"
+    },
+    "ReviewIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_id": {
+          "pattern": "^issue_[a-z0-9_]+$",
+          "title": "Issue Id",
+          "type": "string"
+        },
+        "checker": {
+          "enum": [
+            "source_consistency",
+            "content_completeness",
+            "evidence_sufficiency",
+            "formula_accuracy",
+            "global_layout",
+            "local_overflow"
+          ],
+          "title": "Checker",
+          "type": "string"
+        },
+        "code": {
+          "enum": [
+            "MISSING_SOURCE_REF",
+            "UNRESOLVABLE_SOURCE_REF",
+            "QUOTE_MISMATCH",
+            "NUMERIC_MISMATCH",
+            "FORMULA_SOURCE_MISMATCH",
+            "EVIDENCE_TARGET_MISMATCH",
+            "OCCUPANCY_OUT_OF_RANGE",
+            "VISUAL_RATIO_OUT_OF_RANGE",
+            "FONT_BELOW_MINIMUM",
+            "GAP_BELOW_MINIMUM",
+            "READING_ORDER_BROKEN",
+            "DENSITY_IMBALANCE",
+            "TEXT_CLIPPED",
+            "ELEMENT_OVERLAP",
+            "CANVAS_OVERFLOW",
+            "CHART_LABEL_CLIPPED",
+            "MISSING_REQUIRED_CONTENT",
+            "DUPLICATE_CONTENT",
+            "UNSUPPORTED_CLAIM_LANGUAGE",
+            "EVIDENCE_SCOPE_MISMATCH",
+            "WEAK_BASELINE_COVERAGE",
+            "MISSING_ABLATION_SUPPORT",
+            "FORMULA_SYMBOL_MISMATCH",
+            "FORMULA_VARIABLE_UNDEFINED",
+            "FORMULA_METHOD_LINK_MISSING",
+            "FORMULA_EXPERIMENT_LINK_MISSING",
+            "SOURCE_PREVIEW_MISSING",
+            "SOURCE_PREVIEW_INCOMPLETE",
+            "FORMULA_RENDER_FAILED",
+            "INSPECTOR_CONTENT_CLIPPED",
+            "OFFLINE_BOOT_FAILED",
+            "NARRATIVE_HEADLINE_CLIPPED",
+            "NARRATIVE_BODY_CLIPPED",
+            "NARRATIVE_HEADLINE_OVERFLOW",
+            "NARRATIVE_BODY_OVERFLOW",
+            "POSTER_TITLE_OVERFLOW",
+            "COMPONENT_SUMMARY_CLIPPED",
+            "NARRATIVE_TEXT_TRUNCATED",
+            "TEXT_TRUNCATED",
+            "LOW_COMPONENT_UTILIZATION",
+            "LARGE_BLANK_REGION",
+            "VISUAL_CENTER_IMBALANCE",
+            "FORMULA_AREA_MISMATCH"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "warning",
+            "error"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/IssueTarget"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "detector_evidence": {
+          "additionalProperties": true,
+          "title": "Detector Evidence",
+          "type": "object"
+        },
+        "suggested_patch": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SuggestedPatch"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "status": {
+          "enum": [
+            "open",
+            "resolved",
+            "ignored"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "issue_id",
+        "checker",
+        "code",
+        "severity",
+        "target",
+        "message",
+        "status"
+      ],
+      "title": "ReviewIssue",
+      "type": "object"
+    },
+    "SuggestedPatch": {
+      "additionalProperties": false,
+      "properties": {
+        "patch_id": {
+          "pattern": "^patch_[a-z0-9_]+$",
+          "title": "Patch Id",
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "restore_source_value",
+            "resize",
+            "shorten_summary",
+            "shorten_narrative",
+            "shorten_title",
+            "collapse_details",
+            "reorder",
+            "increase_gap",
+            "adjust_chart_labels",
+            "adjust_semantic_crop",
+            "replace_content",
+            "qualify_claim",
+            "repair_formula",
+            "relink_evidence"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        },
+        "parameters": {
+          "additionalProperties": true,
+          "title": "Parameters",
+          "type": "object"
+        },
+        "expected_revision": {
+          "exclusiveMinimum": 0,
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "patch_id",
+        "operation",
+        "target_id",
+        "expected_revision"
+      ],
+      "title": "SuggestedPatch",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "artifact_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Artifact Revision",
+      "type": "integer"
+    },
+    "review_id": {
+      "pattern": "^rev_[a-z0-9_]+$",
+      "title": "Review Id",
+      "type": "string"
+    },
+    "paper_id": {
+      "pattern": "^ppr_[a-z0-9_]+$",
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "input_revisions": {
+      "$ref": "#/$defs/InputRevisions"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "checker_summaries": {
+      "items": {
+        "$ref": "#/$defs/CheckerSummary"
+      },
+      "maxItems": 6,
+      "minItems": 3,
+      "title": "Checker Summaries",
+      "type": "array"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/ReviewIssue"
+      },
+      "title": "Issues",
+      "type": "array"
+    },
+    "repair_batch": {
+      "$ref": "#/$defs/RepairBatch"
+    },
+    "metrics": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Metrics",
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_revision",
+    "review_id",
+    "paper_id",
+    "input_revisions",
+    "status",
+    "checker_summaries",
+    "repair_batch"
+  ],
+  "title": "ReviewResult",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://papercraft.local/schemas/review_result.schema.json"
+}

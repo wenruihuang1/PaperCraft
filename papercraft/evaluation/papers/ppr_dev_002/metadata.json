@@ -1,0 +1,18 @@
+{
+  "paper_id": "ppr_dev_002",
+  "status": "selected",
+  "title": "Causality-Inspired Single-Source Domain Generalization for Medical Image Segmentation",
+  "authors": [
+    "Cheng Ouyang",
+    "Chen Chen",
+    "Surui Li",
+    "Zeju Li",
+    "Chen Qin",
+    "Wenjia Bai",
+    "Daniel Rueckert"
+  ],
+  "domain": "medical_image_segmentation",
+  "document_profile": "method_equation_experiment",
+  "source_file": "source/paper.pdf",
+  "source_sha256": "sha256:ca4a21d8c2bb9dfe61c7a2e86d6c53017e2abde47047b4d7a9775700a5aaf09a"
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_revision": 1,
+  "review_id": "rev_minimal",
+  "paper_id": "ppr_minimal",
+  "input_revisions": {
+    "document_ir": 1,
+    "paper_analysis": 1,
+    "evidence_graph": 1,
+    "poster_plan": 1,
+    "html_render": null,
+    "pdf_render": null
+  },
+  "status": "passed",
+  "checker_summaries": [
+    {"checker": "source_consistency", "status": "passed", "issue_count": 0},
+    {"checker": "global_layout", "status": "passed", "issue_count": 0},
+    {"checker": "local_overflow", "status": "passed", "issue_count": 0}
+  ],
+  "issues": [],
+  "repair_batch": {
+    "operations": [],
+    "affected_component_ids": [],
+    "must_preserve_component_ids": ["cmp_method", "cmp_equation", "cmp_evidence", "cmp_result"]
+  },
+  "metrics": {"fixture": true}
+}
+

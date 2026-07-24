@@ -1,0 +1,11 @@
+{
+  "paper_id": "ppr_dev_003",
+  "status": "selected",
+  "title": "Stability-Aware Alignment for Single-Source Domain Generalization in Medical Image Segmentation",
+  "authors": [],
+  "domain": "medical_image_segmentation",
+  "document_profile": "narrative_method_equation_experiment",
+  "source_file": "source/paper.pdf",
+  "source_sha256": "sha256:b66fb484875c42d674469f6cfc1fc0f644571ccdd66dc0bf271bf1038fe1fdc8",
+  "display_policy": "hide_anonymous_and_placeholder_venue"
+}

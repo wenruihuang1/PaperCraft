@@ -1,0 +1,350 @@
+{
+  "schema_version": "1.1.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_dev_001",
+  "source_revision": 1,
+  "metadata": {
+    "title": "Adaptive MLP Pruning for Large Vision Transformers",
+    "authors": ["Chengchao Shen"],
+    "language": "en"
+  },
+  "concepts": [
+    {
+      "concept_id": "cpt_problem",
+      "concept_type": "problem",
+      "statement": "Large vision transformers scale well but their parameter, compute, and memory costs make deployment expensive.",
+      "importance": "critical",
+      "source_refs": ["src_p001_b0007"]
+    },
+    {
+      "concept_id": "cpt_motivation_mlp",
+      "concept_type": "motivation",
+      "statement": "MLP modules dominate parameter count (81.1% in the cited EVA-CLIP-E example), making them the highest-leverage structural pruning target.",
+      "importance": "high",
+      "source_refs": ["src_p001_b0008"]
+    },
+    {
+      "concept_id": "cpt_motivation_criterion",
+      "concept_type": "motivation",
+      "statement": "One-hot cross entropy ignores non-label predictions during Taylor importance estimation and also prevents pruning models whose original heads or losses are unavailable.",
+      "importance": "critical",
+      "source_refs": ["src_p001_b0009", "src_p002_b0001"]
+    },
+    {
+      "concept_id": "cpt_key_insight",
+      "concept_type": "key_insight",
+      "statement": "Use the entropy of the full, label-free inter-instance similarity distribution both to score neurons and to stop block-wise binary-search pruning when prediction uncertainty changes too much.",
+      "importance": "critical",
+      "source_refs": ["src_p005_b0021", "src_p005_b0031", "src_p006_b0004"]
+    },
+    {
+      "concept_id": "cpt_conclusion",
+      "concept_type": "conclusion",
+      "statement": "Across the evaluated CLIP and DINOv2 models, AMP reduces MLP-heavy encoders substantially; knowledge distillation is essential for recovering near-original accuracy.",
+      "importance": "high",
+      "source_refs": ["src_p007_b0007", "src_p008_b0010", "src_p009_b0014"]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "clm_compression_recovery",
+      "statement": "For the evaluated CLIP and DINOv2 backbones, AMP removes roughly 40% of encoder parameters and FLOPs, while the distilled models recover near-original performance on the reported tasks.",
+      "claim_type": "main",
+      "scope": "Four CLIP-style encoders on zero-shot classification/retrieval and five encoders including DINOv2-g on ImageNet-1K kNN; recovery is after ImageNet-1K distillation.",
+      "qualifiers": ["roughly", "evaluated backbones", "after distillation", "reported tasks"],
+      "importance": "critical",
+      "source_refs": ["src_p007_b0002", "src_p008_b0003", "src_p008_b0012"]
+    },
+    {
+      "claim_id": "clm_throughput",
+      "statement": "The four evaluated CLIP encoders run at roughly 1.5 times their original image throughput after pruning.",
+      "claim_type": "supporting",
+      "scope": "Single NVIDIA A6000 GPU, batch size 1000, 224x224 inputs; throughput averaged over 10 runs.",
+      "qualifiers": ["roughly", "four CLIP encoders", "specified hardware and batch size"],
+      "importance": "high",
+      "source_refs": ["src_p007_b0001", "src_p007_b0002", "src_p007_b0007"]
+    },
+    {
+      "claim_id": "clm_entropy_criterion",
+      "statement": "The label-free information-entropy criterion yields better pruning-only downstream accuracy than cross entropy at a comparable parameter count.",
+      "claim_type": "supporting",
+      "scope": "OpenCLIP-g, six zero-shot classification benchmarks, one criterion ablation.",
+      "qualifiers": ["downstream proxy for importance quality", "single backbone ablation"],
+      "importance": "high",
+      "source_refs": ["src_p009_b0004", "src_p009_b0005"]
+    },
+    {
+      "claim_id": "clm_adaptive_search",
+      "statement": "Block-wise entropy-guided binary search performs much better than uniform Taylor pruning at a comparable OpenCLIP-g parameter count.",
+      "claim_type": "supporting",
+      "scope": "OpenCLIP-g pruning-only average accuracy over six zero-shot classification benchmarks.",
+      "qualifiers": ["single backbone ablation", "46.5 percentage-point table difference"],
+      "importance": "high",
+      "source_refs": ["src_p009_b0007", "src_p009_b0008"]
+    },
+    {
+      "claim_id": "clm_head_free_applicability",
+      "statement": "The similarity-entropy formulation can prune a backbone without labels or access to its original prediction head, demonstrated on DINOv2-g.",
+      "claim_type": "supporting",
+      "scope": "Label-free ImageNet pruning/distillation and ImageNet-1K kNN evaluation of DINOv2-g.",
+      "qualifiers": ["demonstrated on DINOv2-g"],
+      "importance": "medium",
+      "source_refs": ["src_p002_b0001", "src_p005_b0031", "src_p008_b0010", "src_p008_b0012"]
+    }
+  ],
+  "methods": [
+    {
+      "method_id": "mth_entropy_importance",
+      "name": "Label-free entropy Taylor scoring",
+      "purpose": "Rank MLP hidden neurons by how strongly removing them changes the model's full prediction-distribution uncertainty.",
+      "inputs": ["mini-batch image representations", "MLP hidden activations", "frozen original model"],
+      "outputs": ["per-neuron importance scores", "ranked neurons per MLP block"],
+      "steps": [
+        {"index": 1, "description": "Form pairwise cosine similarities from class-token image representations.", "source_refs": ["src_p005_b0021", "src_seq_p005_004"]},
+        {"index": 2, "description": "Apply a temperature-scaled row-wise softmax to obtain an inter-instance possibility distribution.", "source_refs": ["src_seq_p005_005"]},
+        {"index": 3, "description": "Compute mean information entropy over the mini-batch.", "source_refs": ["src_seq_p005_006"]},
+        {"index": 4, "description": "Use a first-order Taylor approximation of entropy sensitivity and aggregate each neuron across tokens.", "source_refs": ["src_seq_p004_003", "src_seq_p004_004"]},
+        {"index": 5, "description": "Rank hidden neurons by absolute importance for structured removal.", "source_refs": ["src_p003_b0043"]}
+      ],
+      "assumptions": ["Inter-instance similarity is a useful prediction-distribution surrogate.", "The first-order Taylor remainder is small enough for ranking."],
+      "equation_refs": ["eq_taylor_importance", "eq_token_importance", "eq_similarity", "eq_probability", "eq_entropy"],
+      "claim_refs": ["clm_entropy_criterion", "clm_head_free_applicability"],
+      "source_refs": ["src_p004_b0027", "src_p004_b0044", "src_p004_b0045", "src_p005_b0021", "src_p005_b0031"]
+    },
+    {
+      "method_id": "mth_adaptive_pruning",
+      "name": "Block-wise adaptive MLP pruning",
+      "purpose": "Choose each MLP block's remaining hidden size without a single predefined global pruning ratio.",
+      "inputs": ["ranked neurons", "entropy threshold delta E", "maximum search steps", "small pruning dataset"],
+      "outputs": ["per-block retained hidden sizes", "structurally pruned transformer"],
+      "steps": [
+        {"index": 1, "description": "Process transformer blocks from last to first and initialize the feasible hidden-size interval to [0, M0].", "source_refs": ["src_p006_b0004"]},
+        {"index": 2, "description": "Prune to the interval midpoint and measure the resulting entropy.", "source_refs": ["src_p006_b0004"]},
+        {"index": 3, "description": "If the entropy increase is below delta E, search a smaller hidden size; otherwise retain more neurons.", "source_refs": ["src_p006_b0004"]},
+        {"index": 4, "description": "Stop after tmax steps or when the interval has size one, then carry the accepted model entropy to the next block.", "source_refs": ["src_p006_b0004"]}
+      ],
+      "assumptions": ["Entropy is approximately monotonic with retained hidden size over the searched interval."],
+      "equation_refs": ["eq_entropy"],
+      "claim_refs": ["clm_adaptive_search", "clm_compression_recovery"],
+      "source_refs": ["src_p005_b0033", "src_p006_b0004", "src_ast_figure_003"]
+    },
+    {
+      "method_id": "mth_distillation",
+      "name": "Token-level knowledge distillation",
+      "purpose": "Recover the pruned encoder's representation quality using the frozen original encoder as teacher.",
+      "inputs": ["teacher class and patch tokens", "student class and patch tokens", "unlabeled ImageNet-1K images"],
+      "outputs": ["distilled pruned encoder"],
+      "steps": [
+        {"index": 1, "description": "Run the same image through the frozen original encoder and the pruned student.", "source_refs": ["src_p006_b0007"]},
+        {"index": 2, "description": "Match class-token and patch-token representations with normalized mean squared error.", "source_refs": ["src_seq_p006_001"]}
+      ],
+      "assumptions": ["Pruning only MLP hidden dimensions preserves teacher/student output dimensions."],
+      "equation_refs": ["eq_distillation"],
+      "claim_refs": ["clm_compression_recovery"],
+      "source_refs": ["src_p002_b0003", "src_p006_b0007", "src_seq_p006_001"]
+    }
+  ],
+  "equations": [
+    {
+      "equation_id": "eq_taylor_importance",
+      "source_equation_id": "seq_p004_003",
+      "label": "3",
+      "latex_original": "\\Delta C_k = C(\\mathcal{H}_{h_k=\\hat{h}_k})-C(\\mathcal{H}_{h_k=0})=\\hat{h}_k\\cdot\\nabla_{\\hat{h}_k}C-R(h_k)\\approx\\hat{h}_k\\cdot\\nabla_{\\hat{h}_k}C",
+      "semantic_role": "definition",
+      "variables": [
+        {"symbol": "h_k", "meaning": "the k-th hidden neuron activation", "unit": null, "domain": "MLP hidden feature"},
+        {"symbol": "\\hat{h}_k", "meaning": "the activation before pruning", "unit": null, "domain": "MLP hidden feature"},
+        {"symbol": "C", "meaning": "the prediction criterion, instantiated as information entropy", "unit": null, "domain": "scalar criterion"},
+        {"symbol": "R(h_k)", "meaning": "first-order Taylor remainder, omitted in the approximation", "unit": null, "domain": "scalar"}
+      ],
+      "computation_steps": ["Evaluate C on the unpruned activation.", "Backpropagate C to obtain the neuron gradient.", "Multiply activation by gradient and omit the remainder for ranking."],
+      "method_refs": ["mth_entropy_importance"],
+      "experiment_refs": ["exp_entropy_ablation"],
+      "source_refs": ["src_seq_p004_003", "src_p004_b0032"]
+    },
+    {
+      "equation_id": "eq_token_importance",
+      "source_equation_id": "seq_p004_004",
+      "label": "4",
+      "latex_original": "I_k=\\left|\\sum_{n=1}^{N}\\Delta C_k^{(n)}\\right|=\\left|\\sum_{n=1}^{N}\\hat{h}_k^{(n)}\\cdot\\nabla_{\\hat{h}_k^{(n)}}C\\right|",
+      "semantic_role": "definition",
+      "variables": [
+        {"symbol": "I_k", "meaning": "importance score of hidden neuron k", "unit": null, "domain": "non-negative scalar"},
+        {"symbol": "N", "meaning": "number of tokens in the transformer sequence", "unit": "tokens", "domain": "positive integer"},
+        {"symbol": "n", "meaning": "token index", "unit": null, "domain": "1..N"}
+      ],
+      "computation_steps": ["Compute activation-gradient contribution per token.", "Sum contributions for the same hidden neuron across all tokens.", "Take absolute value for ranking."],
+      "method_refs": ["mth_entropy_importance"],
+      "experiment_refs": ["exp_entropy_ablation"],
+      "source_refs": ["src_seq_p004_004", "src_p004_b0042"]
+    },
+    {
+      "equation_id": "eq_similarity",
+      "source_equation_id": "seq_p005_004",
+      "label": "5",
+      "latex_original": "s_{ij}=\\frac{z_i^{\\mathrm{cls}}\\cdot z_j^{\\mathrm{cls}}}{\\lVert z_i^{\\mathrm{cls}}\\rVert\\,\\lVert z_j^{\\mathrm{cls}}\\rVert}",
+      "semantic_role": "definition",
+      "variables": [
+        {"symbol": "z_i^{cls}", "meaning": "last-block class-token representation of image i", "unit": null, "domain": "R^C"},
+        {"symbol": "s_{ij}", "meaning": "cosine similarity between images i and j", "unit": null, "domain": "[-1,1]"}
+      ],
+      "computation_steps": ["Extract class-token representations.", "Normalize each representation.", "Compute every pairwise dot product in the mini-batch."],
+      "method_refs": ["mth_entropy_importance"],
+      "experiment_refs": ["exp_knn_dino"],
+      "source_refs": ["src_seq_p005_004", "src_p005_b0021"]
+    },
+    {
+      "equation_id": "eq_probability",
+      "source_equation_id": "seq_p005_005",
+      "label": "6",
+      "latex_original": "p_{ij}=\\frac{\\exp(s_{ij}/\\tau)}{\\sum_{j'=1}^{B}\\exp(s_{ij'}/\\tau)}",
+      "semantic_role": "definition",
+      "variables": [
+        {"symbol": "p_{ij}", "meaning": "softmax possibility assigned by image i to image j", "unit": null, "domain": "[0,1]"},
+        {"symbol": "\\tau", "meaning": "temperature coefficient", "unit": null, "domain": "positive real"},
+        {"symbol": "B", "meaning": "mini-batch size", "unit": "images", "domain": "positive integer"}
+      ],
+      "computation_steps": ["Scale each similarity by temperature.", "Exponentiate.", "Normalize across all candidate images j for each image i."],
+      "method_refs": ["mth_entropy_importance"],
+      "experiment_refs": ["exp_entropy_ablation"],
+      "source_refs": ["src_seq_p005_005", "src_p005_b0023", "src_p005_b0024"]
+    },
+    {
+      "equation_id": "eq_entropy",
+      "source_equation_id": "seq_p005_006",
+      "label": "7",
+      "latex_original": "\\mathcal{E}=-\\frac{1}{B}\\sum_{i=1}^{B}\\sum_{j=1}^{B}p_{ij}\\log p_{ij}",
+      "semantic_role": "objective",
+      "variables": [
+        {"symbol": "\\mathcal{E}", "meaning": "mean information entropy used as the pruning criterion", "unit": null, "domain": "non-negative scalar"},
+        {"symbol": "p_{ij}", "meaning": "inter-instance possibility from Equation 6", "unit": null, "domain": "[0,1]"},
+        {"symbol": "B", "meaning": "mini-batch size", "unit": "images", "domain": "positive integer"}
+      ],
+      "computation_steps": ["Compute p log p for each pair.", "Sum over candidate images and query images.", "Negate and average over the mini-batch."],
+      "method_refs": ["mth_entropy_importance", "mth_adaptive_pruning"],
+      "experiment_refs": ["exp_entropy_ablation", "exp_binary_search_ablation"],
+      "source_refs": ["src_seq_p005_006", "src_p005_b0025", "src_p005_b0033"]
+    },
+    {
+      "equation_id": "eq_distillation",
+      "source_equation_id": "seq_p006_001",
+      "label": "8",
+      "latex_original": "\\mathcal{L}_{\\mathrm{distill}}=\\frac{1}{C}\\lVert z^{\\mathrm{cls}}-\\hat{z}^{\\mathrm{cls}}\\rVert^2+\\frac{1}{NC}\\lVert z^{\\mathrm{patch}}-\\hat{z}^{\\mathrm{patch}}\\rVert^2",
+      "semantic_role": "objective",
+      "variables": [
+        {"symbol": "z", "meaning": "teacher token representation", "unit": null, "domain": "R^C or R^{N x C}"},
+        {"symbol": "\\hat{z}", "meaning": "student token representation", "unit": null, "domain": "R^C or R^{N x C}"},
+        {"symbol": "C", "meaning": "embedding dimension", "unit": "features", "domain": "positive integer"},
+        {"symbol": "N", "meaning": "number of patch tokens", "unit": "tokens", "domain": "positive integer"}
+      ],
+      "computation_steps": ["Compute class-token squared error and normalize by C.", "Compute patch-token squared error and normalize by N times C.", "Add the two terms."],
+      "method_refs": ["mth_distillation"],
+      "experiment_refs": ["exp_zero_shot_classification", "exp_zero_shot_retrieval", "exp_knn_dino"],
+      "source_refs": ["src_seq_p006_001", "src_p006_b0007", "src_p006_b0008"]
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "exp_zero_shot_classification",
+      "question": "Can AMP reduce CLIP encoder size and compute while preserving zero-shot classification after distillation?",
+      "setup": "Prune four CLIP encoders using 50,000 ImageNet-1K images, distill for 10 epochs on unlabeled ImageNet-1K, and evaluate six zero-shot classification datasets; throughput is measured on one A6000 GPU with batch size 1000.",
+      "datasets": ["ImageNet-1K", "ImageNet-Adversarial", "ImageNet-R", "ImageNet-V2", "ImageNet-Sketch", "ObjectNet"],
+      "metrics": ["encoder parameters", "FLOPs", "images/second", "average zero-shot accuracy"],
+      "baselines": ["original OpenCLIP-g", "original OpenCLIP-G", "original EVA-CLIP-E", "original EVA-CLIP-8B"],
+      "results": [
+        {"result_id": "res_openclip_g", "metric": "parameters / FLOPs / throughput / average accuracy", "value": "1.01B→0.62B / 0.52T→0.32T / 150.8→222.3 imgs/s / 73.0%→73.1% after distillation", "comparison": "original versus AMP distilled", "source_refs": ["src_p007_b0002"]},
+        {"result_id": "res_openclip_big_g", "metric": "parameters / FLOPs / throughput / average accuracy", "value": "1.84B→1.17B / 0.95T→0.60T / 90.6→135.8 imgs/s / 76.2%→75.9% after distillation", "comparison": "original versus AMP distilled", "source_refs": ["src_p007_b0002"]},
+        {"result_id": "res_evaclip_e", "metric": "parameters / FLOPs / throughput / average accuracy", "value": "4.35B→2.50B / 2.23T→1.28T / 43.1→69.5 imgs/s / 80.9%→81.0% after distillation", "comparison": "original versus AMP distilled", "source_refs": ["src_p007_b0002"]},
+        {"result_id": "res_evaclip_8b", "metric": "parameters / FLOPs / throughput / average accuracy", "value": "7.53B→4.59B / 3.86T→2.35T / 20.8→30.1 imgs/s / 82.9%→82.9% after distillation", "comparison": "original versus AMP distilled", "source_refs": ["src_p007_b0002"]}
+      ],
+      "limitations": ["Accuracy tables report no variance or statistical tests.", "Throughput scope is one GPU, one batch size, and one resolution.", "Pruning-only accuracy drops sharply for the two EVA models before distillation."],
+      "claim_refs": ["clm_compression_recovery", "clm_throughput"],
+      "source_refs": ["src_p007_b0001", "src_p007_b0002", "src_p007_b0003", "src_p007_b0004", "src_p007_b0005"]
+    },
+    {
+      "experiment_id": "exp_zero_shot_retrieval",
+      "question": "Does the compressed CLIP representation retain cross-modal retrieval quality?",
+      "setup": "Evaluate text-to-image and image-to-text retrieval on Flickr30K and COCO using Recall@1/5/10 and mean recall.",
+      "datasets": ["Flickr30K", "COCO"],
+      "metrics": ["Recall@1", "Recall@5", "Recall@10", "mean recall"],
+      "baselines": ["original CLIP encoders"],
+      "results": [
+        {"result_id": "res_retrieval_eva8b", "metric": "mean recall", "value": "85.7→86.1 after distillation with parameters reduced from 7.53B to 4.59B", "comparison": "original EVA-CLIP-8B versus AMP distilled", "source_refs": ["src_p008_b0003", "src_p008_b0004"]}
+      ],
+      "limitations": ["No uncertainty estimates are reported.", "Only CLIP-style encoders are applicable to the cross-modal retrieval task."],
+      "claim_refs": ["clm_compression_recovery"],
+      "source_refs": ["src_p008_b0001", "src_p008_b0003", "src_p008_b0004"]
+    },
+    {
+      "experiment_id": "exp_pruning_baselines",
+      "question": "Does AMP outperform alternative pruning strategies at comparable model size?",
+      "setup": "Compare pruning-only and post-distillation average zero-shot classification accuracy for OpenCLIP-g and EVA-CLIP-E at matched parameter counts.",
+      "datasets": ["six zero-shot classification benchmarks"],
+      "metrics": ["average zero-shot classification accuracy"],
+      "baselines": ["random pruning", "L2 norm pruning", "Taylor pruning", "SAViT", "NViT"],
+      "results": [
+        {"result_id": "res_pruning_openclip", "metric": "pruning-only average accuracy", "value": "AMP 53.8% versus NViT 11.1% (42.7 percentage points)", "comparison": "best competing pruning-only result", "source_refs": ["src_p008_b0008"]},
+        {"result_id": "res_pruning_eva", "metric": "post-distillation average accuracy", "value": "AMP 81.0% versus NViT 79.6% (1.4 percentage points)", "comparison": "best competing post-distillation result; paper prose says 2.1%, inconsistent with the table", "source_refs": ["src_p008_b0006", "src_p008_b0008"]}
+      ],
+      "limitations": ["Only two backbones are included.", "The stated 2.1% EVA-CLIP-E margin conflicts with the 1.4-point difference in Table 3."],
+      "claim_refs": ["clm_entropy_criterion", "clm_adaptive_search"],
+      "source_refs": ["src_p008_b0006", "src_p008_b0007", "src_p008_b0008"]
+    },
+    {
+      "experiment_id": "exp_knn_dino",
+      "question": "Can the head-free criterion compress a pure vision transformer and recover representation quality?",
+      "setup": "Evaluate last-block representations on ImageNet-1K with kNN for CLIP encoders and DINOv2-g.",
+      "datasets": ["ImageNet-1K"],
+      "metrics": ["kNN accuracy", "parameters", "FLOPs"],
+      "baselines": ["original DINOv2-g"],
+      "results": [
+        {"result_id": "res_dinov2_knn", "metric": "parameters / FLOPs / kNN accuracy", "value": "1.14B→0.62B / 0.30T→0.16T / 83.5%→83.5% after distillation", "comparison": "original DINOv2-g versus AMP distilled", "source_refs": ["src_p008_b0012"]}
+      ],
+      "limitations": ["One pure-vision backbone and one downstream protocol are reported."],
+      "claim_refs": ["clm_compression_recovery", "clm_head_free_applicability"],
+      "source_refs": ["src_p008_b0010", "src_p008_b0011", "src_p008_b0012", "src_p009_b0001"]
+    },
+    {
+      "experiment_id": "exp_entropy_ablation",
+      "question": "Does information entropy improve the pruning ranking relative to cross entropy?",
+      "setup": "Replace the information-entropy criterion with cross entropy and compare pruning-only OpenCLIP-g at roughly matched parameter counts.",
+      "datasets": ["six zero-shot classification benchmarks"],
+      "metrics": ["average zero-shot classification accuracy", "parameters"],
+      "baselines": ["cross-entropy Taylor criterion"],
+      "results": [
+        {"result_id": "res_entropy_ablation", "metric": "average zero-shot accuracy", "value": "50.0% at 0.65B parameters versus 53.8% at 0.62B with information entropy", "comparison": "cross entropy versus information entropy", "source_refs": ["src_p009_b0005"]}
+      ],
+      "limitations": ["Single backbone.", "The experiment measures downstream accuracy, not importance-score fidelity directly."],
+      "claim_refs": ["clm_entropy_criterion"],
+      "source_refs": ["src_p009_b0004", "src_p009_b0005"]
+    },
+    {
+      "experiment_id": "exp_binary_search_ablation",
+      "question": "Does adaptive block-wise sizing outperform uniform MLP sizing?",
+      "setup": "Compare uniform Taylor pruning from hidden size 6144 to 2645 with AMP binary search at similar total parameter count.",
+      "datasets": ["six zero-shot classification benchmarks"],
+      "metrics": ["average zero-shot classification accuracy"],
+      "baselines": ["uniform Taylor pruning"],
+      "results": [
+        {"result_id": "res_binary_ablation", "metric": "average zero-shot accuracy", "value": "7.3% versus 53.8%, a 46.5 percentage-point difference", "comparison": "uniform Taylor pruning versus AMP binary search", "source_refs": ["src_p009_b0008"]}
+      ],
+      "limitations": ["Single backbone.", "The paper prose reports 64.5%, which is not derivable from the table values."],
+      "claim_refs": ["clm_adaptive_search"],
+      "source_refs": ["src_p009_b0007", "src_p009_b0008"]
+    }
+  ],
+  "understanding_path": [
+    {"step_id": "step_problem", "role": "problem", "object_refs": ["cpt_problem"], "transition": "Most parameters sit in MLP modules."},
+    {"step_id": "step_motivation", "role": "motivation", "object_refs": ["cpt_motivation_mlp", "cpt_motivation_criterion"], "transition": "A head-free uncertainty signal can replace one-hot loss."},
+    {"step_id": "step_key_insight", "role": "key_insight", "object_refs": ["cpt_key_insight"], "transition": "The same signal drives scoring and adaptive stopping."},
+    {"step_id": "step_method", "role": "method", "object_refs": ["mth_entropy_importance", "mth_adaptive_pruning", "mth_distillation"], "transition": "Separate pruning quality from recovery after distillation."},
+    {"step_id": "step_evidence", "role": "evidence", "object_refs": ["clm_entropy_criterion", "exp_entropy_ablation", "clm_adaptive_search", "exp_binary_search_ablation", "clm_compression_recovery", "exp_zero_shot_classification", "exp_zero_shot_retrieval", "exp_knn_dino"], "transition": "State only the scope supported by the tables."},
+    {"step_id": "step_conclusion", "role": "conclusion", "object_refs": ["cpt_conclusion"], "transition": null}
+  ],
+  "analysis_warnings": [
+    "Table 6 implies a 46.5 percentage-point gain (53.8-7.3), not the 64.5% stated in the prose.",
+    "Table 3 implies a 1.4 percentage-point EVA-CLIP-E distilled margin over NViT (81.0-79.6), not the 2.1% stated in the prose.",
+    "The Table 3 row label 'AMR (ours)' is treated as a typographical error for AMP.",
+    "Canonical LaTeX was manually transcribed from rendered equations because DocumentIR honestly records lossy pdf_text rather than source LaTeX."
+  ]
+}

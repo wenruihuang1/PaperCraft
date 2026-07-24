@@ -1,0 +1,65 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# Frontend/build artifacts
+node_modules/
+web/dist/
+web/*.tsbuildinfo
+build/
+dist/
+
+# Generated data, previews, and runtime state
+tmp/
+output/
+runtime/
+*/tmp/
+*/output/
+*/runtime/
+*_generated_posters/
+*_images_and_tables/
+tree_splits/
+contents/
+eval_results/
+data/
+
+# Local/editor files
+.DS_Store
+.idea/
+.vscode/
+.claude/
+$CODEX_HOME/
+.agents/
+
+# Large local assets and generated exports
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.ico
+*.ttf
+*.woff
+*.woff2
+papercraft/web/public/poster_data.js
+Paper2Poster/assets/
+Paper2Poster/
+PosterGen/
+
+# Nested repository metadata is preserved locally but not published as submodules.
+.git.local-backup/
