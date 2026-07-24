@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">PaperCraft — 从论文到可审查科学故事</title>
+  <desc id="desc">PaperCraft 将英文研究论文编译为可追踪、可审查、可多端渲染的科学故事。图中展示从 PDF 到 DocumentIR、PaperAnalysis、EvidenceGraph、NarrativePlan、Visual Director、PosterPlan、ReviewResult，再到互动 HTML、Screen 16:9 和 A0 PDF 的完整流程。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071522"/>
+      <stop offset="0.52" stop-color="#0b2231"/>
+      <stop offset="1" stop-color="#07131f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.55" cy="0.18" r="0.8">
+      <stop offset="0" stop-color="#26d8d0" stop-opacity="0.16"/>
+      <stop offset="0.42" stop-color="#26d8d0" stop-opacity="0.035"/>
+      <stop offset="1" stop-color="#26d8d0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cyanLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#40e4dc"/>
+      <stop offset="1" stop-color="#7dd3fc"/>
+    </linearGradient>
+    <linearGradient id="node" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#113547"/>
+      <stop offset="1" stop-color="#0d2636"/>
+    </linearGradient>
+    <linearGradient id="nodeAccent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#124f5d"/>
+      <stop offset="1" stop-color="#102d43"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000" flood-opacity="0.26"/>
+    </filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="180%">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#8be9e2" stroke-opacity="0.04" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#4adfd8"/>
+    </marker>
+    <marker id="arrowMuted" markerWidth="10" markerHeight="10" refX="7" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#82a8b5"/>
+    </marker>
+    <style>
+      .cn { font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; }
+      .mono { font-family: "SFMono-Regular","Roboto Mono","Menlo",monospace; letter-spacing: 1.2px; }
+      .eyebrow { fill: #72e6df; font-size: 16px; font-weight: 700; letter-spacing: 3.8px; }
+      .title { fill: #f3fbfa; font-size: 58px; font-weight: 800; letter-spacing: 1.2px; }
+      .subtitle { fill: #b3d1d5; font-size: 22px; font-weight: 400; }
+      .small { fill: #86a9b2; font-size: 15px; }
+      .node-title { fill: #eefcfa; font-size: 21px; font-weight: 750; }
+      .node-sub { fill: #8fc1c8; font-size: 14px; }
+      .node-mono { fill: #64e9df; font-size: 13px; font-weight: 700; letter-spacing: 1.1px; }
+      .pill { fill: #d6fffb; font-size: 13px; font-weight: 700; }
+      .callout-title { fill: #dffdfa; font-size: 18px; font-weight: 750; }
+      .callout-body { fill: #99c1c5; font-size: 14px; }
+      .footer { fill: #6f969f; font-size: 13px; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <rect width="1600" height="1000" fill="url(#glow)"/>
+  <rect width="1600" height="1000" fill="url(#grid)"/>
+  <circle cx="1420" cy="120" r="210" fill="#2dd4bf" opacity="0.08" filter="url(#soft)"/>
+  <circle cx="160" cy="880" r="170" fill="#38bdf8" opacity="0.06" filter="url(#soft)"/>
+
+  <g transform="translate(92 74)">
+    <text class="eyebrow mono" x="0" y="0">PAPERCRAFT · SOURCE-GROUNDED POSTER COMPILER</text>
+    <text class="title cn" x="0" y="74">从论文到可审查科学故事</text>
+    <text class="subtitle cn" x="2" y="116">不是把 PDF 排成一张海报，而是把「问题—证据—边界—结论」编译成可追踪的展示结果。</text>
+    <rect x="0" y="144" width="86" height="4" rx="2" fill="url(#cyanLine)"/>
+    <text class="small cn" x="0" y="179">一套语义中间层，连接证据充分性、叙事选择、版面稳定性与最终输出。</text>
+  </g>
+
+  <g transform="translate(1158 78)">
+    <rect x="0" y="0" width="342" height="124" rx="18" fill="#0f2b3b" stroke="#2f6673" stroke-width="1.5"/>
+    <text class="node-mono mono" x="22" y="28">REAL TASK · REVIEWED</text>
+    <text class="callout-title cn" x="22" y="57">医学图像分割案例</text>
+    <text class="small cn" x="22" y="80">机制解释叙事 · 最终状态 passed</text>
+    <text class="mono" x="214" y="106" fill="#f3fbfa" font-size="38" font-weight="800" letter-spacing="0">76/79</text>
+    <text class="small cn" x="22" y="106">后端测试通过</text>
+    <text class="small cn" x="270" y="80">3/3 前端</text>
+  </g>
+
+  <!-- Primary flow -->
+  <g transform="translate(92 300)">
+    <text class="eyebrow mono" x="0" y="0">01 / COMPILE THE ARGUMENT</text>
+    <text class="small cn" x="0" y="29">先判断“能不能说”，再决定“怎么讲”和“如何渲染”。</text>
+
+    <!-- connectors first -->
+    <g fill="none" stroke="#4adfd8" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)">
+      <path d="M164 154 H206"/>
+      <path d="M360 154 H402"/>
+      <path d="M558 154 H606"/>
+      <path d="M770 154 H818"/>
+      <path d="M982 154 H1030"/>
+      <path d="M1194 154 H1242"/>
+      <path d="M1370 154 V250 H1137 V276"/>
+    </g>
+    <g fill="none" stroke="#82a8b5" stroke-width="2" stroke-dasharray="7 8" stroke-linecap="round" marker-end="url(#arrowMuted)">
+      <path d="M478 222 V276"/>
+      <path d="M1112 222 V276"/>
+    </g>
+
+    <!-- nodes -->
+    <g filter="url(#shadow)">
+      <rect x="0" y="86" width="164" height="136" rx="18" fill="url(#node)" stroke="#275367"/>
+      <rect x="206" y="86" width="154" height="136" rx="18" fill="url(#node)" stroke="#275367"/>
+      <rect x="402" y="86" width="156" height="136" rx="18" fill="url(#nodeAccent)" stroke="#2a7078"/>
+      <rect x="606" y="86" width="164" height="136" rx="18" fill="url(#nodeAccent)" stroke="#2a7078"/>
+      <rect x="818" y="86" width="164" height="136" rx="18" fill="url(#nodeAccent)" stroke="#2a7078"/>
+      <rect x="1030" y="86" width="164" height="136" rx="18" fill="url(#node)" stroke="#275367"/>
+      <rect x="1242" y="86" width="156" height="136" rx="18" fill="url(#node)" stroke="#275367"/>
+    </g>
+    <g class="cn">
+      <text class="node-mono mono" x="22" y="118">INPUT</text>
+      <text class="node-title" x="22" y="151">英文文本 PDF</text>
+      <text class="node-sub" x="22" y="181">能力门控 · 页码 · 坐标</text>
+      <text class="node-sub" x="22" y="202">拒绝 OCR 黑箱</text>
+
+      <text class="node-mono mono" x="228" y="118">CANONICAL IR</text>
+      <text class="node-title" x="228" y="151">DocumentIR</text>
+      <text class="node-sub" x="228" y="181">文本块 · 来源引用</text>
+      <text class="node-sub" x="228" y="202">稳定、可定位</text>
+
+      <text class="node-mono mono" x="424" y="118">SEMANTIC</text>
+      <text class="node-title" x="424" y="151">PaperAnalysis</text>
+      <text class="node-sub" x="424" y="181">问题 · 方法 · 结论</text>
+      <text class="node-sub" x="424" y="202">公式 · 实验对象</text>
+
+      <text class="node-mono mono" x="628" y="118">EVIDENCE</text>
+      <text class="node-title" x="628" y="151">EvidenceGraph</text>
+      <text class="node-sub" x="628" y="181">Claim ↔ Evidence</text>
+      <text class="node-sub" x="628" y="202">六维充分性检查</text>
+
+      <text class="node-mono mono" x="840" y="118">NARRATIVE</text>
+      <text class="node-title" x="840" y="151">NarrativePlan</text>
+      <text class="node-sub" x="840" y="181">机制 / 方法 / 因果</text>
+      <text class="node-sub" x="840" y="202">5–9 节点主阅读路径</text>
+
+      <text class="node-mono mono" x="1052" y="118">DIRECT</text>
+      <text class="node-title" x="1052" y="151">Visual Director</text>
+      <text class="node-sub" x="1052" y="181">只重排已验证组件</text>
+      <text class="node-sub" x="1052" y="202">几何约束 · 确定性</text>
+
+      <text class="node-mono mono" x="1264" y="118">RENDER</text>
+      <text class="node-title" x="1264" y="151">PosterPlan</text>
+      <text class="node-sub" x="1264" y="181">Screen / Print 布局</text>
+      <text class="node-sub" x="1264" y="202">组件 · 交互 · 主题</text>
+    </g>
+
+    <!-- shadow stage labels -->
+    <g class="cn">
+      <rect x="392" y="250" width="176" height="62" rx="15" fill="#0d2634" stroke="#355967"/>
+      <text class="callout-title" x="410" y="276">语义中间层</text>
+      <text class="callout-body" x="410" y="298">先保住科学论证</text>
+      <rect x="1006" y="250" width="212" height="62" rx="15" fill="#0d2634" stroke="#355967"/>
+      <text class="callout-title" x="1024" y="276">版面几何层</text>
+      <text class="callout-body" x="1024" y="298">再稳定地讲清楚</text>
+    </g>
+  </g>
+
+  <path d="M1426 522 V604 C1426 640 1375 656 1320 656 V716" fill="none" stroke="#4adfd8" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)"/>
+
+  <!-- Review loop -->
+  <g transform="translate(92 646)">
+    <text class="eyebrow mono" x="0" y="0">02 / REVIEW, REPAIR, PRESERVE</text>
+    <text class="small cn" x="0" y="29">每一次修改都有边界；没有通过审查，就不会把临时结果包装成完成。</text>
+
+    <path d="M1255 86 C1255 45 1180 45 1180 86" fill="none" stroke="#4adfd8" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M1164 145 C1164 194 1080 194 1080 145" fill="none" stroke="#82a8b5" stroke-width="2" stroke-dasharray="7 8" marker-end="url(#arrowMuted)"/>
+
+    <g filter="url(#shadow)">
+      <rect x="0" y="70" width="230" height="168" rx="18" fill="#102d3c" stroke="#295565"/>
+      <rect x="266" y="70" width="230" height="168" rx="18" fill="#102d3c" stroke="#295565"/>
+      <rect x="532" y="70" width="230" height="168" rx="18" fill="#102d3c" stroke="#295565"/>
+      <rect x="798" y="70" width="230" height="168" rx="18" fill="#102d3c" stroke="#295565"/>
+      <rect x="1064" y="70" width="310" height="168" rx="18" fill="#123a48" stroke="#3e9e9e"/>
+    </g>
+    <g class="cn">
+      <text class="node-mono mono" x="24" y="103">SIX REVIEWERS</text>
+      <text class="node-title" x="24" y="137">六类审查</text>
+      <text class="node-sub" x="24" y="169">来源 · 内容 · 证据</text>
+      <text class="node-sub" x="24" y="191">公式 · 全局 · 局部溢出</text>
+      <text class="node-sub" x="24" y="213">结构化问题，而非一句“看起来不错”</text>
+
+      <text class="node-mono mono" x="290" y="103">TYPED PATCH</text>
+      <text class="node-title" x="290" y="137">局部修复</text>
+      <text class="node-sub" x="290" y="169">语义问题 → 结构化对象</text>
+      <text class="node-sub" x="290" y="191">布局问题 → PosterPlan 操作</text>
+      <text class="node-sub" x="290" y="213">不让一次改动拖垮全局</text>
+
+      <text class="node-mono mono" x="556" y="103">IMMUTABLE HISTORY</text>
+      <text class="node-title" x="556" y="137">版本保留</text>
+      <text class="node-sub" x="556" y="169">对象哈希不变则不重写</text>
+      <text class="node-sub" x="556" y="191">旧版本继续可查</text>
+      <text class="node-sub" x="556" y="213">失败会显式标记 review_failed</text>
+
+      <text class="node-mono mono" x="822" y="103">CODEX SKILL</text>
+      <text class="node-title" x="822" y="137">一次可复用任务</text>
+      <text class="node-sub" x="822" y="169">环境检查 → 分析 → 规划</text>
+      <text class="node-sub" x="822" y="191">定向 → 导出 → 视觉复核</text>
+      <text class="node-sub" x="822" y="213">支持断点续跑，无需模型 API Key</text>
+
+      <text class="node-mono mono" x="1088" y="103">OUTPUTS</text>
+      <text class="node-title" x="1088" y="137">一份故事，三种阅读体验</text>
+      <text class="node-sub" x="1088" y="169">互动 HTML · Screen 16:9 PNG</text>
+      <text class="node-sub" x="1088" y="191">A0 Print PDF · 来源检查器</text>
+      <rect x="1088" y="209" width="106" height="24" rx="12" fill="#1c8581"/>
+      <text class="pill cn" x="1106" y="226">可追踪</text>
+      <rect x="1204" y="209" width="106" height="24" rx="12" fill="#1c8581"/>
+      <text class="pill cn" x="1222" y="226">可审查</text>
+    </g>
+  </g>
+
+  <!-- footer / principles -->
+  <g transform="translate(92 936)">
+    <line x1="0" y1="-20" x2="1416" y2="-20" stroke="#2a4d58" stroke-width="1"/>
+    <text class="footer cn" x="0" y="10">核心原则</text>
+    <text class="callout-title cn" x="104" y="10">证据先于渲染</text>
+    <circle cx="250" cy="5" r="3" fill="#4adfd8"/>
+    <text class="callout-title cn" x="276" y="10">叙事可追踪</text>
+    <circle cx="428" cy="5" r="3" fill="#4adfd8"/>
+    <text class="callout-title cn" x="454" y="10">修复可局部</text>
+    <text class="footer cn" x="927" y="10">当前边界：英文文本型 PDF · PPTX 仍非输出格式 · 外部大规模基线进行中</text>
+  </g>
+</svg>

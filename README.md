@@ -13,6 +13,8 @@ constrained Visual Director and deterministic renderer. This keeps claims,
 evidence, limitations, and their original source locations traceable through
 every output.
 
+![PaperCraft architecture poster — from paper to a source-grounded scientific story](docs/papercraft-architecture-poster.png)
+
 ## What it produces
 
 - an offline interactive HTML poster with source inspection;
