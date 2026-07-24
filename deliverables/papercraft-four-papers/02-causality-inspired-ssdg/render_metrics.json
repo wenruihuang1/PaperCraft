@@ -1,0 +1,287 @@
+[
+  {
+    "profile": "screen_16_9",
+    "render_revision": 4,
+    "occupied_area_ratio": 0.8779593505388424,
+    "visual_area_ratio": 0.7543374889398825,
+    "reading_order_valid": true,
+    "density_imbalance": 0.687059638111079,
+    "components": [
+      {
+        "component_id": "cmp_method_flow",
+        "clipped": false,
+        "overlap": false,
+        "canvas_overflow": false,
+        "chart_label_clipped": false,
+        "text_truncated": false,
+        "content_utilization_ratio": 0.838492285802258,
+        "blank_area_ratio": 0.161507714197742,
+        "visual_center_offset": 0.016118746838080778,
+        "allocated_area_ratio": 0.4046552116488233,
+        "formula_count": 0,
+        "visual_scale_ratio": 0.0,
+        "visual_aspect_mismatch": 3.0034063601022205,
+        "visual_short_side_px": 0.0,
+        "visual_legibility_score": 0.0,
+        "minimum_font_size": 18.0,
+        "minimum_gap": 18.0
+      },
+      {
+        "component_id": "cmp_visual_gallery",
+        "clipped": false,
+        "overlap": false,
+        "canvas_overflow": false,
+        "chart_label_clipped": false,
+        "text_truncated": false,
+        "content_utilization_ratio": 0.7532300680786261,
+        "blank_area_ratio": 0.24676993192137386,
+        "visual_center_offset": 0.042028012178761516,
+        "allocated_area_ratio": 0.0970758245020737,
+        "formula_count": 0,
+        "visual_scale_ratio": 0.20399790502793297,
+        "visual_aspect_mismatch": 0.5976708783042782,
+        "visual_short_side_px": 109.546875,
+        "visual_legibility_score": 0.4564453125,
+        "minimum_font_size": 18.0,
+        "minimum_gap": 18.0
+      },
+      {
+        "component_id": "cmp_paper_analysis",
+        "clipped": false,
+        "overlap": false,
+        "canvas_overflow": false,
+        "chart_label_clipped": false,
+        "text_truncated": true,
+        "content_utilization_ratio": 0.151432647691179,
+        "blank_area_ratio": 0.848567352308821,
+        "visual_center_offset": 0.3039913013137278,
+        "allocated_area_ratio": 0.0970758245020737,
+        "formula_count": 0,
+        "visual_scale_ratio": 1.0,
+        "visual_aspect_mismatch": 0.0,
+        "visual_short_side_px": 0.0,
+        "visual_legibility_score": 1.0,
+        "minimum_font_size": 14.0,
+        "minimum_gap": 18.0
+      }
+    ],
+    "narratives": [
+      {
+        "role": "problem",
+        "headline_clipped": false,
+        "body_clipped": false,
+        "headline_overflow": false,
+        "body_overflow": false,
+        "text_truncated": false
+      },
+      {
+        "role": "motivation",
+        "headline_clipped": false,
+        "body_clipped": false,
+        "headline_overflow": false,
+        "body_overflow": false,
+        "text_truncated": false
+      },
+      {
+        "role": "key_insight",
+        "headline_clipped": false,
+        "body_clipped": false,
+        "headline_overflow": false,
+        "body_overflow": false,
+        "text_truncated": false
+      }
+    ],
+    "poster_title_overflow": false,
+    "summary_clipped_components": []
+  },
+  {
+    "profile": "screen_narrow",
+    "render_revision": 4,
+    "occupied_area_ratio": 0.8113452739197531,
+    "visual_area_ratio": 0.6444504850290763,
+    "reading_order_valid": true,
+    "density_imbalance": 0.6626577221865821,
+    "components": [
+      {
+        "component_id": "cmp_method_flow",
+        "clipped": false,
+        "overlap": false,
+        "canvas_overflow": false,
+        "chart_label_clipped": false,
+        "text_truncated": true,
+        "content_utilization_ratio": 0.7618192764611024,
+        "blank_area_ratio": 0.23818072353889763,
+        "visual_center_offset": 0.0209378220594148,
+        "allocated_area_ratio": 0.2620916280864197,
+        "formula_count": 0,
+        "visual_scale_ratio": 0.0,
+        "visual_aspect_mismatch": 2.6730279427794312,
+        "visual_short_side_px": 0.0,
+        "visual_legibility_score": 0.0,
+        "minimum_font_size": 9.0,
+        "minimum_gap": 14.0
+      },
+      {
+        "component_id": "cmp_visual_gallery",
+        "clipped": false,
+        "overlap": false,
+        "canvas_overflow": false,
+        "chart_label_clipped": false,
+        "text_truncated": false,
+        "content_utilization_ratio": 0.7397125077704932,
+        "blank_area_ratio": 0.26028749222950676,
+        "visual_center_offset": 0.037555436702683506,
+        "allocated_area_ratio": 0.1294304976851852,
+        "formula_count": 0,
+        "visual_scale_ratio": 0.18688896648044692,
+        "visual_aspect_mismatch": 0.6159110933061241,
+        "visual_short_side_px": 100.359375,
+        "visual_legibility_score": 0.4181640625,
+        "minimum_font_size": 16.0,
+        "minimum_gap": 14.0
+      },
+      {
+        "component_id": "cmp_paper_analysis",
+        "clipped": false,
+        "overlap": false,
+        "canvas_overflow": false,
+        "chart_label_clipped": false,
+        "text_truncated": true,
+        "content_utilization_ratio": 0.09916155427452022,
+        "blank_area_ratio": 0.9008384457254798,
+        "visual_center_offset": 0.4209479047641779,
+        "allocated_area_ratio": 0.1294304976851852,
+        "formula_count": 0,
+        "visual_scale_ratio": 1.0,
+        "visual_aspect_mismatch": 0.0,
+        "visual_short_side_px": 0.0,
+        "visual_legibility_score": 1.0,
+        "minimum_font_size": 12.0,
+        "minimum_gap": 14.0
+      }
+    ],
+    "narratives": [
+      {
+        "role": "problem",
+        "headline_clipped": false,
+        "body_clipped": false,
+        "headline_overflow": false,
+        "body_overflow": false,
+        "text_truncated": false
+      },
+      {
+        "role": "motivation",
+        "headline_clipped": false,
+        "body_clipped": false,
+        "headline_overflow": false,
+        "body_overflow": false,
+        "text_truncated": false
+      },
+      {
+        "role": "key_insight",
+        "headline_clipped": false,
+        "body_clipped": false,
+        "headline_overflow": false,
+        "body_overflow": false,
+        "text_truncated": false
+      }
+    ],
+    "poster_title_overflow": false,
+    "summary_clipped_components": []
+  },
+  {
+    "profile": "print_a0_landscape",
+    "render_revision": 4,
+    "occupied_area_ratio": 0.8785235198166059,
+    "visual_area_ratio": 0.8957177955634612,
+    "reading_order_valid": true,
+    "density_imbalance": 0.8449782288404293,
+    "components": [
+      {
+        "component_id": "cmp_method_flow",
+        "clipped": false,
+        "overlap": false,
+        "canvas_overflow": false,
+        "chart_label_clipped": false,
+        "text_truncated": false,
+        "content_utilization_ratio": 0.6853968242383871,
+        "blank_area_ratio": 0.3146031757616129,
+        "visual_center_offset": 0.029977740925083388,
+        "allocated_area_ratio": 0.3983639712582253,
+        "formula_count": 0,
+        "visual_scale_ratio": 1.2334538755458515,
+        "visual_aspect_mismatch": 0.7275469593849209,
+        "visual_short_side_px": 564.921875,
+        "visual_legibility_score": 1.0,
+        "minimum_font_size": 24.0,
+        "minimum_gap": 8.999967447916667
+      },
+      {
+        "component_id": "cmp_visual_gallery",
+        "clipped": false,
+        "overlap": false,
+        "canvas_overflow": false,
+        "chart_label_clipped": false,
+        "text_truncated": false,
+        "content_utilization_ratio": 0.9150206962098593,
+        "blank_area_ratio": 0.08497930379014074,
+        "visual_center_offset": 0.003255448971419475,
+        "allocated_area_ratio": 0.13938761317775983,
+        "formula_count": 0,
+        "visual_scale_ratio": 0.7943576388888889,
+        "visual_aspect_mismatch": 0.27358386422650915,
+        "visual_short_side_px": 502.046875,
+        "visual_legibility_score": 1.0,
+        "minimum_font_size": 24.0,
+        "minimum_gap": 8.999967447916667
+      },
+      {
+        "component_id": "cmp_paper_analysis",
+        "clipped": false,
+        "overlap": false,
+        "canvas_overflow": false,
+        "chart_label_clipped": false,
+        "text_truncated": false,
+        "content_utilization_ratio": 0.07004246736942998,
+        "blank_area_ratio": 0.92995753263057,
+        "visual_center_offset": 0.4558873134011294,
+        "allocated_area_ratio": 0.1393895501122008,
+        "formula_count": 0,
+        "visual_scale_ratio": 1.0,
+        "visual_aspect_mismatch": 0.0,
+        "visual_short_side_px": 0.0,
+        "visual_legibility_score": 1.0,
+        "minimum_font_size": 24.0,
+        "minimum_gap": 8.999967447916667
+      }
+    ],
+    "narratives": [
+      {
+        "role": "problem",
+        "headline_clipped": false,
+        "body_clipped": false,
+        "headline_overflow": false,
+        "body_overflow": false,
+        "text_truncated": false
+      },
+      {
+        "role": "motivation",
+        "headline_clipped": false,
+        "body_clipped": false,
+        "headline_overflow": false,
+        "body_overflow": false,
+        "text_truncated": false
+      },
+      {
+        "role": "key_insight",
+        "headline_clipped": false,
+        "body_clipped": false,
+        "headline_overflow": false,
+        "body_overflow": false,
+        "text_truncated": false
+      }
+    ],
+    "poster_title_overflow": false,
+    "summary_clipped_components": []
+  }
+]

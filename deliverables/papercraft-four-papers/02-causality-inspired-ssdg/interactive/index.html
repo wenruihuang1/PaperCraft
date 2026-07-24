@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <title>PaperCraft Studio</title>
+    <script defer src="./poster_data.js"></script>
+    <script>
+      window.__PAPERCRAFT_BOOTED__ = false;
+      window.addEventListener("error", function (event) {
+        var fallback = document.getElementById("boot-fallback");
+        if (fallback) {
+          fallback.hidden = false;
+          fallback.querySelector("p").textContent = "The offline poster could not start: " + (event.message || "a local asset failed to load") + ". Re-export the poster or open the included index.html without moving its assets folder.";
+        }
+      });
+      window.setTimeout(function () {
+        if (!window.__PAPERCRAFT_BOOTED__) {
+          var fallback = document.getElementById("boot-fallback");
+          if (fallback) fallback.hidden = false;
+        }
+      }, 2500);
+    </script>
+    <script defer src="./assets/index-Dw4pjcGd.js"></script>
+    <link rel="stylesheet" href="./assets/index-CIbIRi8N.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="boot-fallback" hidden style="position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:10vw;background:#07111f;color:#eef4ff;font:18px/1.55 Arial,sans-serif">
+      <div style="max-width:720px;border:1px solid #2f5e80;border-radius:18px;padding:28px;background:#0d1d31"><strong style="font-size:26px">PaperCraft could not start offline</strong><p>The poster data or application bundle did not load. Keep index.html, poster_data.js, and the assets folder together, then re-export.</p></div>
+    </div>
+  </body>
+</html>

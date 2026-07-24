@@ -15,6 +15,14 @@ every output.
 
 ![PaperCraft architecture poster — from paper to a source-grounded scientific story](docs/papercraft-architecture-poster.png)
 
+## Four-paper sample bundle
+
+仓库中已整理一份四篇论文的完整样例产物，包含每篇论文的交互式 HTML、16:9/窄屏海报、A0 预览、检查视图、渲染指标和源 PDF：
+
+[查看四篇论文产物汇总](deliverables/papercraft-four-papers/README.md)
+
+![四篇论文海报总览](deliverables/papercraft-four-papers/four-papers-montage.png)
+
 ## What it produces
 
 - an offline interactive HTML poster with source inspection;
