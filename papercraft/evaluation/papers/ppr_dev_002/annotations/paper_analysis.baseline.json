@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_dev_002",
+  "source_revision": 1,
+  "metadata": {
+    "title": "Causality-Inspired Single-Source Domain Generalization for Medical Image Segmentation",
+    "authors": [
+      "Cheng Ouyang",
+      "Chen Chen",
+      "Surui Li",
+      "Zeju Li",
+      "Chen Qin",
+      "Wenjia Bai",
+      "Daniel Rueckert"
+    ],
+    "language": "en"
+  },
+  "concepts": [
+    {
+      "concept_id": "cpt_problem",
+      "concept_type": "problem",
+      "statement": "Deep learning models usually suffer from the domain shift issue, where models trained on one source domain do not generalize well to other unseen domains.",
+      "importance": "critical",
+      "source_refs": [
+        "src_p001_b0005"
+      ]
+    },
+    {
+      "concept_id": "cpt_motivation",
+      "concept_type": "motivation",
+      "statement": "In this work, we investigate the single-source domain gener- alization problem: training a deep network that is robust to unseen domains, under the condition that training data are only available from one source domain, which is common in medical imaging applications.",
+      "importance": "high",
+      "source_refs": [
+        "src_p001_b0005"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "clm_main_result",
+      "statement": "The proposed approach yields consistent performance gains compared with competitive methods when tested on unseen domains.",
+      "claim_type": "main",
+      "scope": "reported in Abstract",
+      "qualifiers": [
+        "on unseen domains"
+      ],
+      "importance": "critical",
+      "source_refs": [
+        "src_p001_b0006"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "method_id": "mth_primary",
+      "name": "III. METHOD",
+      "purpose": "Speciﬁcally, our approach is a synergy of a global inten- sity non-linear augmentation technique (GIN) and an inter- ventional pseudo-correlation augmentation technique (IPA).",
+      "inputs": [],
+      "outputs": [],
+      "steps": [
+        {
+          "index": 1,
+          "description": "We then describe how IPA removes confoundings.",
+          "source_refs": [
+            "src_p004_b0003"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Finally, we summarize the overall training process.",
+          "source_refs": [
+            "src_p004_b0003"
+          ]
+        },
+        {
+          "index": 3,
+          "description": "We then tested a segmen- tation network on these background-distorted images, and have observed substantial performance downgrades compared with results on the original undistorted images.",
+          "source_refs": [
+            "src_p005_b0019"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "equation_refs": [],
+      "claim_refs": [
+        "clm_main_result"
+      ],
+      "source_refs": [
+        "src_p004_b0003",
+        "src_p005_b0019"
+      ]
+    }
+  ],
+  "equations": [],
+  "experiments": [
+    {
+      "experiment_id": "exp_primary",
+      "question": "Does the reported evaluation support the main result claim?",
+      "setup": "We compared our method with the empirical risk min- imization (ERM) baseline and several recent single-source domain generalization methods.",
+      "datasets": [],
+      "metrics": [],
+      "baselines": [],
+      "results": [
+        {
+          "result_id": "res_main",
+          "metric": "reported outcome",
+          "value": "The proposed approach yields consistent performance gains compared with competitive methods when tested on unseen domains.",
+          "comparison": null,
+          "source_refs": [
+            "src_p001_b0006"
+          ]
+        }
+      ],
+      "limitations": [
+        "Datasets, metrics, and baselines require semantic verification beyond this rule-based baseline."
+      ],
+      "claim_refs": [
+        "clm_main_result"
+      ],
+      "source_refs": [
+        "src_p008_b0007",
+        "src_p001_b0006"
+      ]
+    }
+  ],
+  "understanding_path": [
+    {
+      "step_id": "step_problem",
+      "role": "problem",
+      "object_refs": [
+        "cpt_problem"
+      ],
+      "transition": "The paper's stated motivation frames why the problem matters."
+    },
+    {
+      "step_id": "step_motivation",
+      "role": "motivation",
+      "object_refs": [
+        "cpt_motivation"
+      ],
+      "transition": "The primary method is introduced in response."
+    },
+    {
+      "step_id": "step_method",
+      "role": "method",
+      "object_refs": [
+        "mth_primary"
+      ],
+      "transition": "The evaluation is used to test the reported claim."
+    },
+    {
+      "step_id": "step_evidence",
+      "role": "evidence",
+      "object_refs": [
+        "clm_main_result",
+        "exp_primary",
+        "res_main"
+      ],
+      "transition": null
+    }
+  ],
+  "analysis_warnings": [
+    "Generated by heuristic_v1 without an LLM; semantic boundaries require human review.",
+    "Only extractive source sentences are used; no equation semantics are inferred."
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_minimal",
+  "source": {
+    "file_name": "paper.pdf",
+    "sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "language": "en",
+    "input_type": "text_pdf",
+    "page_count": 1
+  },
+  "metadata": {
+    "title": "A Minimal Grounded Method",
+    "authors": ["Ada Researcher"],
+    "abstract": "A compact fixture for contract validation."
+  },
+  "pages": [
+    {"page_number": 1, "width": 612.0, "height": 792.0}
+  ],
+  "sections": [
+    {
+      "section_id": "srcsec_main",
+      "title": "Main",
+      "level": 1,
+      "page_start": 1,
+      "page_end": 1
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "srcblk_problem",
+      "block_type": "paragraph",
+      "page": 1,
+      "section_id": "srcsec_main",
+      "text": "Existing systems are slow. Our two-step method reduces runtime.",
+      "bbox": {"x0": 50.0, "y0": 80.0, "x1": 550.0, "y1": 130.0},
+      "reading_order": 1
+    },
+    {
+      "block_id": "srcblk_method",
+      "block_type": "paragraph",
+      "page": 1,
+      "section_id": "srcsec_main",
+      "text": "First normalize the input, then compute the score.",
+      "bbox": {"x0": 50.0, "y0": 150.0, "x1": 550.0, "y1": 200.0},
+      "reading_order": 2
+    }
+  ],
+  "equations": [
+    {
+      "source_equation_id": "seq_score",
+      "page": 1,
+      "label": "1",
+      "representation": "latex",
+      "raw_text": "s = x / t",
+      "latex": "s = x / t",
+      "bbox": {"x0": 180.0, "y0": 220.0, "x1": 420.0, "y1": 260.0}
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "ast_results",
+      "asset_type": "table",
+      "page": 1,
+      "caption": "Table 1: Runtime comparison.",
+      "path": "assets/table-1.png",
+      "bbox": {"x0": 80.0, "y0": 300.0, "x1": 530.0, "y1": 500.0}
+    }
+  ],
+  "source_refs": [
+    {
+      "source_ref_id": "src_problem",
+      "source_type": "text_span",
+      "locator": {
+        "page": 1,
+        "block_id": "srcblk_problem",
+        "char_start": 0,
+        "char_end": 26,
+        "bbox": {"x0": 50.0, "y0": 80.0, "x1": 250.0, "y1": 130.0}
+      },
+      "quote": "Existing systems are slow.",
+      "checksum": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    {
+      "source_ref_id": "src_method",
+      "source_type": "text_span",
+      "locator": {
+        "page": 1,
+        "block_id": "srcblk_method",
+        "char_start": 0,
+        "char_end": 50
+      },
+      "quote": "First normalize the input, then compute the score.",
+      "checksum": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+    },
+    {
+      "source_ref_id": "src_equation",
+      "source_type": "equation",
+      "locator": {
+        "page": 1,
+        "source_equation_id": "seq_score",
+        "bbox": {"x0": 180.0, "y0": 220.0, "x1": 420.0, "y1": 260.0}
+      },
+      "quote": "s = x / t",
+      "checksum": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+    },
+    {
+      "source_ref_id": "src_result",
+      "source_type": "table",
+      "locator": {
+        "page": 1,
+        "asset_id": "ast_results",
+        "bbox": {"x0": 80.0, "y0": 300.0, "x1": 530.0, "y1": 500.0}
+      },
+      "quote": "Runtime: baseline 20 ms; ours 10 ms.",
+      "checksum": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+    }
+  ],
+  "warnings": []
+}

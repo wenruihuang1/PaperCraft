@@ -1,0 +1,13 @@
+{
+  "paper_id": "ppr_dev_001",
+  "annotator_id": "annotator_placeholder",
+  "annotation_revision": 1,
+  "gold_artifacts": {
+    "document_ir": "annotations/document_ir.gold.json",
+    "paper_analysis": "annotations/paper_analysis.gold.json",
+    "evidence_graph": "annotations/evidence_graph.gold.json"
+  },
+  "adjudication_status": "not_started",
+  "notes": []
+}
+

@@ -1,0 +1,852 @@
+{
+  "$defs": {
+    "AnalysisEquation": {
+      "additionalProperties": false,
+      "properties": {
+        "equation_id": {
+          "pattern": "^eq_[a-z0-9_]+$",
+          "title": "Equation Id",
+          "type": "string"
+        },
+        "source_equation_id": {
+          "pattern": "^seq_[a-z0-9_]+$",
+          "title": "Source Equation Id",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "latex_original": {
+          "minLength": 1,
+          "title": "Latex Original",
+          "type": "string"
+        },
+        "semantic_role": {
+          "enum": [
+            "definition",
+            "objective",
+            "constraint",
+            "update_rule",
+            "metric",
+            "other"
+          ],
+          "title": "Semantic Role",
+          "type": "string"
+        },
+        "variables": {
+          "items": {
+            "$ref": "#/$defs/EquationVariable"
+          },
+          "title": "Variables",
+          "type": "array"
+        },
+        "computation_steps": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Computation Steps",
+          "type": "array"
+        },
+        "method_refs": {
+          "items": {
+            "pattern": "^mth_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Method Refs",
+          "type": "array"
+        },
+        "experiment_refs": {
+          "items": {
+            "pattern": "^exp_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Experiment Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "equation_id",
+        "source_equation_id",
+        "latex_original",
+        "semantic_role",
+        "variables",
+        "computation_steps",
+        "source_refs"
+      ],
+      "title": "AnalysisEquation",
+      "type": "object"
+    },
+    "AnalysisMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "authors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authors",
+          "type": "array"
+        },
+        "language": {
+          "const": "en",
+          "title": "Language",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "authors",
+        "language"
+      ],
+      "title": "AnalysisMetadata",
+      "type": "object"
+    },
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "pattern": "^clm_[a-z0-9_]+$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "claim_type": {
+          "enum": [
+            "main",
+            "supporting"
+          ],
+          "title": "Claim Type",
+          "type": "string"
+        },
+        "scope": {
+          "minLength": 1,
+          "title": "Scope",
+          "type": "string"
+        },
+        "qualifiers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Qualifiers",
+          "type": "array"
+        },
+        "importance": {
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "low"
+          ],
+          "title": "Importance",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claim_id",
+        "statement",
+        "claim_type",
+        "scope",
+        "importance",
+        "source_refs"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "Concept": {
+      "additionalProperties": false,
+      "properties": {
+        "concept_id": {
+          "pattern": "^cpt_[a-z0-9_]+$",
+          "title": "Concept Id",
+          "type": "string"
+        },
+        "concept_type": {
+          "enum": [
+            "problem",
+            "motivation",
+            "key_insight",
+            "conclusion"
+          ],
+          "title": "Concept Type",
+          "type": "string"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "importance": {
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "low"
+          ],
+          "title": "Importance",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "concept_id",
+        "concept_type",
+        "statement",
+        "importance",
+        "source_refs"
+      ],
+      "title": "Concept",
+      "type": "object"
+    },
+    "EquationVariable": {
+      "additionalProperties": false,
+      "properties": {
+        "symbol": {
+          "minLength": 1,
+          "title": "Symbol",
+          "type": "string"
+        },
+        "meaning": {
+          "minLength": 1,
+          "title": "Meaning",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "domain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Domain"
+        }
+      },
+      "required": [
+        "symbol",
+        "meaning"
+      ],
+      "title": "EquationVariable",
+      "type": "object"
+    },
+    "Experiment": {
+      "additionalProperties": false,
+      "properties": {
+        "experiment_id": {
+          "pattern": "^exp_[a-z0-9_]+$",
+          "title": "Experiment Id",
+          "type": "string"
+        },
+        "question": {
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "setup": {
+          "minLength": 1,
+          "title": "Setup",
+          "type": "string"
+        },
+        "datasets": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Datasets",
+          "type": "array"
+        },
+        "metrics": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Metrics",
+          "type": "array"
+        },
+        "baselines": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Baselines",
+          "type": "array"
+        },
+        "results": {
+          "items": {
+            "$ref": "#/$defs/ExperimentResult"
+          },
+          "minItems": 1,
+          "title": "Results",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "claim_refs": {
+          "items": {
+            "pattern": "^clm_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Claim Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "experiment_id",
+        "question",
+        "setup",
+        "datasets",
+        "metrics",
+        "baselines",
+        "results",
+        "source_refs"
+      ],
+      "title": "Experiment",
+      "type": "object"
+    },
+    "ExperimentResult": {
+      "additionalProperties": false,
+      "properties": {
+        "result_id": {
+          "pattern": "^res_[a-z0-9_]+$",
+          "title": "Result Id",
+          "type": "string"
+        },
+        "metric": {
+          "minLength": 1,
+          "title": "Metric",
+          "type": "string"
+        },
+        "value": {
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        },
+        "comparison": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Comparison"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "result_id",
+        "metric",
+        "value",
+        "source_refs"
+      ],
+      "title": "ExperimentResult",
+      "type": "object"
+    },
+    "InsightNarrative": {
+      "additionalProperties": false,
+      "properties": {
+        "concept_ref": {
+          "pattern": "^cpt_[a-z0-9_]+$",
+          "title": "Concept Ref",
+          "type": "string"
+        },
+        "principle": {
+          "minLength": 1,
+          "title": "Principle",
+          "type": "string"
+        },
+        "operationalization": {
+          "minLength": 1,
+          "title": "Operationalization",
+          "type": "string"
+        },
+        "expected_effect": {
+          "minLength": 1,
+          "title": "Expected Effect",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "concept_ref",
+        "principle",
+        "operationalization",
+        "expected_effect",
+        "source_refs"
+      ],
+      "title": "InsightNarrative",
+      "type": "object"
+    },
+    "Method": {
+      "additionalProperties": false,
+      "properties": {
+        "method_id": {
+          "pattern": "^mth_[a-z0-9_]+$",
+          "title": "Method Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "purpose": {
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        },
+        "inputs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "outputs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Outputs",
+          "type": "array"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/MethodStep"
+          },
+          "minItems": 1,
+          "title": "Steps",
+          "type": "array"
+        },
+        "assumptions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "equation_refs": {
+          "items": {
+            "pattern": "^eq_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Equation Refs",
+          "type": "array"
+        },
+        "claim_refs": {
+          "items": {
+            "pattern": "^clm_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "title": "Claim Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "method_id",
+        "name",
+        "purpose",
+        "inputs",
+        "outputs",
+        "steps",
+        "source_refs"
+      ],
+      "title": "Method",
+      "type": "object"
+    },
+    "MethodStep": {
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "exclusiveMinimum": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "index",
+        "description",
+        "source_refs"
+      ],
+      "title": "MethodStep",
+      "type": "object"
+    },
+    "MotivationNarrative": {
+      "additionalProperties": false,
+      "properties": {
+        "concept_ref": {
+          "pattern": "^cpt_[a-z0-9_]+$",
+          "title": "Concept Ref",
+          "type": "string"
+        },
+        "observation": {
+          "minLength": 1,
+          "title": "Observation",
+          "type": "string"
+        },
+        "limitation": {
+          "minLength": 1,
+          "title": "Limitation",
+          "type": "string"
+        },
+        "design_requirement": {
+          "minLength": 1,
+          "title": "Design Requirement",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "concept_ref",
+        "observation",
+        "limitation",
+        "design_requirement",
+        "source_refs"
+      ],
+      "title": "MotivationNarrative",
+      "type": "object"
+    },
+    "NarrativeFrame": {
+      "additionalProperties": false,
+      "properties": {
+        "problem": {
+          "$ref": "#/$defs/ProblemNarrative"
+        },
+        "motivation": {
+          "$ref": "#/$defs/MotivationNarrative"
+        },
+        "insight": {
+          "$ref": "#/$defs/InsightNarrative"
+        }
+      },
+      "required": [
+        "problem",
+        "motivation",
+        "insight"
+      ],
+      "title": "NarrativeFrame",
+      "type": "object"
+    },
+    "ProblemNarrative": {
+      "additionalProperties": false,
+      "description": "Reader-facing problem frame, separated from a section summary.",
+      "properties": {
+        "concept_ref": {
+          "pattern": "^cpt_[a-z0-9_]+$",
+          "title": "Concept Ref",
+          "type": "string"
+        },
+        "context": {
+          "minLength": 1,
+          "title": "Context",
+          "type": "string"
+        },
+        "conventional_assumption": {
+          "minLength": 1,
+          "title": "Conventional Assumption",
+          "type": "string"
+        },
+        "failure_mechanism": {
+          "minLength": 1,
+          "title": "Failure Mechanism",
+          "type": "string"
+        },
+        "consequence": {
+          "minLength": 1,
+          "title": "Consequence",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "pattern": "^src_[a-z0-9_]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "concept_ref",
+        "context",
+        "conventional_assumption",
+        "failure_mechanism",
+        "consequence",
+        "source_refs"
+      ],
+      "title": "ProblemNarrative",
+      "type": "object"
+    },
+    "UnderstandingStep": {
+      "additionalProperties": false,
+      "properties": {
+        "step_id": {
+          "pattern": "^step_[a-z0-9_]+$",
+          "title": "Step Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "problem",
+            "motivation",
+            "key_insight",
+            "method",
+            "evidence",
+            "conclusion"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "object_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Object Refs",
+          "type": "array"
+        },
+        "transition": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transition"
+        }
+      },
+      "required": [
+        "step_id",
+        "role",
+        "object_refs"
+      ],
+      "title": "UnderstandingStep",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "artifact_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Artifact Revision",
+      "type": "integer"
+    },
+    "paper_id": {
+      "pattern": "^ppr_[a-z0-9_]+$",
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "source_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Source Revision",
+      "type": "integer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/AnalysisMetadata"
+    },
+    "concepts": {
+      "items": {
+        "$ref": "#/$defs/Concept"
+      },
+      "minItems": 1,
+      "title": "Concepts",
+      "type": "array"
+    },
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "minItems": 1,
+      "title": "Claims",
+      "type": "array"
+    },
+    "methods": {
+      "items": {
+        "$ref": "#/$defs/Method"
+      },
+      "minItems": 1,
+      "title": "Methods",
+      "type": "array"
+    },
+    "equations": {
+      "items": {
+        "$ref": "#/$defs/AnalysisEquation"
+      },
+      "title": "Equations",
+      "type": "array"
+    },
+    "experiments": {
+      "items": {
+        "$ref": "#/$defs/Experiment"
+      },
+      "minItems": 1,
+      "title": "Experiments",
+      "type": "array"
+    },
+    "narrative_frame": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NarrativeFrame"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "understanding_path": {
+      "items": {
+        "$ref": "#/$defs/UnderstandingStep"
+      },
+      "minItems": 1,
+      "title": "Understanding Path",
+      "type": "array"
+    },
+    "analysis_warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Analysis Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_revision",
+    "paper_id",
+    "source_revision",
+    "metadata",
+    "concepts",
+    "claims",
+    "methods",
+    "experiments",
+    "understanding_path"
+  ],
+  "title": "PaperAnalysis",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://papercraft.local/schemas/paper_analysis.schema.json"
+}

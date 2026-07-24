@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_minimal",
+  "analysis_revision": 1,
+  "evidence_revision": 1,
+  "archetype": "method_pipeline",
+  "thesis": "A normalized scoring pipeline halves the reported runtime.",
+  "archetype_rationale": "The paper advances an ordered method and evaluates its runtime outcome.",
+  "nodes": [
+    {
+      "node_id": "nar_problem",
+      "role": "problem",
+      "statement": "Existing systems are slow.",
+      "importance": "primary",
+      "object_refs": ["cpt_problem"],
+      "evidence_refs": [],
+      "source_refs": ["src_problem"]
+    },
+    {
+      "node_id": "nar_insight",
+      "role": "insight",
+      "statement": "Normalize inputs before computing the score.",
+      "importance": "primary",
+      "object_refs": ["cpt_insight"],
+      "evidence_refs": [],
+      "source_refs": ["src_method"]
+    },
+    {
+      "node_id": "nar_method",
+      "role": "method",
+      "statement": "The pipeline normalizes the input and computes a score.",
+      "importance": "primary",
+      "object_refs": ["mth_pipeline"],
+      "evidence_refs": [],
+      "source_refs": ["src_method", "src_equation"]
+    },
+    {
+      "node_id": "nar_evidence",
+      "role": "evidence",
+      "statement": "The reported runtime falls from 20 ms to 10 ms.",
+      "importance": "primary",
+      "object_refs": ["res_runtime"],
+      "evidence_refs": ["ev_runtime"],
+      "source_refs": ["src_result"]
+    },
+    {
+      "node_id": "nar_takeaway",
+      "role": "takeaway",
+      "statement": "The evaluated pipeline reports a twofold runtime improvement.",
+      "importance": "primary",
+      "object_refs": ["clm_speed"],
+      "evidence_refs": ["ev_runtime"],
+      "source_refs": ["src_result"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "nedge_problem_insight",
+      "from_node": "nar_problem",
+      "to_node": "nar_insight",
+      "relation": "motivates",
+      "transition": "The bottleneck motivates a simpler computation path."
+    },
+    {
+      "edge_id": "nedge_insight_method",
+      "from_node": "nar_insight",
+      "to_node": "nar_method",
+      "relation": "operationalizes",
+      "transition": "The ordered pipeline implements the insight."
+    },
+    {
+      "edge_id": "nedge_method_evidence",
+      "from_node": "nar_method",
+      "to_node": "nar_evidence",
+      "relation": "evaluated_by",
+      "transition": "A runtime comparison evaluates the pipeline."
+    },
+    {
+      "edge_id": "nedge_evidence_takeaway",
+      "from_node": "nar_evidence",
+      "to_node": "nar_takeaway",
+      "relation": "supports",
+      "transition": "The measured difference supports the scoped conclusion."
+    }
+  ],
+  "primary_path": [
+    "nar_problem",
+    "nar_insight",
+    "nar_method",
+    "nar_evidence",
+    "nar_takeaway"
+  ],
+  "claim_coverage": [
+    {
+      "claim_ref": "clm_speed",
+      "disposition": "included",
+      "reason": "It is the paper's main evaluated outcome."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "validation_layer": "schema",
+  "artifact": "review_result",
+  "path": ["checker_summaries", 0, "checker"],
+  "replacement": "formula_depth",
+  "expected_error": "checker"
+}
+

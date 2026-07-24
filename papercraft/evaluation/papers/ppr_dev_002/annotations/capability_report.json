@@ -1,0 +1,76 @@
+{
+  "file_name": "paper.pdf",
+  "sha256": "sha256:ca4a21d8c2bb9dfe61c7a2e86d6c53017e2abde47047b4d7a9775700a5aaf09a",
+  "status": "supported",
+  "rejection_codes": [],
+  "metrics": {
+    "page_count": 12,
+    "total_text_characters": 59711,
+    "text_page_ratio": 1.0,
+    "raster_dominant_page_ratio": 0.0,
+    "latin_letter_ratio": 0.9966548308727341,
+    "english_function_word_ratio": 0.25916004974648427
+  },
+  "pages": [
+    {
+      "page_number": 1,
+      "text_characters": 5124,
+      "image_coverage_ratio": 0.0010004840264278242
+    },
+    {
+      "page_number": 2,
+      "text_characters": 5364,
+      "image_coverage_ratio": 0.036451781213016635
+    },
+    {
+      "page_number": 3,
+      "text_characters": 5654,
+      "image_coverage_ratio": 0.0011454544941159259
+    },
+    {
+      "page_number": 4,
+      "text_characters": 4558,
+      "image_coverage_ratio": 0.14432732337027324
+    },
+    {
+      "page_number": 5,
+      "text_characters": 5411,
+      "image_coverage_ratio": 0.04149799960799671
+    },
+    {
+      "page_number": 6,
+      "text_characters": 5097,
+      "image_coverage_ratio": 0.04968979323461069
+    },
+    {
+      "page_number": 7,
+      "text_characters": 4845,
+      "image_coverage_ratio": 0.07199173764816158
+    },
+    {
+      "page_number": 8,
+      "text_characters": 3190,
+      "image_coverage_ratio": 0.0011454544941159259
+    },
+    {
+      "page_number": 9,
+      "text_characters": 2507,
+      "image_coverage_ratio": 0.30685599476867065
+    },
+    {
+      "page_number": 10,
+      "text_characters": 3238,
+      "image_coverage_ratio": 0.02487289446703727
+    },
+    {
+      "page_number": 11,
+      "text_characters": 6882,
+      "image_coverage_ratio": 0.0011454544941159259
+    },
+    {
+      "page_number": 12,
+      "text_characters": 7841,
+      "image_coverage_ratio": 0.0011454544941159259
+    }
+  ]
+}

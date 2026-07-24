@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.1.0",
+  "paper_id": "ppr_dev_001",
+  "annotator_id": "codex_primary",
+  "annotation_revision": 1,
+  "status": "adjudicated",
+  "reviewed_on": "2026-07-16",
+  "gold_artifacts": {
+    "document_ir": "annotations/document_ir.gold.json",
+    "paper_analysis": "annotations/paper_analysis.gold.json",
+    "evidence_graph": "annotations/evidence_graph.gold.json",
+    "poster_expectations": "annotations/poster_expectations.json"
+  },
+  "coverage": {
+    "concepts": 5,
+    "claims": 5,
+    "methods": 3,
+    "equations": 6,
+    "experiments": 6,
+    "results": 10,
+    "claim_assessments": 5
+  },
+  "formula_review": {
+    "status": "passed_with_manual_transcription",
+    "rendered_pages_checked": [4, 5, 6],
+    "equation_labels_checked": ["3", "4", "5", "6", "7", "8"],
+    "note": "Canonical LaTeX was transcribed from rendered pages because the frozen DocumentIR correctly preserves lossy PDF text rather than pretending it is source LaTeX."
+  },
+  "numeric_review": {
+    "status": "passed_with_source_inconsistencies",
+    "rendered_pages_checked": [7, 8, 9],
+    "source_inconsistencies": [
+      {
+        "code": "PAPER_PROSE_TABLE_MISMATCH",
+        "location": "Section 4.6.2 versus Table 6",
+        "prose_value": "64.5%",
+        "table_value": "53.8% - 7.3% = 46.5 percentage points",
+        "decision": "Use the table-derived value and expose the inconsistency in source details."
+      },
+      {
+        "code": "PAPER_PROSE_TABLE_MISMATCH",
+        "location": "Section 4.4 versus Table 3",
+        "prose_value": "2.1%",
+        "table_value": "81.0% - 79.6% = 1.4 percentage points",
+        "decision": "Use the table-derived value and expose the inconsistency in source details."
+      },
+      {
+        "code": "PAPER_ROW_LABEL_TYPO",
+        "location": "Table 3",
+        "prose_value": "AMR (ours)",
+        "table_value": "AMP",
+        "decision": "Treat AMR as a typographical error because the paper defines only AMP."
+      }
+    ]
+  },
+  "adjudication_notes": [
+    "The near-lossless main claim is accepted only for post-distillation results and the evaluated task/model scope.",
+    "The entropy-criterion and adaptive-search mechanism claims are marked partially supported because their ablations use one backbone and report no uncertainty.",
+    "The throughput claim is accepted only with hardware, batch-size, resolution, and model qualifiers.",
+    "No user-authored JSON is required; future changes should be made through the review UI and stored as a new revision."
+  ]
+}

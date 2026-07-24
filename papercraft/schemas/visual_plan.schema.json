@@ -1,0 +1,114 @@
+{
+  "additionalProperties": false,
+  "description": "A renderer-safe visual interpretation with no free-form layout geometry.",
+  "properties": {
+    "schema_version": {
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "artifact_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Artifact Revision",
+      "type": "integer"
+    },
+    "paper_id": {
+      "pattern": "^ppr_[a-z0-9_]+$",
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "narrative_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Narrative Revision",
+      "type": "integer"
+    },
+    "baseline_poster_revision": {
+      "exclusiveMinimum": 0,
+      "title": "Baseline Poster Revision",
+      "type": "integer"
+    },
+    "visual_archetype": {
+      "enum": [
+        "pipeline_story",
+        "cause_intervention_effect",
+        "mechanism_explainer",
+        "benchmark_matrix",
+        "case_gallery",
+        "dataset_landscape",
+        "theory_derivation",
+        "decision_loop",
+        "agent_workflow",
+        "system_architecture",
+        "taxonomy_map",
+        "balanced_story"
+      ],
+      "title": "Visual Archetype",
+      "type": "string"
+    },
+    "component_sequence": {
+      "items": {
+        "pattern": "^cmp_[a-z0-9_]+$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Component Sequence",
+      "type": "array"
+    },
+    "primary_node_refs": {
+      "items": {
+        "pattern": "^nar_[a-z0-9_]+$",
+        "type": "string"
+      },
+      "maxItems": 9,
+      "minItems": 5,
+      "title": "Primary Node Refs",
+      "type": "array"
+    },
+    "hero_node_refs": {
+      "items": {
+        "pattern": "^nar_[a-z0-9_]+$",
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Hero Node Refs",
+      "type": "array"
+    },
+    "status": {
+      "default": "applied",
+      "enum": [
+        "applied",
+        "fallback"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "fallback_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Fallback Reason"
+    }
+  },
+  "required": [
+    "schema_version",
+    "artifact_revision",
+    "paper_id",
+    "narrative_revision",
+    "baseline_poster_revision",
+    "visual_archetype",
+    "component_sequence",
+    "primary_node_refs",
+    "hero_node_refs"
+  ],
+  "title": "VisualPlan",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://papercraft.local/schemas/visual_plan.schema.json"
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "MVP_SINGLE_PAPER",
+  "entries": [
+    {
+      "paper_id": "ppr_dev_001",
+      "split": "dev",
+      "status": "gold_poster_completed",
+      "path": "papers/ppr_dev_001"
+    },
+    {
+      "paper_id": "ppr_dev_002",
+      "split": "dev",
+      "status": "analysis_baseline_reviewed",
+      "path": "papers/ppr_dev_002"
+    },
+    {
+      "paper_id": "ppr_dev_003",
+      "split": "generalization",
+      "status": "source_adjudicated_poster",
+      "path": "papers/ppr_dev_003"
+    }
+  ]
+}

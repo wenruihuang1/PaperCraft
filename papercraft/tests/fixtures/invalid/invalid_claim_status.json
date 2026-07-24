@@ -1,0 +1,8 @@
+{
+  "validation_layer": "schema",
+  "artifact": "evidence_graph",
+  "path": ["claim_assessments", 0, "status"],
+  "replacement": "unsupported",
+  "expected_error": "status"
+}
+

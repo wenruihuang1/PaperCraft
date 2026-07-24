@@ -1,0 +1,61 @@
+{
+  "paper_id": "ppr_dev_001",
+  "required_claim_refs": [
+    "clm_compression_recovery",
+    "clm_throughput",
+    "clm_entropy_criterion",
+    "clm_adaptive_search"
+  ],
+  "required_method_refs": [
+    "mth_entropy_importance",
+    "mth_adaptive_pruning",
+    "mth_distillation"
+  ],
+  "required_equation_refs": [
+    "eq_taylor_importance",
+    "eq_entropy",
+    "eq_distillation"
+  ],
+  "required_result_refs": [
+    "res_openclip_g",
+    "res_evaclip_e",
+    "res_dinov2_knn",
+    "res_entropy_ablation",
+    "res_binary_ablation"
+  ],
+  "recommended_component_types": [
+    "method_flow",
+    "equation_explorer",
+    "claim_evidence_chain",
+    "result_chart"
+  ],
+  "preferred_asset_refs": [
+    "ast_figure_001",
+    "ast_figure_002",
+    "ast_figure_003",
+    "ast_table_004",
+    "ast_table_008",
+    "ast_table_009"
+  ],
+  "original_reconstruction_toggle_asset_refs": [
+    "ast_figure_001",
+    "ast_figure_003"
+  ],
+  "must_not_reconstruct_asset_refs": [
+    "ast_table_004",
+    "ast_table_008",
+    "ast_table_009"
+  ],
+  "forbidden_overstatements": [
+    "Do not call pruning-only performance near-lossless; recovery occurs after distillation.",
+    "Do not generalize the roughly 1.5x throughput result beyond the four CLIP models and the reported A6000 setup.",
+    "Do not repeat the prose claim of a 64.5% binary-search gain; Table 6 supports a 46.5 percentage-point difference.",
+    "Do not repeat the prose claim of a 2.1% EVA-CLIP-E margin over NViT; Table 3 supports 1.4 percentage points.",
+    "Do not state that the entropy criterion directly measures importance-score accuracy; the ablation measures downstream accuracy."
+  ],
+  "notes": [
+    "Lead with the 40% compression versus recovered quality trade-off, then reveal that entropy scoring and adaptive stopping are the two technical levers.",
+    "Visually separate pruning-only and post-distillation results.",
+    "Use selected result charts instead of shrinking the complete paper tables into the poster."
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "paper_id": "ppr_dev_002",
+  "status": "passed_with_notes",
+  "reviewed_on": "2026-07-16",
+  "review_scope": "Deterministic DocumentIR source traceability",
+  "counts": {
+    "pages": 12,
+    "sections": 7,
+    "blocks": 155,
+    "equations": 8,
+    "assets": 15
+  },
+  "checks": [
+    {
+      "check": "input_capability",
+      "status": "passed",
+      "evidence": "Capability report identifies an English text PDF with 12 text-bearing pages."
+    },
+    {
+      "check": "text_source_ranges",
+      "status": "passed",
+      "evidence": "All text-span quotes and character ranges were revalidated against their referenced blocks."
+    },
+    {
+      "check": "two_column_reading_order",
+      "status": "passed",
+      "evidence": "Page 1 now reads the left-column abstract before its right-column continuation and then enters I. INTRODUCTION; the extracted abstract is complete."
+    },
+    {
+      "check": "visual_page_and_bbox_sampling",
+      "status": "passed",
+      "evidence": "Rendered pages 1, 4, 6, and 8 were compared with source bboxes and caption crops."
+    },
+    {
+      "check": "equation_sampling",
+      "status": "passed_with_notes",
+      "evidence": "Equations (1), (3), (5), and (6) occur on the recorded pages and bboxes; equation (5) exposes a PDF font control glyph and stacked-order loss."
+    },
+    {
+      "check": "asset_sampling",
+      "status": "passed_with_notes",
+      "evidence": "ast_figure_002, ast_figure_004, ast_table_006, ast_table_007, and ast_table_008 contain the expected visuals; adjacent dense tables can overlap in crop context."
+    }
+  ],
+  "manual_corrections": [
+    "The seven-author list was transcribed from rendered page 1 because the PDF metadata author field is empty."
+  ],
+  "known_limitations": [
+    "Caption-anchored crops may include part of a neighboring table when multiple tables are tightly packed.",
+    "PDF text extraction cannot reconstruct canonical LaTeX for visually stacked equations."
+  ]
+}

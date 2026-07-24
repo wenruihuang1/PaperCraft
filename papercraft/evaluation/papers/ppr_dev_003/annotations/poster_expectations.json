@@ -1,0 +1,47 @@
+{
+  "paper_id": "ppr_dev_003",
+  "required_narrative_roles": [
+    "problem",
+    "motivation",
+    "key_insight"
+  ],
+  "required_method_refs": [
+    "mth_tri_view",
+    "mth_cgsd",
+    "mth_saam"
+  ],
+  "core_equation_labels": [
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17"
+  ],
+  "required_result_refs": [
+    "res_mri_ct",
+    "res_ct_mri",
+    "res_lge_bssfp",
+    "res_bssfp_lge"
+  ],
+  "preferred_asset_refs": [
+    "ast_figure_001",
+    "ast_figure_002",
+    "ast_figure_011",
+    "ast_table_004",
+    "ast_figure_005"
+  ],
+  "main_area_ratio": {
+    "narrative": 0.28,
+    "method_equations": 0.52,
+    "results_evidence": 0.2
+  },
+  "forbidden_presentations": [
+    "raw flattened table text",
+    "raw PDF formula text",
+    "unqualified claims beyond the evaluated tasks"
+  ]
+}

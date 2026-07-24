@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.1.0",
+  "paper_id": "ppr_dev_002",
+  "annotator_id": "codex_primary",
+  "annotation_revision": 1,
+  "status": "adjudicated",
+  "reviewed_on": "2026-07-17",
+  "gold_artifacts": {
+    "document_ir": "annotations/document_ir.gold.json",
+    "paper_analysis": "annotations/paper_analysis.gold.json",
+    "evidence_graph": "annotations/evidence_graph.gold.json",
+    "poster_expectations": "annotations/poster_expectations.json"
+  },
+  "coverage": {
+    "concepts": 4,
+    "claims": 4,
+    "methods": 3,
+    "equations": 4,
+    "experiments": 4,
+    "results": 8,
+    "claim_assessments": 4
+  },
+  "formula_review": {
+    "status": "passed_with_manual_transcription",
+    "rendered_pages_checked": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "equation_labels_checked": [
+      "1",
+      "3",
+      "4",
+      "6"
+    ],
+    "note": "Symbols were transcribed from rendered pages because PDF text extraction loses mathematical layout."
+  },
+  "numeric_review": {
+    "status": "passed",
+    "rendered_pages_checked": [
+      8,
+      9,
+      10
+    ],
+    "source_inconsistencies": []
+  },
+  "adjudication_notes": [
+    "Table II supports the bounded cross-domain performance claim.",
+    "Table V supports a heterogeneous IPA contribution, not a universal gain.",
+    "The causal-intervention claim is marked insufficient because diagrams, equations, and predictive ablations do not identify removal of real confounding.",
+    "The KL-term claim remains partial because it is tested once without uncertainty."
+  ]
+}

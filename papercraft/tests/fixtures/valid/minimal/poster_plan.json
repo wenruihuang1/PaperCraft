@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_minimal",
+  "analysis_revision": 1,
+  "evidence_revision": 1,
+  "reading_path": ["cmp_method", "cmp_equation", "cmp_evidence", "cmp_result"],
+  "components": [
+    {
+      "component_id": "cmp_method",
+      "component_type": "method_flow",
+      "title": "Two-step method",
+      "summary": "Normalize the input, then compute the score.",
+      "content_refs": ["mth_pipeline"],
+      "source_refs": ["src_method", "src_equation"],
+      "claim_refs": ["clm_speed"],
+      "evidence_refs": [],
+      "interactions": [{"event": "click", "action": "expand_details"}],
+      "details": ["The score is computed after normalization."],
+      "method_refs": ["mth_pipeline"],
+      "steps": [
+        {"label": "Normalize", "description": "Normalize the input.", "source_refs": ["src_method"]},
+        {"label": "Score", "description": "Compute s = x / t.", "source_refs": ["src_equation"]}
+      ]
+    },
+    {
+      "component_id": "cmp_equation",
+      "component_type": "equation_explorer",
+      "title": "Score equation",
+      "summary": "The score divides normalized input by runtime.",
+      "content_refs": ["eq_score"],
+      "source_refs": ["src_equation"],
+      "claim_refs": [],
+      "evidence_refs": ["ev_definition"],
+      "interactions": [{"event": "click", "action": "show_source"}],
+      "details": ["Original equation: s = x / t"],
+      "equation_refs": ["eq_score"],
+      "show_variable_table": true,
+      "show_computation_steps": true
+    },
+    {
+      "component_id": "cmp_evidence",
+      "component_type": "claim_evidence_chain",
+      "title": "Claim and evidence",
+      "summary": "The measured runtime supports the scoped claim.",
+      "content_refs": ["clm_speed", "res_runtime"],
+      "source_refs": ["src_result"],
+      "claim_refs": ["clm_speed"],
+      "evidence_refs": ["ev_runtime"],
+      "interactions": [{"event": "click", "action": "show_source"}],
+      "details": ["The evidence covers one benchmark."],
+      "show_assessment_status": true
+    },
+    {
+      "component_id": "cmp_result",
+      "component_type": "result_chart",
+      "title": "Runtime result",
+      "summary": "Runtime decreases from 20 ms to 10 ms.",
+      "content_refs": ["exp_runtime", "res_runtime"],
+      "source_refs": ["src_result"],
+      "claim_refs": ["clm_speed"],
+      "evidence_refs": ["ev_runtime"],
+      "interactions": [{"event": "click", "action": "show_source"}],
+      "details": ["Baseline: 20 ms; ours: 10 ms."],
+      "experiment_refs": ["exp_runtime"],
+      "result_refs": ["res_runtime"],
+      "chart_type": "bar"
+    }
+  ],
+  "layout_profiles": {
+    "screen_16_9": {
+      "profile": "screen_16_9",
+      "canvas": {"width_px": 1920, "height_px": 1080},
+      "occupancy": {
+        "calculation_method": "intrinsic_demand",
+        "raw_demand_ratio": 0.84,
+        "tolerance": 0.04,
+        "absolute_bounds": {"minimum": 0.72, "maximum": 0.9},
+        "target_interval": {"minimum": 0.8, "maximum": 0.88}
+      },
+      "typography": {"title_min_px": 40, "body_min_px": 18, "caption_min_px": 14},
+      "visual_area_ratio": {"minimum": 0.4, "maximum": 0.58},
+      "minimum_component_gap_px": 16,
+      "component_layouts": [
+        {"component_id": "cmp_method", "order": 1, "column_start": 1, "column_span": 2, "row_start": 1, "row_span": 2, "minimum_height": 260, "preferred_height": 340},
+        {"component_id": "cmp_equation", "order": 2, "column_start": 3, "column_span": 1, "row_start": 1, "row_span": 1, "minimum_height": 200, "preferred_height": 260},
+        {"component_id": "cmp_evidence", "order": 3, "column_start": 3, "column_span": 1, "row_start": 2, "row_span": 1, "minimum_height": 200, "preferred_height": 260},
+        {"component_id": "cmp_result", "order": 4, "column_start": 4, "column_span": 1, "row_start": 1, "row_span": 2, "minimum_height": 260, "preferred_height": 340}
+      ]
+    },
+    "print_a0_landscape": {
+      "profile": "print_a0_landscape",
+      "canvas": {"width_mm": 1189, "height_mm": 841, "orientation": "landscape"},
+      "occupancy": {
+        "calculation_method": "intrinsic_demand",
+        "raw_demand_ratio": 0.88,
+        "tolerance": 0.04,
+        "absolute_bounds": {"minimum": 0.78, "maximum": 0.94},
+        "target_interval": {"minimum": 0.84, "maximum": 0.92}
+      },
+      "typography": {"title_min_pt": 60, "body_min_pt": 24, "caption_min_pt": 18},
+      "visual_area_ratio": {"minimum": 0.4, "maximum": 0.58},
+      "minimum_component_gap_mm": 8,
+      "component_layouts": [
+        {"component_id": "cmp_method", "order": 1, "column_start": 1, "column_span": 2, "row_start": 1, "row_span": 2, "minimum_height": 220, "preferred_height": 300},
+        {"component_id": "cmp_equation", "order": 2, "column_start": 3, "column_span": 1, "row_start": 1, "row_span": 1, "minimum_height": 160, "preferred_height": 220},
+        {"component_id": "cmp_evidence", "order": 3, "column_start": 3, "column_span": 1, "row_start": 2, "row_span": 1, "minimum_height": 160, "preferred_height": 220},
+        {"component_id": "cmp_result", "order": 4, "column_start": 4, "column_span": 1, "row_start": 1, "row_span": 2, "minimum_height": 220, "preferred_height": 300}
+      ]
+    }
+  }
+}
+

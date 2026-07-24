@@ -1,0 +1,26 @@
+{
+  "name": "papercraft-poster",
+  "version": "0.1.0+codex.20260724064738",
+  "description": "Create evidence-grounded interactive and print research posters from English text PDFs.",
+  "author": {
+    "name": "PaperCraft"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PaperCraft Poster",
+    "shortDescription": "Turn research PDFs into reviewed interactive and A0 posters.",
+    "longDescription": "Runs the local PaperCraft engine with Codex account authentication to create source-grounded interactive, 16:9, and A0 research posters.",
+    "developerName": "PaperCraft",
+    "category": "Productivity",
+    "capabilities": [
+      "Generate posters",
+      "Review layouts",
+      "Use local files"
+    ],
+    "defaultPrompt": [
+      "Use $papercraft-poster to turn my attached research PDF into a reviewed poster.",
+      "Use $papercraft-poster to make a Screen 16:9 and A0 poster from this paper."
+    ],
+    "brandColor": "#39C6F4"
+  }
+}

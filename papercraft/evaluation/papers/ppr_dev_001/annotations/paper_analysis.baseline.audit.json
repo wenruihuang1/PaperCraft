@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "paper_id": "ppr_dev_001",
+  "status": "structurally_passed_semantic_review_required",
+  "reviewed_on": "2026-07-16",
+  "checks": {
+    "problem": "passed",
+    "motivation": "passed",
+    "method": "passed_with_notes",
+    "claim": "passed",
+    "experiment": "passed_with_notes",
+    "source_refs": "passed"
+  },
+  "notes": [
+    "The problem, motivation, and main 40% reduction claim are extractive and correctly grounded.",
+    "The method steps capture pruning and distillation, but the final selected step is a local similarity-computation detail rather than a complete top-level stage.",
+    "The experiment points to a valid DINOv2 kNN evaluation passage but does not yet reconstruct the complete evaluation suite.",
+    "Datasets, metrics, and baselines remain empty pending semantic analysis."
+  ]
+}

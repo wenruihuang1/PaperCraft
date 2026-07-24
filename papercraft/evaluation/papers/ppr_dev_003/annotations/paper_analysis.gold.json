@@ -1,0 +1,1222 @@
+{
+  "schema_version": "1.2.0",
+  "artifact_revision": 1,
+  "paper_id": "ppr_dev_003",
+  "source_revision": 3,
+  "metadata": {
+    "title": "Stability-Aware Alignment for Single-Source Domain Generalization in Medical Image Segmentation",
+    "authors": [],
+    "language": "en"
+  },
+  "concepts": [
+    {
+      "concept_id": "cpt_problem",
+      "concept_type": "problem",
+      "statement": "Uniform consistency treats every perturbed region as equally reliable even though strong appearance shifts can destabilize boundaries, background, and semantically critical anatomy.",
+      "importance": "critical",
+      "source_refs": [
+        "src_p001_b0013",
+        "src_ast_figure_001"
+      ]
+    },
+    {
+      "concept_id": "cpt_motivation",
+      "concept_type": "motivation",
+      "statement": "SSDG needs diverse perturbations, but it also needs a way to decide where the resulting supervision remains trustworthy.",
+      "importance": "critical",
+      "source_refs": [
+        "src_p002_b0025",
+        "src_p002_b0033"
+      ]
+    },
+    {
+      "concept_id": "cpt_insight",
+      "concept_type": "key_insight",
+      "statement": "Estimate repeatable semantics across anchor, base, and strong views, then align only stable foreground support with confidence-dependent strength.",
+      "importance": "critical",
+      "source_refs": [
+        "src_p002_b0033",
+        "src_ast_figure_002"
+      ]
+    },
+    {
+      "concept_id": "cpt_conclusion",
+      "concept_type": "conclusion",
+      "statement": "For this evaluated medical SSDG setting, reliable alignment depends on identifying stable semantic information instead of enforcing unconditional invariance.",
+      "importance": "high",
+      "source_refs": [
+        "src_p008_b0086"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "clm_selective_alignment",
+      "statement": "Stability-guided selective alignment is a better-motivated constraint than uniform alignment when strong perturbations create spatially unreliable responses.",
+      "claim_type": "main",
+      "scope": "The paper's single-source medical segmentation formulation and evaluated perturbation pipeline.",
+      "qualifiers": [
+        "mechanistic support is qualitative and ablation-based",
+        "no repeated-run uncertainty is reported"
+      ],
+      "importance": "critical",
+      "source_refs": [
+        "src_p001_b0013",
+        "src_p008_b0030"
+      ]
+    },
+    {
+      "claim_id": "clm_benchmark_performance",
+      "statement": "SAA reports the best average Dice among the compared non-supervised methods on all four evaluated transfer tasks.",
+      "claim_type": "main",
+      "scope": "BTCV-CHAOS MRI↔CT and MS-CMRSeg LGE↔bSSFP under the paper's shared U-Net protocol.",
+      "qualifiers": [
+        "point estimates only",
+        "does not imply performance beyond these datasets or transfer directions"
+      ],
+      "importance": "critical",
+      "source_refs": [
+        "src_ast_table_004",
+        "src_p005_b0075",
+        "src_p005_b0092"
+      ]
+    },
+    {
+      "claim_id": "clm_saam_contribution",
+      "statement": "SAAM is the strongest single-module contributor, while the full RCCS+CGSD+SAAM configuration performs best on every reported task.",
+      "claim_type": "supporting",
+      "scope": "Component ablations in Tables 2 and 3 across the four reported transfer tasks.",
+      "qualifiers": [
+        "components are evaluated within this implementation"
+      ],
+      "importance": "high",
+      "source_refs": [
+        "src_p007_b0045",
+        "src_ast_table_006",
+        "src_ast_table_007"
+      ]
+    },
+    {
+      "claim_id": "clm_mechanism_visualization",
+      "statement": "The mechanism visualization shows more organ-centered stable support and smoother anatomy-focused alignment weights for SAA than for the baseline example.",
+      "claim_type": "supporting",
+      "scope": "The representative case visualized in Figure 6.",
+      "qualifiers": [
+        "qualitative example",
+        "not a population-level statistical result"
+      ],
+      "importance": "medium",
+      "source_refs": [
+        "src_ast_figure_011",
+        "src_p008_b0030"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "method_id": "mth_tri_view",
+      "name": "Tri-View Construction",
+      "purpose": "Create anchor, mild base, and stronger semantic-preserving views so cross-view repeatability can be measured rather than assumed.",
+      "inputs": [
+        "source image x",
+        "source label y"
+      ],
+      "outputs": [
+        "anchor x^(0)",
+        "base x^(1)",
+        "strong x^(2)"
+      ],
+      "steps": [
+        {
+          "index": 1,
+          "description": "Keep the anchor unchanged as the semantic reference.",
+          "source_refs": [
+            "src_p003_b0113"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Apply global intensity perturbation for a moderate base view.",
+          "source_refs": [
+            "src_p003_b0113",
+            "src_seq_p003_004"
+          ]
+        },
+        {
+          "index": 3,
+          "description": "Build the strong view with class-conditional perturbation, saliency fusion, and random-convolution candidate selection.",
+          "source_refs": [
+            "src_p003_b0121",
+            "src_p004_b0009"
+          ]
+        }
+      ],
+      "assumptions": [
+        "The selected perturbations should preserve task-relevant anatomy sufficiently for cross-view comparison."
+      ],
+      "equation_refs": [
+        "eq_01",
+        "eq_02",
+        "eq_03",
+        "eq_04"
+      ],
+      "claim_refs": [
+        "clm_selective_alignment",
+        "clm_saam_contribution"
+      ],
+      "source_refs": [
+        "src_p003_b0102",
+        "src_p003_b0113",
+        "src_p004_b0009"
+      ]
+    },
+    {
+      "method_id": "mth_cgsd",
+      "name": "Channel-Gated Structure-Style Decoupling",
+      "purpose": "Suppress shallow appearance-sensitive channels before estimating spatial stability from deeper features.",
+      "inputs": [
+        "tri-view shallow features",
+        "shared channel gate g"
+      ],
+      "outputs": [
+        "structure-weighted features",
+        "CGSD regularization"
+      ],
+      "steps": [
+        {
+          "index": 1,
+          "description": "Convert a shared gate into complementary structure and style channel weights.",
+          "source_refs": [
+            "src_p004_b0034",
+            "src_seq_p004_005",
+            "src_seq_p004_006"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Forward structure-weighted features and suppress style-weighted responses.",
+          "source_refs": [
+            "src_p004_b0045",
+            "src_seq_p004_007"
+          ]
+        },
+        {
+          "index": 3,
+          "description": "Regularize base/strong structure embeddings against the complementary style allocation.",
+          "source_refs": [
+            "src_p004_b0082",
+            "src_seq_p004_003"
+          ]
+        }
+      ],
+      "assumptions": [
+        "Cross-view channel discrepancy is informative about structure-dominant versus appearance-sensitive responses."
+      ],
+      "equation_refs": [
+        "eq_05",
+        "eq_06",
+        "eq_07",
+        "eq_08"
+      ],
+      "claim_refs": [
+        "clm_selective_alignment",
+        "clm_saam_contribution"
+      ],
+      "source_refs": [
+        "src_p004_b0034",
+        "src_ast_figure_003",
+        "src_p004_b0084"
+      ]
+    },
+    {
+      "method_id": "mth_saam",
+      "name": "Stability-Aware Alignment Module",
+      "purpose": "Estimate spatial reliability across views, retain stable foreground support, and weight anchor-centered feature alignment by confidence.",
+      "inputs": [
+        "deep features F^(0), F^(1), F^(2)",
+        "label/prediction foreground support"
+      ],
+      "outputs": [
+        "stability d_stab",
+        "stable mask Omega",
+        "alignment weight A",
+        "L_saam"
+      ],
+      "steps": [
+        {
+          "index": 1,
+          "description": "Average pairwise cosine dissimilarity to estimate cross-view stability.",
+          "source_refs": [
+            "src_seq_p004_008",
+            "src_seq_p004_009"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Select Top-rho stable locations and convert distance into a reliability gate.",
+          "source_refs": [
+            "src_p005_b0002",
+            "src_seq_p005_001",
+            "src_seq_p005_002"
+          ]
+        },
+        {
+          "index": 3,
+          "description": "Restrict the gate to foreground support and align projected anchor features to base and strong views.",
+          "source_refs": [
+            "src_p005_b0017",
+            "src_p005_b0043",
+            "src_seq_p005_007"
+          ]
+        }
+      ],
+      "assumptions": [
+        "Lower cross-view feature dissimilarity indicates more reliable semantic support for alignment."
+      ],
+      "equation_refs": [
+        "eq_09",
+        "eq_10",
+        "eq_11",
+        "eq_12",
+        "eq_13",
+        "eq_14",
+        "eq_15",
+        "eq_16",
+        "eq_17"
+      ],
+      "claim_refs": [
+        "clm_selective_alignment",
+        "clm_saam_contribution",
+        "clm_mechanism_visualization"
+      ],
+      "source_refs": [
+        "src_p004_b0089",
+        "src_p005_b0002",
+        "src_p005_b0043",
+        "src_ast_figure_011"
+      ]
+    }
+  ],
+  "equations": [
+    {
+      "equation_id": "eq_01",
+      "source_equation_id": "seq_p003_004",
+      "label": "1",
+      "latex_original": "x^{(1)}=\\alpha F(x)+\\beta",
+      "semantic_role": "update_rule",
+      "variables": [
+        {
+          "symbol": "x",
+          "meaning": "source image",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\alpha,\\beta",
+          "meaning": "sampled intensity scale and shift",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_tri_view"
+      ],
+      "experiment_refs": [
+        "exp_tri_view"
+      ],
+      "source_refs": [
+        "src_seq_p003_004"
+      ]
+    },
+    {
+      "equation_id": "eq_02",
+      "source_equation_id": "seq_p003_005",
+      "label": "2",
+      "latex_original": "x^{\\mathrm{clp}}=\\sum_{c=1}^{C}(\\alpha_c x_c+\\beta_c m_c)",
+      "semantic_role": "update_rule",
+      "variables": [
+        {
+          "symbol": "m_c",
+          "meaning": "binary mask for semantic class c",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\alpha_c,\\beta_c",
+          "meaning": "class-wise intensity parameters",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_tri_view"
+      ],
+      "experiment_refs": [
+        "exp_tri_view"
+      ],
+      "source_refs": [
+        "src_seq_p003_005"
+      ]
+    },
+    {
+      "equation_id": "eq_03",
+      "source_equation_id": "seq_p004_001",
+      "label": "3",
+      "latex_original": "\\tilde{x}^{(2)}=S\\odot x^{(1)}+(1-S)\\odot x^{\\mathrm{clp}}",
+      "semantic_role": "update_rule",
+      "variables": [
+        {
+          "symbol": "S",
+          "meaning": "saliency map",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\odot",
+          "meaning": "element-wise multiplication",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_tri_view"
+      ],
+      "experiment_refs": [
+        "exp_tri_view"
+      ],
+      "source_refs": [
+        "src_seq_p004_001"
+      ]
+    },
+    {
+      "equation_id": "eq_04",
+      "source_equation_id": "seq_p004_002",
+      "label": "4",
+      "latex_original": "x^{(2)}=\\arg\\min_{\\hat{x}\\in\\{\\hat{x}_1,\\ldots,\\hat{x}_K\\}}\\mathcal{D}\\!\\left(f_\\theta(\\hat{x}),f_\\theta(x^{(0)})\\right)",
+      "semantic_role": "constraint",
+      "variables": [
+        {
+          "symbol": "\\hat{x}_k",
+          "meaning": "random-convolution candidate",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\mathcal{D}",
+          "meaning": "cosine distance",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_tri_view"
+      ],
+      "experiment_refs": [
+        "exp_tri_view"
+      ],
+      "source_refs": [
+        "src_seq_p004_002"
+      ]
+    },
+    {
+      "equation_id": "eq_05",
+      "source_equation_id": "seq_p004_005",
+      "label": "5",
+      "latex_original": "\\mathbf{w}^{\\mathrm{str}}=\\sigma(\\mathbf{g}),\\quad \\mathbf{w}^{\\mathrm{str}}\\in(0,1)^C",
+      "semantic_role": "definition",
+      "variables": [
+        {
+          "symbol": "\\mathbf{g}",
+          "meaning": "shared learnable channel gate",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\mathbf{w}^{\\mathrm{str}}",
+          "meaning": "structure channel weights",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_cgsd"
+      ],
+      "experiment_refs": [
+        "exp_component_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p004_005"
+      ]
+    },
+    {
+      "equation_id": "eq_06",
+      "source_equation_id": "seq_p004_006",
+      "label": "6",
+      "latex_original": "\\mathbf{w}^{\\mathrm{sty}}=\\mathbf{1}-\\mathbf{w}^{\\mathrm{str}}",
+      "semantic_role": "definition",
+      "variables": [
+        {
+          "symbol": "\\mathbf{w}^{\\mathrm{sty}}",
+          "meaning": "complementary style channel weights",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_cgsd"
+      ],
+      "experiment_refs": [
+        "exp_component_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p004_006"
+      ]
+    },
+    {
+      "equation_id": "eq_07",
+      "source_equation_id": "seq_p004_007",
+      "label": "7",
+      "latex_original": "f_{\\mathrm{str}}^{(k)}=f^{(k)}\\odot\\mathbf{w}^{\\mathrm{str}},\\quad f_{\\mathrm{sty}}^{(k)}=f^{(k)}\\odot\\mathbf{w}^{\\mathrm{sty}}",
+      "semantic_role": "update_rule",
+      "variables": [
+        {
+          "symbol": "f^{(k)}",
+          "meaning": "shallow feature map for view k",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "k",
+          "meaning": "view index",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_cgsd"
+      ],
+      "experiment_refs": [
+        "exp_component_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p004_007"
+      ]
+    },
+    {
+      "equation_id": "eq_08",
+      "source_equation_id": "seq_p004_003",
+      "label": "8",
+      "latex_original": "\\mathcal{L}_{\\mathrm{cgsd}}=d\\!\\left(\\phi(f_{\\mathrm{str}}^{(1)}),\\phi(f_{\\mathrm{str}}^{(2)})\\right)-d\\!\\left(\\phi(f_{\\mathrm{sty}}^{(1)}),\\phi(f_{\\mathrm{sty}}^{(2)})\\right)",
+      "semantic_role": "objective",
+      "variables": [
+        {
+          "symbol": "\\phi",
+          "meaning": "lightweight projector",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "d",
+          "meaning": "cosine distance",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_cgsd"
+      ],
+      "experiment_refs": [
+        "exp_component_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p004_003"
+      ]
+    },
+    {
+      "equation_id": "eq_09",
+      "source_equation_id": "seq_p004_008",
+      "label": "9",
+      "latex_original": "d_{kl}(i)=1-\\frac{\\langle F_i^{(k)},F_i^{(l)}\\rangle}{\\lVert F_i^{(k)}\\rVert_2\\lVert F_i^{(l)}\\rVert_2}",
+      "semantic_role": "metric",
+      "variables": [
+        {
+          "symbol": "F_i^{(k)}",
+          "meaning": "deep feature vector at location i in view k",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "d_{kl}",
+          "meaning": "pairwise cosine dissimilarity",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_saam"
+      ],
+      "experiment_refs": [
+        "exp_saam_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p004_008"
+      ]
+    },
+    {
+      "equation_id": "eq_10",
+      "source_equation_id": "seq_p004_009",
+      "label": "10",
+      "latex_original": "d_{\\mathrm{stab}}(i)=\\frac{1}{3}\\sum_{(k,l)}d_{kl}(i)",
+      "semantic_role": "metric",
+      "variables": [
+        {
+          "symbol": "d_{\\mathrm{stab}}",
+          "meaning": "mean cross-view dissimilarity",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "(k,l)",
+          "meaning": "the three view pairs",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_saam"
+      ],
+      "experiment_refs": [
+        "exp_saam_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p004_009"
+      ]
+    },
+    {
+      "equation_id": "eq_11",
+      "source_equation_id": "seq_p005_001",
+      "label": "11",
+      "latex_original": "\\Omega(i)=\\mathbb{I}\\!\\left(i\\in\\operatorname{TopK}_{\\rho}(-d_{\\mathrm{stab}})\\right)",
+      "semantic_role": "constraint",
+      "variables": [
+        {
+          "symbol": "\\Omega",
+          "meaning": "stable-region selector",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\rho",
+          "meaning": "selection ratio",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_saam"
+      ],
+      "experiment_refs": [
+        "exp_saam_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p005_001"
+      ]
+    },
+    {
+      "equation_id": "eq_12",
+      "source_equation_id": "seq_p005_002",
+      "label": "12",
+      "latex_original": "R(i)=\\exp\\!\\left(-\\frac{d_{\\mathrm{stab}}(i)}{\\tau}\\right),\\quad W(i)=\\Omega(i)\\,R(i)",
+      "semantic_role": "definition",
+      "variables": [
+        {
+          "symbol": "\\tau",
+          "meaning": "temperature",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "W",
+          "meaning": "low-resolution stability gate",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_saam"
+      ],
+      "experiment_refs": [
+        "exp_saam_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p005_002"
+      ]
+    },
+    {
+      "equation_id": "eq_13",
+      "source_equation_id": "seq_p005_003",
+      "label": "13",
+      "latex_original": "M(i)=\\mathbb{I}\\!\\left((y_i\\neq0)\\vee(\\hat y_i^{(0)}\\neq0)\\vee(\\hat y_i^{(1)}\\neq0)\\vee(\\hat y_i^{(2)}\\neq0)\\right)",
+      "semantic_role": "constraint",
+      "variables": [
+        {
+          "symbol": "M",
+          "meaning": "foreground union prior",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\hat y^{(k)}",
+          "meaning": "prediction for view k",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_saam"
+      ],
+      "experiment_refs": [
+        "exp_saam_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p005_003"
+      ]
+    },
+    {
+      "equation_id": "eq_14",
+      "source_equation_id": "seq_p005_004",
+      "label": "14",
+      "latex_original": "A(i)=\\operatorname{Up}_{\\mathrm{bi}}(W(i))\\,M(i)",
+      "semantic_role": "definition",
+      "variables": [
+        {
+          "symbol": "A",
+          "meaning": "final alignment weight",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\operatorname{Up}_{\\mathrm{bi}}",
+          "meaning": "bilinear upsampling",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_saam"
+      ],
+      "experiment_refs": [
+        "exp_saam_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p005_004"
+      ]
+    },
+    {
+      "equation_id": "eq_15",
+      "source_equation_id": "seq_p005_005",
+      "label": "15",
+      "latex_original": "q^{(k)}=g_{\\phi}(F^{(k)}),\\quad q^{(k)}\\in\\mathbb{R}^{C_q\\times H_q\\times W_q}",
+      "semantic_role": "update_rule",
+      "variables": [
+        {
+          "symbol": "g_\\phi",
+          "meaning": "shared projection head",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "q^{(k)}",
+          "meaning": "compact feature embedding",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_saam"
+      ],
+      "experiment_refs": [
+        "exp_saam_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p005_005"
+      ]
+    },
+    {
+      "equation_id": "eq_16",
+      "source_equation_id": "seq_p005_006",
+      "label": "16",
+      "latex_original": "\\hat q^{(k)}=\\operatorname{Up}_{\\mathrm{bi}}(q^{(k)}),\\quad \\hat q^{(k)}\\in\\mathbb{R}^{C_q\\times H\\times W}",
+      "semantic_role": "update_rule",
+      "variables": [
+        {
+          "symbol": "\\hat q^{(k)}",
+          "meaning": "upsampled embedding at alignment resolution",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_saam"
+      ],
+      "experiment_refs": [
+        "exp_saam_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p005_006"
+      ]
+    },
+    {
+      "equation_id": "eq_17",
+      "source_equation_id": "seq_p005_007",
+      "label": "17",
+      "latex_original": "\\mathcal{L}_{\\mathrm{saam}}=\\frac{\\sum_i A(i)\\left[d(\\hat q_i^{(0)},\\hat q_i^{(1)})+d(\\hat q_i^{(0)},\\hat q_i^{(2)})\\right]}{\\sum_i A(i)+\\epsilon}",
+      "semantic_role": "objective",
+      "variables": [
+        {
+          "symbol": "\\mathcal{L}_{\\mathrm{saam}}",
+          "meaning": "weighted anchor-centered alignment loss",
+          "unit": null,
+          "domain": null
+        },
+        {
+          "symbol": "\\epsilon",
+          "meaning": "numerical stabilizer",
+          "unit": null,
+          "domain": null
+        }
+      ],
+      "computation_steps": [
+        "Read the inputs using the paper's original notation.",
+        "Apply the displayed operation to produce the quantity used by the next stage."
+      ],
+      "method_refs": [
+        "mth_saam"
+      ],
+      "experiment_refs": [
+        "exp_saam_ablation"
+      ],
+      "source_refs": [
+        "src_seq_p005_007"
+      ]
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "exp_main_benchmark",
+      "question": "Does SAA outperform the strongest compared non-supervised method across all four benchmark directions?",
+      "setup": "Shared U-Net protocol on BTCV-CHAOS cross-modality and MS-CMRSeg cross-sequence SSDG tasks; Dice is the metric.",
+      "datasets": [
+        "BTCV-CHAOS",
+        "MS-CMRSeg"
+      ],
+      "metrics": [
+        "Average Dice (%)"
+      ],
+      "baselines": [
+        "ERM",
+        "Cutout",
+        "RSC",
+        "MixStyle",
+        "AdvBias",
+        "RandConv",
+        "CSDG",
+        "SLAug",
+        "S2S2",
+        "DCON"
+      ],
+      "results": [
+        {
+          "result_id": "res_mri_ct",
+          "metric": "MRI→CT",
+          "value": "84.45% vs 85.55%",
+          "comparison": "DCON vs SAA",
+          "source_refs": [
+            "src_p006_b0014",
+            "src_p006_b0015",
+            "src_ast_table_004"
+          ]
+        },
+        {
+          "result_id": "res_ct_mri",
+          "metric": "CT→MRI",
+          "value": "88.63% vs 89.20%",
+          "comparison": "SLAug vs SAA",
+          "source_refs": [
+            "src_p006_b0027",
+            "src_p006_b0028",
+            "src_ast_table_004"
+          ]
+        },
+        {
+          "result_id": "res_lge_bssfp",
+          "metric": "LGE→bSSFP",
+          "value": "88.06% vs 88.12%",
+          "comparison": "DCON vs SAA",
+          "source_refs": [
+            "src_p006_b0014",
+            "src_p006_b0015",
+            "src_ast_table_004"
+          ]
+        },
+        {
+          "result_id": "res_bssfp_lge",
+          "metric": "bSSFP→LGE",
+          "value": "86.69% vs 87.33%",
+          "comparison": "SLAug vs SAA",
+          "source_refs": [
+            "src_p006_b0027",
+            "src_p006_b0028",
+            "src_ast_table_004"
+          ]
+        }
+      ],
+      "limitations": [
+        "Only point estimates are reported; no repeated-run variance or significance test is provided."
+      ],
+      "claim_refs": [
+        "clm_benchmark_performance"
+      ],
+      "source_refs": [
+        "src_ast_table_004",
+        "src_p005_b0069",
+        "src_p005_b0075",
+        "src_p005_b0092"
+      ]
+    },
+    {
+      "experiment_id": "exp_component_ablation",
+      "question": "Which top-level modules account for the reported gains?",
+      "setup": "Baseline plus RCCS, CGSD, or SAAM individually, compared with the full configuration on all four tasks.",
+      "datasets": [
+        "BTCV-CHAOS",
+        "MS-CMRSeg"
+      ],
+      "metrics": [
+        "Average Dice (%)"
+      ],
+      "baselines": [
+        "Baseline",
+        "+RCCS",
+        "+CGSD",
+        "+SAAM",
+        "Full"
+      ],
+      "results": [
+        {
+          "result_id": "res_component_mri_ct",
+          "metric": "MRI→CT component ablation",
+          "value": "82.77% vs 85.55%",
+          "comparison": "Baseline vs Full",
+          "source_refs": [
+            "src_p007_b0012",
+            "src_p007_b0045"
+          ]
+        },
+        {
+          "result_id": "res_component_lge_bssfp",
+          "metric": "LGE→bSSFP component ablation",
+          "value": "86.54% vs 88.12%",
+          "comparison": "Baseline vs Full",
+          "source_refs": [
+            "src_p007_b0012",
+            "src_p007_b0045"
+          ]
+        },
+        {
+          "result_id": "res_component_ct_mri",
+          "metric": "CT→MRI component ablation",
+          "value": "87.24% vs 89.20%",
+          "comparison": "Baseline vs Full",
+          "source_refs": [
+            "src_p007_b0026",
+            "src_p007_b0045"
+          ]
+        },
+        {
+          "result_id": "res_component_bssfp_lge",
+          "metric": "bSSFP→LGE component ablation",
+          "value": "85.55% vs 87.33%",
+          "comparison": "Baseline vs Full",
+          "source_refs": [
+            "src_p007_b0026",
+            "src_p007_b0045"
+          ]
+        }
+      ],
+      "limitations": [
+        "The ablation isolates configured modules, not every internal perturbation choice."
+      ],
+      "claim_refs": [
+        "clm_saam_contribution",
+        "clm_selective_alignment"
+      ],
+      "source_refs": [
+        "src_ast_table_006",
+        "src_ast_table_007",
+        "src_p007_b0045"
+      ]
+    },
+    {
+      "experiment_id": "exp_saam_ablation",
+      "question": "Do stable-region selection, distance weighting, and the alignment term each contribute?",
+      "setup": "Remove Ω, W, or the alignment term while keeping the remaining SAA configuration fixed.",
+      "datasets": [
+        "BTCV-CHAOS",
+        "MS-CMRSeg"
+      ],
+      "metrics": [
+        "Overall average Dice (%)"
+      ],
+      "baselines": [
+        "Full",
+        "w/o Ω",
+        "w/o W",
+        "w/o align"
+      ],
+      "results": [
+        {
+          "result_id": "res_saam_selector",
+          "metric": "Stable-region selector",
+          "value": "86.70% vs 87.55%",
+          "comparison": "w/o Ω vs Full",
+          "source_refs": [
+            "src_p007_b0055",
+            "src_p007_b0046"
+          ]
+        },
+        {
+          "result_id": "res_saam_weight",
+          "metric": "Distance weighting",
+          "value": "86.98% vs 87.55%",
+          "comparison": "w/o W vs Full",
+          "source_refs": [
+            "src_p007_b0055",
+            "src_p007_b0046"
+          ]
+        },
+        {
+          "result_id": "res_saam_align",
+          "metric": "Alignment objective",
+          "value": "86.30% vs 87.55%",
+          "comparison": "w/o align vs Full",
+          "source_refs": [
+            "src_p007_b0055",
+            "src_p007_b0046"
+          ]
+        }
+      ],
+      "limitations": [
+        "The experiment reports deterministic point estimates without uncertainty."
+      ],
+      "claim_refs": [
+        "clm_selective_alignment",
+        "clm_saam_contribution"
+      ],
+      "source_refs": [
+        "src_ast_table_008",
+        "src_ast_table_009",
+        "src_p007_b0046"
+      ]
+    },
+    {
+      "experiment_id": "exp_tri_view",
+      "question": "Does the full anchor-base-strong hierarchy outperform isolated view combinations?",
+      "setup": "Tri-view alternatives on MRI→CT with CGSD and SAAM fixed.",
+      "datasets": [
+        "BTCV-CHAOS MRI→CT"
+      ],
+      "metrics": [
+        "Dice (%)"
+      ],
+      "baselines": [
+        "Anchor",
+        "A+B",
+        "A+S",
+        "A+B+S",
+        "S-w/o-L",
+        "S-w/o-T"
+      ],
+      "results": [
+        {
+          "result_id": "res_tri_view",
+          "metric": "Tri-view hierarchy",
+          "value": "64.14% vs 85.55%",
+          "comparison": "Anchor vs A+B+S",
+          "source_refs": [
+            "src_p007_b0095",
+            "src_p007_b0113",
+            "src_p007_b0079"
+          ]
+        }
+      ],
+      "limitations": [
+        "The isolated tri-view analysis is shown on MRI→CT only."
+      ],
+      "claim_refs": [
+        "clm_selective_alignment",
+        "clm_saam_contribution"
+      ],
+      "source_refs": [
+        "src_ast_figure_010",
+        "src_p007_b0079"
+      ]
+    }
+  ],
+  "narrative_frame": {
+    "problem": {
+      "concept_ref": "cpt_problem",
+      "context": "Single-source medical segmentation must generalize to unseen acquisition shifts without target data.",
+      "conventional_assumption": "Uniform consistency assumes every perturbed region is equally trustworthy.",
+      "failure_mechanism": "Strong perturbations make boundaries, background, and subtle anatomy disagree across views.",
+      "consequence": "Aligning those unstable responses can turn noise into supervision and limit generalization.",
+      "source_refs": [
+        "src_p001_b0013",
+        "src_ast_figure_001"
+      ]
+    },
+    "motivation": {
+      "concept_ref": "cpt_motivation",
+      "observation": "Useful augmentation and safe consistency are not the same thing.",
+      "limitation": "Input diversity alone does not reveal which local semantics survive a perturbation.",
+      "design_requirement": "The model must estimate reliability before deciding where and how strongly to align.",
+      "source_refs": [
+        "src_p002_b0025",
+        "src_p002_b0033"
+      ]
+    },
+    "insight": {
+      "concept_ref": "cpt_insight",
+      "principle": "Align repeatable semantics, not every response.",
+      "operationalization": "Use tri-view agreement to select stable foreground regions and convert stability into an alignment weight.",
+      "expected_effect": "The constraint concentrates on reliable anatomy while avoiding unstable boundary and background responses.",
+      "source_refs": [
+        "src_ast_figure_002",
+        "src_ast_figure_011"
+      ]
+    }
+  },
+  "understanding_path": [
+    {
+      "step_id": "step_problem",
+      "role": "problem",
+      "object_refs": [
+        "cpt_problem"
+      ],
+      "transition": "The failure is spatially selective, so reliability must be estimated locally."
+    },
+    {
+      "step_id": "step_motivation",
+      "role": "motivation",
+      "object_refs": [
+        "cpt_motivation"
+      ],
+      "transition": "Cross-view repeatability provides a usable reliability signal."
+    },
+    {
+      "step_id": "step_key_insight",
+      "role": "key_insight",
+      "object_refs": [
+        "cpt_insight"
+      ],
+      "transition": "Three modules operationalize the insight."
+    },
+    {
+      "step_id": "step_method",
+      "role": "method",
+      "object_refs": [
+        "mth_tri_view",
+        "mth_cgsd",
+        "mth_saam"
+      ],
+      "transition": "Benchmarks and controlled removals test the scoped claims."
+    },
+    {
+      "step_id": "step_evidence",
+      "role": "evidence",
+      "object_refs": [
+        "clm_benchmark_performance",
+        "clm_saam_contribution",
+        "exp_main_benchmark",
+        "exp_component_ablation",
+        "exp_saam_ablation"
+      ],
+      "transition": "The conclusion remains bounded to the demonstrated settings."
+    },
+    {
+      "step_id": "step_conclusion",
+      "role": "conclusion",
+      "object_refs": [
+        "cpt_conclusion"
+      ],
+      "transition": null
+    }
+  ],
+  "analysis_warnings": [
+    "Anthropic review paused on 2026-07-17 because the configured API credential returned HTTP 401; source-adjudicated gold was completed locally."
+  ]
+}

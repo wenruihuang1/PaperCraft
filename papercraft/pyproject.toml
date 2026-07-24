@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "papercraft"
+version = "0.1.0"
+description = "Schema-first contracts for grounded, interactive research-paper posters"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.11,<3",
+  "PyMuPDF==1.26.7",
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.34,<1",
+  "python-multipart>=0.0.20,<1",
+  "openai>=1.100,<3",
+  "anthropic>=0.60,<1",
+  "python-dotenv>=1.0,<2",
+  "jinja2>=3.1,<4",
+  "playwright>=1.51,<2",
+  "httpx[socks]>=0.28,<1",
+]
+
+[project.optional-dependencies]
+test = [
+  "jsonschema>=4.20",
+  "pytest>=8",
+  "httpx>=0.28,<1",
+]
+
+[project.scripts]
+papercraft = "papercraft.app_cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]

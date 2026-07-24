@@ -1,0 +1,8 @@
+{
+  "validation_layer": "schema",
+  "artifact": "poster_plan",
+  "path": ["components", 0, "component_type"],
+  "replacement": "freeform_svg",
+  "expected_error": "component_type"
+}
+

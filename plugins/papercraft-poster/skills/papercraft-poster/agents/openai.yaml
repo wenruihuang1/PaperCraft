@@ -1,0 +1,7 @@
+interface:
+  display_name: "PaperCraft Poster"
+  short_description: "Generate evidence-grounded posters from research PDFs"
+  default_prompt: "Use $papercraft-poster to turn the attached research PDF into a reviewed interactive and print poster."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,8 @@
+interface:
+  display_name: "PaperCraft Poster Iterate"
+  short_description: "Inspect and minimally repair PaperCraft poster layouts"
+  default_prompt: "Use $papercraft-poster-iterate to inspect and minimally repair this PaperCraft poster."
+  brand_color: "#39C6F4"
+
+policy:
+  allow_implicit_invocation: true
