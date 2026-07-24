@@ -65,6 +65,22 @@ Use $papercraft-poster to turn /absolute/path/to/paper.pdf into a reviewed poste
 The input must be an English, text-based PDF. Scanned PDFs and unsupported
 languages are rejected explicitly rather than silently OCR'd.
 
+Verify the local engine and Codex sign-in before a longer run:
+
+```bash
+python3 plugins/papercraft-poster/scripts/check_environment.py --auth-probe
+```
+
+After pulling a plugin update, reinstall it and start a new Codex task so the
+new workflow is loaded:
+
+```bash
+bash plugins/papercraft-poster/install.sh
+```
+
+For macOS CLI paths, terminal commands, repair steps, and troubleshooting, use
+the [plugin README](plugins/papercraft-poster/README.md).
+
 ## Repository map
 
 | Directory | Purpose |
